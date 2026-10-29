@@ -77,7 +77,7 @@ button{font:inherit;color:inherit}
 .wk.ok{border-left-color:var(--acc)}.wk.alt{border-left-color:var(--amb)}.wk.skip{border-left-color:var(--skip)}.wk.miss{border-left-color:var(--red)}
 .wk.today{outline:3px solid var(--acc);outline-offset:1px}
 .wk .wd{width:58px;flex:none}.wk .wd b{display:block;font-size:1.2rem}.wk .wd span{color:var(--mut);font-size:.9rem}
-.wk .wm{flex:1;min-width:0}.wk .wt{font-weight:700;overflow:hidden;display:-webkit-box;-webkit-line-clamp:2;-webkit-box-orient:vertical}
+.wk .wm{flex:1;min-width:0;overflow-wrap:anywhere}.wk .wt{font-weight:700;overflow:hidden;display:-webkit-box;-webkit-line-clamp:2;-webkit-box-orient:vertical}
 .wk .ws{font-size:.95rem;font-weight:600}.wk .ws.ok{color:var(--acc)}.wk .ws.alt{color:var(--amb)}.wk .ws.skip{color:var(--skip)}.wk .ws.miss{color:var(--red)}
 .wk .wdots{display:flex;gap:5px;flex:none}
 /* handleliste */
@@ -105,6 +105,21 @@ button{font:inherit;color:inherit}
 .fbi .m{color:var(--mut);font-size:.95rem}.fbi .st{color:var(--star);font-size:1.2rem;letter-spacing:2px}
 .fbi img{display:block;max-width:100%;max-height:260px;border-radius:12px;margin-top:8px}
 .msg{padding:30px;text-align:center;color:var(--mut)}
+/* flere måltider */
+.le{display:flex;align-items:center;gap:12px;min-height:68px;padding:8px 0;border-top:1px solid var(--line)}
+.le:first-of-type{border-top:0}
+.le .lt{width:56px;flex:none;text-align:center;font-weight:800;font-size:1.05rem}
+.le .lm{flex:1;min-width:0}.le .ln{font-weight:700;overflow-wrap:anywhere}.le .ls{color:var(--mut);font-size:.95rem}
+.le.skip{opacity:.65}
+.lx{flex:none;width:52px;height:52px;border-radius:14px;border:2px solid var(--line);background:var(--card);font-size:1.4rem;font-weight:800;cursor:pointer;color:var(--red);padding:0}
+.cntb{font-weight:800;color:var(--acc);margin:0 0 10px}
+.wk .wc{font-size:.95rem;font-weight:600;color:var(--mut)}
+.sh.add{padding-bottom:0}
+.sh.add .q2{display:block;font-weight:700;margin:14px 0 6px}
+.sh.add input[type=text],.sh.add input[type=time]{width:100%;min-height:56px;padding:10px 14px;border:2px solid var(--line);border-radius:14px;background:var(--card);color:var(--ink);font:inherit;font-size:1.1rem}
+.sh.add .chips{margin:0}
+.sh.add .chip{min-height:52px}
+.stickb{position:sticky;bottom:0;background:var(--bg);padding:12px 0 calc(16px + env(safe-area-inset-bottom));margin-top:14px}
 /* chrome */
 #err{position:fixed;top:72px;border-radius:12px;margin:0 12px;left:0;right:0;z-index:30;background:var(--redbg);color:var(--red);padding:10px 14px;font-weight:700;display:none}
 .tb{position:fixed;left:0;right:0;bottom:0;z-index:20;display:grid;grid-template-columns:repeat(4,1fr);background:var(--card);border-top:2px solid var(--line);padding-bottom:env(safe-area-inset-bottom)}
@@ -137,9 +152,10 @@ const H = {apikey: KEY, Authorization: "Bearer " + KEY, "Content-Type": "applica
 const DAYK = ["Man","Tir","Ons","Tor","Fre","Lør","Søn"];
 const DAYS = {Man:"Mandag",Tir:"Tirsdag",Ons:"Onsdag",Tor:"Torsdag",Fre:"Fredag","Lør":"Lørdag","Søn":"Søndag"};
 const TABS = ["idag","uke","liste","fb"];
-let week = null, meals = [], items = [], fb = [], dayLog = [];
+let week = null, meals = [], items = [], fb = [], dayLog = [], entries = [];
 let tab = "idag", sel = todayKey(), fbModal = null;
 const drafts = {}, logDraft = {}, logOpen = new Set(), catOpen = {};
+let addOpen = false, addDraft = null;
 const $ = s => document.querySelector(s);
 const esc = s => String(s ?? "").replace(/[&<>"]/g, c => ({"&":"&amp;","<":"&lt;",">":"&gt;",'"':"&quot;"}[c]));
 const cap = s => s.charAt(0).toUpperCase() + s.slice(1);
@@ -164,10 +180,11 @@ async function load() {
       api("mat_meal_plan?select=*&order=sort&" + q),
       api("mat_shopping_items?select=*&order=sort&" + q),
       rpc("list_feedback", {p_week: week}).catch(() => fb),
-      rpc("list_day_log", {p_week: week}).catch(() => dayLog)]);
+      rpc("list_day_log", {p_week: week}).catch(() => dayLog),
+      rpc("list_day_entries", {p_week: week}).catch(() => entries)]);
     if (meals.length && (pending > 0 || seq !== writeSeq)) return; // lokale endringer underveis: ikke overskriv
     const sig = JSON.stringify(res), same = sig === lastSig; lastSig = sig;
-    [meals, items, fb, dayLog] = res;
+    [meals, items, fb, dayLog, entries] = res;
     err();
     if (same && meals.length && document.getElementById("view").children.length) return; // ingen endringer: ikke tegn på nytt
     const ae = document.activeElement;
@@ -199,6 +216,30 @@ const PROT = {lite: "Lite protein", greit: "Greit", mye: "Mye protein"};
 const PRESET = {frokost: ["Havregrøt", "Eggerøre", "Skyr"], "mellommåltid": ["Proteinshake", "Proteinbar"]};
 const FILL = ["Pizza", "Rester", "Kylling og ris", "Takeaway"];
 
+const TYPES = [["frokost","Frokost"],["lunsj","Lunsj"],["mellommåltid","Mellommåltid"],["snack","Snack"],["kvelds","Kvelds"],["drikke","Drikke/shake"],["annet","Annet"]];
+const TL = Object.fromEntries(TYPES);
+const TICON = {frokost: "🥣", lunsj: "🥪", "mellommåltid": "🍎", snack: "🍌", kvelds: "🌙", drikke: "🥤", annet: "🍴"};
+const TTIME = {frokost: "08:00", lunsj: "12:00", "mellommåltid": "15:00", snack: "16:30", kvelds: "21:00", drikke: "15:00", annet: "12:00"};
+const QUICK = ["Proteinshake","Proteinbar","Skyr","Nøtter","Banan","Eple","Riskrem","Brødskive","Egg","Havregrøt"];
+const QTYPE = {Proteinshake: "drikke", Proteinbar: "snack", "Nøtter": "snack", Riskrem: "kvelds"};
+const hhmm = (d = new Date()) => String(d.getHours()).padStart(2, "0") + ":" + String(d.getMinutes()).padStart(2, "0");
+const toMin = t => +t.slice(0, 2) * 60 + +t.slice(3, 5);
+const typeByTime = t => { const h = +t.slice(0, 2); return h < 10 ? "frokost" : h < 14 ? "lunsj" : h < 18 ? "mellommåltid" : "kvelds"; };
+// Alt som er logget for en dag, samlet i én kronologisk liste (gamle logger + nye oppføringer)
+function dayItems(d) {
+  const a = [], m = dinner(d);
+  if (m) { const k = kD(d), s = status(k), r = logRec(k) || {};
+    if (s) a.push({k, min: 1110, icon: "🍽️", skip: s === "hoppet_over", name: s === "hoppet_over" ? "Hoppet over" : s === "endret" ? (r.actual_text || "Noe annet") : m.title, sub: "Middag" + (s === "som_planlagt" ? " · som planlagt" : "") + (r.actual_protein && s !== "hoppet_over" ? " · " + PROT[r.actual_protein] : "")}); }
+  for (const [ty, k, mn, ic] of [["frokost", kF(d), 480, "🥣"], ["mellommåltid", kS(d), 900, "🍎"]]) {
+    const s = status(k), r = logRec(k) || {};
+    if (s) a.push({k, min: mn, icon: ic, skip: s === "hoppet_over", name: s === "hoppet_over" ? "Hoppet over" : (r.actual_text || "Som planlagt"), sub: cap(ty) + (r.actual_protein && s !== "hoppet_over" ? " · " + PROT[r.actual_protein] : "")});
+  }
+  for (const e of entries.filter(x => x.day === d)) a.push({eid: e.id, min: toMin(e.eaten_time), time: e.eaten_time, icon: TICON[e.entry_type], name: e.label, sub: TL[e.entry_type] + (e.protein ? " · " + PROT[e.protein] : "")});
+  return a.sort((x, y) => x.min - y.min);
+}
+const countDay = d => dayItems(d).filter(x => !x.skip).length;
+const cntTxt = n => n + (n === 1 ? " måltid" : " måltider");
+
 let toastTimer = null, toastUndo = null;
 function showToast(msg, undo) {
   toastUndo = undo || null;
@@ -226,6 +267,57 @@ async function saveLog(k, st, text, protein, quiet) {
     if (t === "m") Object.assign(r, prev); else dayLog = prevLog;
     $("#toast").style.display = "none"; render(); err("Kunne ikke lagre! Sjekk nettforbindelsen og prøv igjen.");
   } finally { pending--; writeSeq++; lastSig = ""; }
+}
+
+async function addEntry() {
+  const x = addDraft; if (!x || x.busy) return;
+  const text = x.text.trim(), label = x.preset && x.preset !== "Annet" ? (text ? x.preset + " – " + text : x.preset) : text;
+  if (!label) { x.bad = "Velg noe fra listen eller skriv kort hva du spiste."; return render(); }
+  if (label.length > 100) { x.bad = "Teksten er for lang (maks 100 tegn)."; return render(); }
+  x.busy = true; x.bad = ""; writeSeq++; pending++; render();
+  try {
+    const t = effTime(x), day = sel;
+    const id = await rpc("add_day_entry", {p_week: week, p_day: day, p_type: typeOf(x), p_label: label, p_protein: x.protein, p_time: x.time || (isToday(day) ? null : t)});
+    entries = await rpc("list_day_entries", {p_week: week}).catch(() => entries);
+    addOpen = false; addDraft = null; err();
+    showToast("✓ Lagret", () => delEntry(id, true));
+  } catch (e) { console.error(e); x.busy = false; x.bad = "Kunne ikke lagre. Sjekk nettforbindelsen og prøv igjen."; }
+  finally { pending--; writeSeq++; lastSig = ""; }
+  render();
+}
+async function delEntry(id, undoOfAdd) {
+  const e0 = entries.find(x => x.id === id); if (!e0) return;
+  const prev = entries; entries = entries.filter(x => x.id !== id);
+  writeSeq++; pending++; render();
+  showToast(undoOfAdd ? "Angret" : "Slettet", undoOfAdd ? null : () => restoreEntry(id));
+  try { await rpc("delete_day_entry", {p_id: id}); err(); }
+  catch (e) { console.error(e); entries = prev; $("#toast").style.display = "none"; render(); err("Kunne ikke slette. Prøv igjen."); }
+  finally { pending--; writeSeq++; lastSig = ""; }
+}
+async function restoreEntry(id) {
+  writeSeq++; pending++;
+  try { await rpc("restore_day_entry", {p_id: id}); entries = await rpc("list_day_entries", {p_week: week}); showToast("Lagt tilbake"); err(); }
+  catch (e) { console.error(e); err("Kunne ikke angre. Prøv igjen."); }
+  finally { pending--; writeSeq++; lastSig = ""; render(); }
+}
+const typeOf = x => x.type || QTYPE[x.preset] || typeByTime(x.time || (isToday(sel) ? x.now : "15:00"));
+const effTime = x => x.time || (isToday(sel) ? x.now : TTIME[x.type || QTYPE[x.preset] || "mellommåltid"]);
+function openAdd() { const n = hhmm(); addDraft = {type: null, preset: null, text: "", protein: null, time: null, now: n, bad: "", busy: false}; addOpen = true; render(); }
+function addSheetHtml() {
+  const x = addDraft, t = effTime(x), ty = typeOf(x);
+  const dt = dayDate(sel);
+  return `<div class="ov" data-ov><div class="sh add"><div class="top"><div><div class="lab">Legg til måltid</div><h2>${DAYS[sel]} ${esc(fmt(dt, {day: "numeric", month: "short"}))}</h2></div><button class="btn" data-close aria-label="Lukk">✕</button></div>
+    <label class="q2" style="margin-top:0">Hva spiste du?</label>
+    <div class="chips">${QUICK.concat("Annet").map(p => `<button class="chip ${x.preset === p ? "on" : ""}" data-apre="${esc(p)}">${esc(p)}</button>`).join("")}</div>
+    <label class="q2" for="at-text">${x.preset === "Annet" || !x.preset ? "Skriv kort" : "Tillegg"} <span class="d">${x.preset && x.preset !== "Annet" ? "(valgfritt)" : ""}</span></label>
+    <input type="text" id="at-text" class="ai" maxlength="100" enterkeyhint="done" placeholder="F.eks. grøt med bær" value="${esc(x.text)}">
+    <label class="q2">Type</label>
+    <div class="chips">${TYPES.map(([k, l]) => `<button class="chip ${ty === k ? "on" : ""}" data-atype="${k}">${l}</button>`).join("")}</div>
+    <label class="q2">Hvor mye protein? <span class="d">(valgfritt)</span></label>
+    <div class="prot" style="margin:0">${Object.keys(PROT).map(p => `<button class="chip ${x.protein === p ? "on" : ""}" data-aprot="${p}">${PROT[p]}</button>`).join("")}</div>
+    <label class="q2" for="at-time">Klokkeslett <span class="d">(valgfritt${isToday(sel) ? ", nå som standard" : ""})</span></label>
+    <input type="time" id="at-time" class="ai" value="${esc(t)}">
+    <div class="stickb">${x.bad ? `<div class="bad">${esc(x.bad)}</div>` : ""}<button class="btn go" data-asave ${x.busy ? "disabled" : ""}>${x.busy ? "Lagrer …" : "Lagre"}</button></div></div></div>`;
 }
 
 /* ---------- små byggeklosser ---------- */
@@ -291,6 +383,10 @@ function viewIdag() {
   // frokost
   h += `<section class="card" id="sf"><div class="lab">🥣 Frokost</div>${by("frokost").length ? `<div class="hint" style="margin:0 0 4px">Planlagt: ${by("frokost").map(x => esc(x.title.split(" med ")[0])).join(" · ")}</div>` : ""}${mealButtons(kF(d), "frokost")}</section>`;
   h += `<section class="card" id="ss"><div class="lab">🍎 Mellommåltid</div>${mealButtons(kS(d), "mellommåltid")}</section>`;
+  const li = dayItems(d), n = li.filter(x => !x.skip).length;
+  h += `<section class="card" id="sl"><div class="lab">🍴 Annet i dag</div><div class="cntb">${isToday(d) ? cntTxt(n) + " i dag" : cntTxt(n) + " logget"}</div>
+    <button class="btn go" data-add>＋ Legg til</button>
+    ${li.length ? `<div style="margin-top:10px">${li.map(x => `<div class="le ${x.skip ? "skip" : ""}"><div class="lt">${x.time ? esc(x.time) : x.icon}</div><div class="lm"><div class="ln">${esc(x.name)}</div><div class="ls">${esc(x.sub)}</div></div><button class="lx" ${x.eid ? `data-deid="${x.eid}"` : `data-dlk="${x.k}"`} aria-label="Fjern">✕</button></div>`).join("")}</div>` : `<div class="hint" style="margin-top:10px">Ingenting logget ennå.</div>`}</section>`;
   const g = by("mål")[0];
   if (g) h += `<div class="card" style="background:var(--accbg)"><b>${esc(g.title)}</b><div>${esc(g.description)}</div></div>`;
   return h;
@@ -304,7 +400,7 @@ function viewUke() {
     const m = dinner(d), kd = kD(d), s = STATE(kd, d), dt = dayDate(d);
     const txt = kd && status(kd) ? statusText(kd) : (s === "miss" ? "Ikke logget" : "");
     h += `<button class="wk ${s} ${isToday(d) ? "today" : ""}" data-goto="${d}"><div class="wd"><b>${d}</b><span>${esc(fmt(dt, {day: "numeric", month: "short"}))}</span></div>
-      <div class="wm"><div class="wt">${m ? esc(m.title) : "–"}</div>${txt ? `<div class="ws ${s}">${s === "ok" ? "✓ " : ""}${esc(txt)}</div>` : ""}</div>
+      <div class="wm"><div class="wt">${m ? esc(m.title) : "–"}</div>${txt ? `<div class="ws ${s}">${s === "ok" ? "✓ " : ""}${esc(txt)}</div>` : ""}${countDay(d) ? `<div class="wc">🍴 ${cntTxt(countDay(d))}</div>` : ""}</div>
       <div class="wdots">${dot(kF(d), d, "🥣", "Frokost")}${dot(kS(d), d, "🍎", "Mellommåltid")}${dot(kd, d, "🍽️", "Middag")}</div></button>`;
   }
   return h;
@@ -354,12 +450,14 @@ function viewFb() {
   <h2 style="margin:18px 0 8px">Denne uka</h2><div class="card">${fb.length ? fb.map(fbItem).join("") : `<div class="msg" style="padding:12px">Ingen tilbakemeldinger ennå.</div>`}</div>`;
 }
 function renderModal() {
-  const el = $("#modal");
+  const el = $("#modal"), old = el.querySelector(".sh"), top = old ? old.scrollTop : 0;
+  if (addOpen && addDraft) { el.innerHTML = addSheetHtml(); document.body.classList.add("nos"); const n = el.querySelector(".sh"); if (n) n.scrollTop = top; return; }
   if (!fbModal) { el.innerHTML = ""; document.body.classList.remove("nos"); return; }
   const m = meals.find(x => x.id === +fbModal), prev = fb.filter(f => f.meal_id === +fbModal);
   el.innerHTML = `<div class="ov" data-ov><div class="sh"><div class="top"><div><div class="lab">Tilbakemelding</div><h2>${esc(m ? m.title : "")}</h2></div><button class="btn" data-close aria-label="Lukk">✕</button></div>
     ${form(fbModal, true)}${prev.length ? `<h2 style="margin:18px 0 4px">Tidligere</h2>${prev.map(fbItem).join("")}` : ""}</div></div>`;
   document.body.classList.add("nos");
+  const n = el.querySelector(".sh"); if (n) n.scrollTop = top;
 }
 function uid() {
   if (crypto.randomUUID) return crypto.randomUUID();
@@ -421,6 +519,19 @@ document.addEventListener("click", async ev => {
   if ((e = c("[data-sel]"))) { sel = e.dataset.sel; return render(); }
   if ((e = c("[data-goto]"))) { sel = e.dataset.goto; return go("idag"); }
   if ((e = c("[data-scroll]"))) { const el = document.getElementById(e.dataset.scroll); if (el) el.scrollIntoView({behavior: "smooth", block: "center"}); return; }
+  if (c("[data-add]")) return openAdd();
+  if (addOpen && addDraft) {
+    const x = addDraft;
+    if ((e = c("[data-apre]"))) { const p = e.dataset.apre; x.preset = x.preset === p ? null : p; x.bad = ""; render(); if (x.preset === "Annet") { const i = $("#at-text"); if (i) i.focus({preventScroll: true}); } return; }
+    if ((e = c("[data-atype]"))) { x.type = e.dataset.atype; return render(); }
+    if ((e = c("[data-aprot]"))) { x.protein = x.protein === e.dataset.aprot ? null : e.dataset.aprot; return render(); }
+    if (c("[data-asave]")) return addEntry();
+  }
+  if ((e = c("[data-deid]"))) return delEntry(+e.dataset.deid);
+  if ((e = c("[data-dlk]"))) {
+    const k = e.dataset.dlk, r = logRec(k) || {}, prev = {s: status(k), t: r.actual_text ?? null, p: r.actual_protein ?? null};
+    saveLog(k, null, null, null, true); showToast("Fjernet", () => saveLog(k, prev.s, prev.t, prev.p, true)); return;
+  }
   if ((e = c("[data-set]"))) { const k = e.dataset.lk, s = e.dataset.set || null; return saveLog(k, s, null, null); }
   if ((e = c("[data-preset]"))) { return saveLog(e.dataset.lk, e.dataset.planned === "1" ? "som_planlagt" : "endret", e.dataset.preset, null); }
   if ((e = c("[data-other]"))) {
@@ -443,7 +554,7 @@ document.addEventListener("click", async ev => {
     return;
   }
   if ((e = c("[data-fb]"))) { fbModal = e.dataset.fb; dr(fbModal).ok = false; return render(); }
-  if (c("[data-close]") || t.matches("[data-ov]")) { fbModal = null; return render(); }
+  if (c("[data-close]") || t.matches("[data-ov]")) { fbModal = null; addOpen = false; addDraft = null; return render(); }
   const f = c(".fbf"), k = f && f.dataset.k;
   if (f) {
     if ((e = c("[data-star]"))) { const x = dr(k), n = +e.dataset.star; x.rating = x.rating === n ? 0 : n; return render(); }
@@ -454,9 +565,12 @@ document.addEventListener("click", async ev => {
 document.addEventListener("input", ev => {
   const t = ev.target, f = t.closest(".fbf");
   if (f && t.tagName === "TEXTAREA") { const x = dr(f.dataset.k); x.comment = t.value; x.ok = false; }
+  if (addDraft && t.id === "at-text") { addDraft.text = t.value; addDraft.bad = ""; }
+  if (addDraft && t.id === "at-time") { addDraft.time = /^\d\d:\d\d$/.test(t.value) ? t.value : null; }
   const s = t.closest(".sheet"); if (s && t.classList.contains("lgi")) { const d = logDraft[s.dataset.lk]; d.text = t.value; d.bad = ""; }
 });
 document.addEventListener("keydown", ev => {
+  if (ev.key === "Enter" && ev.target.id === "at-text") { ev.preventDefault(); addEntry(); return; }
   if (ev.key === "Enter" && ev.target.classList && ev.target.classList.contains("lgi")) { ev.preventDefault(); ev.target.closest(".sheet").querySelector("[data-logsave]").click(); }
 });
 document.addEventListener("change", async ev => {
