@@ -1,1 +1,1 @@
-# mat-kosthold
+# Mat/kosthold: ukeplan og handleliste

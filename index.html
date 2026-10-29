@@ -1,0 +1,147 @@
+<!doctype html>
+<html lang="nb">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1, viewport-fit=cover">
+<meta name="theme-color" content="#2f855a">
+<title>Mat og handleliste</title>
+<style>
+:root{--bg:#f6f7f4;--card:#fff;--ink:#1f2933;--mut:#6b7280;--acc:#2f855a;--acc2:#e6f4ec;--line:#e5e7eb}
+@media(prefers-color-scheme:dark){:root{--bg:#111613;--card:#1a211d;--ink:#e8ece9;--mut:#9aa6a0;--acc:#48bb78;--acc2:#1f3a2b;--line:#2b3530}}
+*{box-sizing:border-box}
+body{margin:0;background:var(--bg);color:var(--ink);font:16px/1.4 system-ui,-apple-system,"Segoe UI",Roboto,sans-serif;padding-bottom:env(safe-area-inset-bottom)}
+header{position:sticky;top:0;z-index:5;background:var(--bg);padding:12px 14px 0;border-bottom:1px solid var(--line)}
+h1{font-size:1.2rem;margin:0 0 8px;display:flex;justify-content:space-between;align-items:baseline}
+h1 small{font-weight:400;color:var(--mut);font-size:.8rem}
+.tabs{display:flex;gap:4px}
+.tab{flex:1;padding:10px;border:0;background:none;color:var(--mut);font:inherit;font-weight:600;border-bottom:3px solid transparent;cursor:pointer}
+.tab.on{color:var(--acc);border-color:var(--acc)}
+main{max-width:720px;margin:0 auto;padding:14px}
+section[hidden]{display:none}
+h2{font-size:.85rem;text-transform:uppercase;letter-spacing:.05em;color:var(--mut);margin:20px 0 8px}
+.card{background:var(--card);border:1px solid var(--line);border-radius:12px;overflow:hidden}
+.row{display:flex;gap:12px;align-items:flex-start;padding:12px 14px;border-top:1px solid var(--line);cursor:pointer;-webkit-tap-highlight-color:transparent}
+.row:first-child{border-top:0}
+.row input{width:24px;height:24px;margin:2px 0 0;accent-color:var(--acc);flex:none}
+.row .t{flex:1;min-width:0}
+.row .n{font-weight:600}
+.row .d,.row .note{color:var(--mut);font-size:.9rem}
+.row .note{font-style:italic}
+.row.done .n{text-decoration:line-through;color:var(--mut)}
+.row.done .d{opacity:.6}
+.day{flex:none;width:36px;font-weight:700;color:var(--acc);padding-top:2px}
+.info{padding:12px 14px;border-top:1px solid var(--line)}
+.info:first-child{border-top:0}
+.info b{display:block}
+.goal b{display:block}.goal{background:var(--acc2);border-radius:12px;padding:12px 14px;margin-bottom:6px}
+.bar{display:flex;align-items:center;gap:12px;margin-bottom:6px}
+.prog{flex:1;height:10px;background:var(--line);border-radius:9px;overflow:hidden}
+.prog i{display:block;height:100%;background:var(--acc);width:0;transition:width .2s}
+.cnt{font-weight:700;white-space:nowrap}
+button.reset{margin-top:22px;width:100%;padding:12px;border:1px solid var(--line);background:var(--card);color:var(--ink);border-radius:12px;font:inherit;font-weight:600;cursor:pointer}
+.msg{padding:30px;text-align:center;color:var(--mut)}
+#err{background:#fde8e8;color:#9b1c1c;padding:8px 14px;display:none;font-size:.9rem}
+</style>
+</head>
+<body>
+<header>
+  <h1><span>Mat og handleliste</span><small id="wk"></small></h1>
+  <div class="tabs"><button class="tab on" data-t="plan">Ukeplan</button><button class="tab" data-t="list">Handleliste</button></div>
+</header>
+<div id="err"></div>
+<main>
+  <section id="plan"><div class="msg">Laster …</div></section>
+  <section id="list" hidden><div class="msg">Laster …</div></section>
+</main>
+<script>
+const URL_ = "https://yhzgdipjpdmovegbkybx.supabase.co", KEY = "eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJpc3MiOiJzdXBhYmFzZSIsInJlZiI6InloemdkaXBqcGRtb3ZlZ2JreWJ4Iiwicm9sZSI6ImFub24iLCJpYXQiOjE3OTAzMzY5NzcsImV4cCI6MjEwNTkxMjk3N30.13nVIkVWVIb-fh7oPKA1tHdCeX8tKqIpVi_o80rXIo4";
+const H = {apikey: KEY, Authorization: "Bearer " + KEY, "Content-Type": "application/json"};
+const DAYS = {Man:"Mandag",Tir:"Tirsdag",Ons:"Onsdag",Tor:"Torsdag",Fre:"Fredag","Lør":"Lørdag","Søn":"Søndag"};
+let week = null, meals = [], items = [];
+const $ = s => document.querySelector(s);
+const esc = s => String(s ?? "").replace(/[&<>"]/g, c => ({"&":"&amp;","<":"&lt;",">":"&gt;",'"':"&quot;"}[c]));
+const err = m => { const e = $("#err"); e.textContent = m || ""; e.style.display = m ? "block" : "none"; };
+
+async function api(path, opts) {
+  const r = await fetch(URL_ + "/rest/v1/" + path, {headers: H, ...opts});
+  if (!r.ok) throw new Error(r.status + " " + await r.text());
+  return r.status === 204 ? null : r.json();
+}
+async function load() {
+  try {
+    const w = await api("mat_meal_plan?select=week&order=week.desc&limit=1");
+    week = w[0]?.week;
+    if (!week) { meals = []; items = []; render(); return; }
+    const q = "week=eq." + encodeURIComponent(week);
+    [meals, items] = await Promise.all([
+      api("mat_meal_plan?select=*&order=sort&" + q),
+      api("mat_shopping_items?select=*&order=sort&" + q)]);
+    err(); render();
+  } catch (e) { err("Kunne ikke hente data. Prøv å laste siden på nytt."); console.error(e); }
+}
+function weekLabel(w) { const m = /(\d+)-W(\d+)/.exec(w || ""); return m ? "Uke " + +m[2] : (w || ""); }
+
+function row(cls, id, checked, title, desc, note, lead) {
+  return `<label class="row ${checked ? "done" : ""}" data-id="${id}">${lead || ""}<input type="checkbox" ${checked ? "checked" : ""}>
+  <span class="t"><span class="n">${esc(title)}</span>${desc ? `<div class="d">${esc(desc)}</div>` : ""}${note ? `<div class="note">${esc(note)}</div>` : ""}</span></label>`;
+}
+function render() {
+  $("#wk").textContent = weekLabel(week);
+  const by = t => meals.filter(m => m.meal_type === t);
+  const info = m => `<div class="info"><b>${esc(m.title)}</b>${m.description ? `<span class="d">${esc(m.description)}</span>` : ""}</div>`;
+  let h = "";
+  const goal = by("mål");
+  if (goal.length) h += `<div class="goal">${goal.map(g => `<b>${esc(g.title)}</b>${esc(g.description)}`).join("<br>")}</div>`;
+  if (by("frokost").length) h += `<h2>Frokost (velg ett)</h2><div class="card">${by("frokost").map(info).join("")}</div>`;
+  if (by("mellommåltid").length) h += `<h2>Mellommåltid</h2><div class="card">${by("mellommåltid").map(info).join("")}</div>`;
+  const din = by("middag");
+  if (din.length) {
+    const d = din.filter(m => m.done).length;
+    h += `<h2>Middager · ${d}/${din.length} spist</h2><div class="card">${din.map(m =>
+      `<label class="row ${m.done ? "done" : ""}" data-meal="${m.id}"><span class="day">${esc(m.day)}</span><span class="t"><span class="n">${esc(m.title)}</span>${m.description ? `<div class="d">${esc(m.description)}</div>` : ""}${m.protein_note ? `<div class="note">${esc(m.protein_note)}</div>` : ""}</span><input type="checkbox" ${m.done ? "checked" : ""} aria-label="Spist"></label>`).join("")}</div>`;
+  }
+  $("#plan").innerHTML = h || `<div class="msg">Ingen plan ennå.</div>`;
+
+  if (!items.length) { $("#list").innerHTML = `<div class="msg">Ingen handleliste ennå.</div>`; return; }
+  const got = items.filter(i => i.checked).length;
+  const cats = [...new Set(items.map(i => i.category))];
+  h = `<div class="bar"><div class="prog"><i style="width:${Math.round(got / items.length * 100)}%"></i></div><span class="cnt">${got} av ${items.length} kjøpt</span></div>`;
+  for (const c of cats) {
+    const its = items.filter(i => i.category === c), g = its.filter(i => i.checked).length;
+    h += `<h2>${esc(c)} · ${g}/${its.length}</h2><div class="card">${its.map(i =>
+      row("", i.id, i.checked, i.name + (i.quantity ? " – " + i.quantity : ""), "", i.note)).join("")}</div>`;
+  }
+  h += `<button class="reset" id="reset">Nullstill avkryssing</button>`;
+  $("#list").innerHTML = h;
+}
+
+document.addEventListener("change", async ev => {
+  const row = ev.target.closest(".row"); if (!row) return;
+  const on = ev.target.checked;
+  const isMeal = row.dataset.meal, id = +(row.dataset.meal || row.dataset.id);
+  const rec = (isMeal ? meals : items).find(x => x.id === id);
+  const key = isMeal ? "done" : "checked";
+  rec[key] = on; render();
+  try {
+    await api("rpc/" + (isMeal ? "toggle_meal" : "toggle_item"), {method: "POST", body: JSON.stringify(isMeal ? {p_id: id, p_done: on} : {p_id: id, p_checked: on})});
+    err();
+  } catch (e) { rec[key] = !on; render(); err("Kunne ikke lagre. Sjekk nettforbindelsen."); }
+});
+document.addEventListener("click", async ev => {
+  if (ev.target.id !== "reset") return;
+  if (!confirm("Fjerne alle avkrysninger i handlelisten?")) return;
+  try { await api("rpc/mat_reset_checked", {method: "POST", body: JSON.stringify({p_week: week})}); items.forEach(i => i.checked = false); render(); }
+  catch (e) { err("Kunne ikke nullstille."); }
+});
+document.querySelectorAll(".tab").forEach(b => b.onclick = () => {
+  document.querySelectorAll(".tab").forEach(x => x.classList.toggle("on", x === b));
+  $("#plan").hidden = b.dataset.t !== "plan"; $("#list").hidden = b.dataset.t !== "list";
+  location.hash = b.dataset.t;
+});
+if (location.hash === "#list") document.querySelector('[data-t="list"]').click();
+addEventListener("focus", load);
+document.addEventListener("visibilitychange", () => { if (!document.hidden) load(); });
+load();
+</script>
+</body>
+</html>
