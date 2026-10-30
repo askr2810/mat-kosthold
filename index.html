@@ -533,7 +533,7 @@ function viewHandle() {
     <label class="lbl" style="margin-top:0" for="sh-from">Fra dato</label><input type="date" class="inp" id="sh-from" value="${esc(f)}">
     <div class="chips"><button class="chip ${f === today() ? "on" : ""}" data-shfrom="${today()}">Fra i dag</button><button class="chip ${f === add(today(), 1) ? "on" : ""}" data-shfrom="${add(today(), 1)}">Fra i morgen</button><button class="chip ${f === add(monday(today()), 7) ? "on" : ""}" data-shfrom="${add(monday(today()), 7)}">Fra neste mandag</button></div>
     <label class="lbl">Hvor mange dager?</label>
-    <div class="prot" style="margin:0">${[4, 7, 14].map(n => `<button class="chip ${shopF.days === n ? "on" : ""}" data-shdays="${n}">${n} dager</button>`).join("")}</div>
+    <div class="prot" style="margin:0">${[5, 7, 14].map(n => `<button class="chip ${shopF.days === n ? "on" : ""}" data-shdays="${n}">${n} dager</button>`).join("")}</div>
     <div class="chips"><button class="chip ${!shopF.days ? "on" : ""}" data-shdays="0">Velg til-dato selv</button></div>
     ${!shopF.days ? `<label class="lbl" for="sh-to">Til og med</label><input type="date" class="inp" id="sh-to" value="${esc(t)}">` : ""}
     <div class="sum" style="margin:12px 0 0">📅 ${lf(f)} – ${lf(t)} (${diffDays(f, t) + 1} dager)${pv ? `<br>${pv.n} ${pv.n === 1 ? "rett" : "retter"} planlagt, ${pv.dn} middager` : ""}</div>
@@ -859,7 +859,7 @@ document.addEventListener("click", async ev => {
   if ((e = c("[data-pe]"))) { M = {t: "entry", id: +e.dataset.pe}; return render(); }
   if (c("[data-shopweek]")) {
     const end = add(viewMon, 6); shopF.from = viewMon < today() && end >= today() ? today() : viewMon;
-    const n = diffDays(shopF.from, end) + 1; if ([4, 7, 14].includes(n)) shopF.days = n; else { shopF.days = 0; shopF.to = end; }
+    const n = diffDays(shopF.from, end) + 1; if ([5, 7, 14].includes(n)) shopF.days = n; else { shopF.days = 0; shopF.to = end; }
     shopF.preview = null; return go("handle");
   }
   // Retter
