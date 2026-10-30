@@ -196,6 +196,29 @@ select.inp{appearance:auto}
 .vtog .chip{min-height:60px;border-radius:16px;display:flex;flex-direction:column;align-items:center;justify-content:center;font-weight:700}
 .vtog .chip small{font-weight:600;font-size:.9rem;opacity:.85}
 .chip.fastt{width:100%;min-height:56px;text-align:left;border-radius:16px;margin:0 0 12px}
+.ilist.big li{font-size:18px;line-height:1.45;padding:4px 0}
+.rsteps{margin:6px 0 0;padding-left:30px}
+.rsteps li{font-size:19px;line-height:1.5;padding:8px 0;border-bottom:1px solid var(--line)}
+.rsteps li::marker{font-weight:800;color:var(--acc)}
+.rbox{margin-top:14px;padding:12px 14px;border-radius:14px;border:1px solid var(--line);font-size:18px;line-height:1.45}
+.rbox.prep{background:var(--accbg);border-color:var(--acc)}
+.rbox.tips ul{margin:4px 0 0;padding-left:20px}
+.cookb{font-size:18px}
+body.cooking{overflow:hidden}
+#cook{position:fixed;inset:0;z-index:200;background:var(--bg);color:var(--ink);display:flex;flex-direction:column}
+.cktop{display:flex;align-items:center;gap:10px;padding:max(10px,env(safe-area-inset-top)) 14px 8px}
+.cktop .btn{width:auto}
+.ckw{font-size:15px;color:var(--mut)}
+.ckbody{flex:1;overflow:auto;padding:8px 18px 18px}
+.cklab{font-size:17px;font-weight:800;color:var(--acc);text-transform:uppercase;letter-spacing:.04em}
+.ckname{font-size:26px;font-weight:800;margin:4px 0}
+.ckbar{height:8px;border-radius:4px;background:var(--line);margin:8px 0 18px;overflow:hidden}
+.ckbar i{display:block;height:100%;background:var(--acc)}
+.cktxt{font-size:27px;line-height:1.4;font-weight:600;margin:6px 0 20px}
+.cktxt.sm{font-size:19px;font-weight:400;margin:0}
+.cknav{display:grid;grid-template-columns:1fr 1.4fr;gap:10px;padding:10px 14px max(14px,env(safe-area-inset-bottom));border-top:1px solid var(--line)}
+.cknav .btn{min-height:64px;font-size:20px}
+.cknav .btn[disabled]{opacity:.4}
 </style>
 </head>
 <body>
@@ -466,11 +489,17 @@ function varToggle(r, attr) {
   return `<div class="vtog"><button class="chip ${r.id === b.id ? "on" : ""}" data-${attr}="${b.id}">🧑‍🍳 Fra bunnen<small>${b.minutes || "?"} min</small></button><button class="chip ${r.id === h.id ? "on" : ""}" data-${attr}="${h.id}">⚡ Hurtig<small>${h.minutes || "?"} min · ferdigmix</small></button></div>`;
 }
 const kindForSlot = s => s === "kvelds" ? "snack" : s;
+function stepList(r) { return String(r.steps || "").split(/\n+/).map(x => x.trim().replace(/^\d+[.)]\s*/, "")).filter(Boolean); }
 function recipeBody(r, portions) {
-  const f = portions && r.servings ? portions / r.servings : 1;
-  return `<div style="margin-top:12px"><div class="lab">Ingredienser (${portions ? num(portions) : r.servings} porsjoner)</div>
-    <ul class="ilist">${r.ing.map(i => `<li><b>${esc(i.name)}</b>${i.qty != null ? " – " + esc(qtyTxt(i.qty * f, i.unit)) : ""}${i.at_home ? ` <span class="h">har du vanligvis</span>` : ""}</li>`).join("") || "<li class='d'>Ingen ingredienser</li>"}</ul>
-    ${r.steps ? `<div class="lab" style="margin-top:12px">Slik gjør du</div><div class="steps">${esc(r.steps)}</div>` : ""}
+  const f = portions && r.servings ? portions / r.servings : 1, st = stepList(r), tips = String(r.tips || "").split(/\n+/).filter(Boolean);
+  return `<div style="margin-top:12px">
+    ${st.length ? `<button class="btn go cookb" data-cook="${r.id}" data-cport="${portions || ""}">👨‍🍳 Start kokemodus – ett steg om gangen</button>` : ""}
+    <div class="lab" style="margin-top:12px">Ingredienser (${portions ? num(portions) : r.servings} porsjoner)${f !== 1 ? ` <span class="h">skalert fra ${r.servings}</span>` : ""}</div>
+    <ul class="ilist big">${r.ing.map(i => `<li><b>${esc(i.name)}</b>${i.qty != null ? " – " + esc(qtyTxt(i.qty * f, i.unit)) : ""}${i.at_home ? ` <span class="h">har du vanligvis</span>` : ""}</li>`).join("") || "<li class='d'>Ingen ingredienser</li>"}</ul>
+    ${f !== 1 && st.length ? `<div class="note">Mengdene i stegene gjelder ${r.servings} porsjoner – bruk lista over for ${num(portions)}.</div>` : ""}
+    ${r.prep ? `<div class="rbox prep"><div class="lab">🔪 Forberedelse</div><div>${esc(r.prep)}</div></div>` : ""}
+    ${st.length ? `<div class="lab" style="margin-top:14px">Slik gjør du${r.minutes ? ` · ca. ${r.minutes} min` : ""}</div><ol class="rsteps">${st.map(x => `<li>${esc(x)}</li>`).join("")}</ol>` : ""}
+    ${tips.length ? `<div class="rbox tips"><div class="lab">💡 Tips og vanlige feil</div><ul>${tips.map(x => `<li>${esc(x)}</li>`).join("")}</ul></div>` : ""}
     ${r.veg_addon ? `<div class="lab" style="margin-top:12px">Grønt (enkelt)</div><div>🥦 ${esc(r.veg_addon)}</div>` : ""}</div>`;
 }
 
@@ -713,7 +742,7 @@ function recHtml(m) {
       <div class="grid2" style="margin:0 0 10px"><button class="btn sm" data-plwk="-7">◀ Uka før</button><button class="btn sm" data-plwk="7">Uka etter ▶</button></div>
       <label class="q">Måltid</label>${slotChips(pl.slot, "pls")}
       <button class="btn go" data-pladd>＋ Legg til ${DK[wd(pl.date)]} ${esc(fmt(pl.date))}</button></div>` : ""}
-    ${recipeBody(r)}
+    ${recipeBody(r, m.back && m.back.t === "entry" ? (plan.find(x => x.id === m.back.id) || {}).portions : null)}
     <div class="grid2" style="margin-top:16px"><button class="btn sm" data-edit="${r.id}">✎ Rediger</button><button class="btn sm" data-hide>${r.hidden ? "👁 Vis igjen" : "🙈 Skjul"}</button></div>
     <div class="stack" style="margin-top:10px"><button class="btn sm" data-fb="r:${r.id}">💬 Gi tilbakemelding</button></div>
     ${nf.length ? `<h2 style="margin:18px 0 4px">Tilbakemeldinger</h2>${nf.map(fbItem).join("")}` : ""}`;
@@ -1130,6 +1159,43 @@ document.addEventListener("click", ev => {
   if (c("[data-auall]")) { autoGen(M); return render(); }
   if (c("[data-ausave]")) return autoSave();
 });
+/* ---------- Kokemodus ---------- */
+let CK = null, wl = null;
+async function wakeOn() { try { if ("wakeLock" in navigator && !wl && document.visibilityState === "visible") { wl = await navigator.wakeLock.request("screen"); wl.addEventListener("release", () => { wl = null; }); } } catch (e) { wl = null; } renderCook(); }
+function wakeOff() { try { wl && wl.release(); } catch (e) {} wl = null; }
+document.addEventListener("visibilitychange", () => { if (CK && document.visibilityState === "visible") wakeOn(); });
+function openCook(id, port) { const r = R(id); if (!r) return; CK = {id, i: -1, port: port || null, ing: false}; document.body.classList.add("cooking"); renderCook(); wakeOn(); }
+function closeCook() { CK = null; wakeOff(); document.body.classList.remove("cooking"); const el = $("#cook"); if (el) el.remove(); }
+function renderCook() {
+  if (!CK) return; const r = R(CK.id); if (!r) return closeCook();
+  let el = $("#cook"); if (!el) { el = document.createElement("div"); el.id = "cook"; el.setAttribute("role", "dialog"); el.setAttribute("aria-label", "Kokemodus"); document.body.appendChild(el); }
+  const st = stepList(r), n = st.length, i = CK.i, f = CK.port && r.servings ? CK.port / r.servings : 1;
+  const ingL = `<ul class="ilist big">${r.ing.map(x => `<li><b>${esc(x.name)}</b>${x.qty != null ? " – " + esc(qtyTxt(x.qty * f, x.unit)) : ""}</li>`).join("")}</ul>`;
+  const wake = "wakeLock" in navigator ? (wl ? "🔆 Skjermen holdes våken" : "Skjermen kan slukke") : "Tips: skjermen kan slukke – trykk på den innimellom";
+  let body;
+  if (i < 0) body = `<div class="cklab">Før du starter</div><div class="ckname">${esc(r.name)}</div>
+    <div class="d">${CK.port ? num(CK.port) : r.servings} porsjoner${r.minutes ? " · ca. " + r.minutes + " min" : ""}</div>
+    <div class="lab" style="margin-top:14px">Finn frem</div>${ingL}
+    ${r.prep ? `<div class="rbox prep"><div class="lab">🔪 Forberedelse</div><div class="cktxt sm">${esc(r.prep)}</div></div>` : ""}`;
+  else if (i >= n) body = `<div class="cklab">Ferdig!</div><div class="cktxt">🍽️ Velbekomme!</div>
+    ${r.tips ? `<div class="rbox tips"><div class="lab">💡 Husk til neste gang</div><ul>${String(r.tips).split(/\n+/).map(x => `<li>${esc(x)}</li>`).join("")}</ul></div>` : ""}`;
+  else body = `<div class="cklab">Steg ${i + 1} av ${n}</div><div class="ckbar"><i style="width:${Math.round((i + 1) / n * 100)}%"></i></div>
+    <div class="cktxt">${esc(st[i])}</div>
+    <button class="btn sm" data-ckin>${CK.ing ? "Skjul ingredienser" : "🧾 Vis ingredienser"}</button>${CK.ing ? ingL : ""}`;
+  el.innerHTML = `<div class="cktop"><button class="btn sm" data-ckx aria-label="Lukk kokemodus">✕ Lukk</button><span class="ckw">${wake}</span></div>
+    <div class="ckbody">${body}</div>
+    <div class="cknav"><button class="btn" data-ckp ${i < 0 ? "disabled" : ""}>◀ Forrige</button>${i >= n ? `<button class="btn go" data-ckx>Ferdig ✓</button>` : `<button class="btn go" data-ckn>${i < 0 ? "Start ▶" : i === n - 1 ? "Ferdig ▶" : "Neste ▶"}</button>`}</div>`;
+}
+document.addEventListener("click", ev => {
+  const c = s => ev.target.closest(s); let e;
+  if ((e = c("[data-cook]"))) { ev.stopPropagation(); return openCook(+e.dataset.cook, +e.dataset.cport || null); }
+  if (!CK) return;
+  if (c("[data-ckx]")) return closeCook();
+  if (c("[data-ckn]")) { CK.i++; CK.ing = false; renderCook(); $("#cook .ckbody").scrollTop = 0; return; }
+  if (c("[data-ckp]")) { CK.i = Math.max(-1, CK.i - 1); CK.ing = false; renderCook(); return; }
+  if (c("[data-ckin]")) { CK.ing = !CK.ing; renderCook(); }
+}, true);
+document.addEventListener("keydown", ev => { if (!CK) return; if (ev.key === "Escape") closeCook(); });
 </script>
 </body>
 </html>
