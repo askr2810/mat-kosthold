@@ -175,6 +175,27 @@ select.inp{appearance:auto}
 .lists .chip{text-align:left}
 .pt{font-size:.95rem;color:var(--mut);margin-top:4px}
 .tab{font-size:.78rem}
+.pday .ph{align-items:center}.pday .ph>div b{margin-right:8px}
+.btn.aut{width:auto;flex:none;min-width:52px;min-height:52px;padding:0;font-size:1.4rem;border-radius:14px}
+.amodes{display:grid;grid-template-columns:1fr 1fr;gap:10px;margin:6px 0 12px}
+.amode{min-height:96px;border:2px solid var(--line);background:var(--card);color:var(--ink);border-radius:18px;padding:10px;text-align:left;cursor:pointer;display:flex;flex-direction:column;gap:2px;font-size:1rem}
+.amode .ae{font-size:1.5rem}.amode b{font-size:1.08rem}.amode small{color:var(--mut);font-size:.9rem;line-height:1.25}
+.amode.on{background:var(--accbg);border-color:var(--acc)}
+.amode:first-child{grid-column:1/-1;min-height:80px}
+.aopts{background:var(--card);border:2px solid var(--line);border-radius:16px;padding:6px 12px;margin:0 0 12px}
+.aopts summary{min-height:48px;display:flex;align-items:center;font-weight:700;font-size:1.05rem;cursor:pointer}
+.arow{display:flex;flex-wrap:wrap;gap:8px;margin:4px 0 12px}
+.chip.on{background:var(--acc);border-color:var(--acc);color:var(--onacc)}
+.aprev{display:flex;align-items:center;gap:10px;background:var(--card);border:2px solid var(--line);border-radius:16px;padding:10px;margin:0 0 10px}
+.aprev .ad{width:52px;text-align:center;flex:none}.aprev .ad b{display:block;font-size:1.1rem}.aprev .ad span{color:var(--mut);font-size:.9rem}
+.aprev .am{flex:1;min-width:0}.aprev .an{all:unset;cursor:pointer;font-weight:700;font-size:1.08rem;min-height:48px;display:flex;align-items:center}
+.aprev .as{color:var(--mut);font-size:.95rem}
+.btn.abyt{flex:none;width:auto;min-height:52px;padding:0 12px;font-size:1rem}
+.badge.hv{background:var(--ambbg);color:var(--amb)}
+.vtog{display:grid;grid-template-columns:1fr 1fr;gap:8px;margin:10px 0 4px}
+.vtog .chip{min-height:60px;border-radius:16px;display:flex;flex-direction:column;align-items:center;justify-content:center;font-weight:700}
+.vtog .chip small{font-weight:600;font-size:.9rem;opacity:.85}
+.chip.fastt{width:100%;min-height:56px;text-align:left;border-radius:16px;margin:0 0 12px}
 </style>
 </head>
 <body>
@@ -215,6 +236,8 @@ const $ = s => document.querySelector(s);
 const esc = s => String(s ?? "").replace(/[&<>"]/g, c => ({"&":"&amp;","<":"&lt;",">":"&gt;",'"':"&quot;"}[c]));
 const err = m => { const e = $("#err"); e.textContent = m || ""; e.style.display = m ? "block" : "none"; if (m) setTimeout(() => err(), 6000); };
 const R = id => recipes.find(r => r.id === id);
+const hurtigOf = r => r && recipes.find(x => x.variant === "hurtig" && x.variant_of === r.id);
+const baseId = id => { const r = R(id); return r && r.variant === "hurtig" && r.variant_of ? r.variant_of : id; };
 
 /* ---------- datoer ---------- */
 function ds(d) { return d.getFullYear() + "-" + String(d.getMonth() + 1).padStart(2, "0") + "-" + String(d.getDate()).padStart(2, "0"); }
@@ -418,14 +441,14 @@ async function restoreEntry(id) {
 }
 
 /* ---------- byggeklosser ---------- */
-const badges = r => `${r.favorite ? `<span class="badge fav">★</span>` : ""}<span class="badge ${r.tag}">${r.tag === "liker" ? "Liker" : "Prøv"}</span>`;
+const badges = r => `${r.variant === "hurtig" ? `<span class="badge hv">⚡ Hurtig</span>` : r.variant === "bunnen" ? `<span class="badge hv">⚡ også hurtig</span>` : ""}${r.favorite ? `<span class="badge fav">★</span>` : ""}<span class="badge ${r.tag}">${r.tag === "liker" ? "Liker" : "Prøv"}</span>`;
 const nutri = r => [r.minutes ? r.minutes + " min" : "", r.kcal ? "ca. " + r.kcal + " kcal" : "", r.protein ? r.protein + " g protein" : "", (r.equipment || []).map(e => EQL[e]).join(", ")].filter(Boolean).join(" · ");
 const meta = r => [KL[r.kind], nutri(r)].filter(Boolean).join(" · ");
 const recCard = r => `<button class="rc ${r.hidden ? "hid" : ""}" data-rec="${r.id}"><div class="rn">${badges(r)}${esc(r.name)}</div><div class="rm">${esc(meta(r))}${r.hidden ? " · skjult" : ""}</div></button>`;
 // f.tag: "" | liker | prøv | fav | hidden. Skjulte retter vises bare under «Skjulte».
 function filterRecipes(f) {
   const q = (f.q || "").trim().toLowerCase();
-  return recipes.filter(r => (f.tag === "hidden" ? r.hidden : !r.hidden)
+  return recipes.filter(r => r.variant !== "hurtig" && (f.tag === "hidden" ? r.hidden : !r.hidden)
     && (!f.tag || f.tag === "hidden" || (f.tag === "fav" ? r.favorite : r.tag === f.tag))
     && (!f.kind || r.kind === f.kind) && (!f.time || (r.minutes || 999) <= f.time) && (!f.eq || (r.equipment || []).includes(f.eq))
     && (!q || r.name.toLowerCase().includes(q) || r.ing.some(i => i.name.toLowerCase().includes(q))))
@@ -437,6 +460,10 @@ function filterBar(f, pfx, withHidden) {
   <div class="fl">${ch("tag", "", "Alle")}${ch("tag", "liker", "Liker")}${ch("tag", "prøv", "Prøv noe nytt")}${ch("tag", "fav", "★ Favoritter")}${withHidden ? ch("tag", "hidden", "Skjulte") : ""}</div>
   <div class="fl">${ch("kind", "", "Alle typer")}${KINDS.map(([k, l]) => ch("kind", k, l)).join("")}</div>
   <div class="fl">${ch("time", 0, "All tid")}${ch("time", 20, "≤ 20 min")}${ch("time", 30, "≤ 30 min")}${ch("eq", "", "Alt utstyr")}${EQ.slice(0, 4).map(([k, l]) => ch("eq", k, l)).join("")}</div>`;
+}
+function varToggle(r, attr) {
+  const b = r.variant === "hurtig" ? R(r.variant_of) : r, h = hurtigOf(b); if (!b || !h) return "";
+  return `<div class="vtog"><button class="chip ${r.id === b.id ? "on" : ""}" data-${attr}="${b.id}">🧑‍🍳 Fra bunnen<small>${b.minutes || "?"} min</small></button><button class="chip ${r.id === h.id ? "on" : ""}" data-${attr}="${h.id}">⚡ Hurtig<small>${h.minutes || "?"} min · ferdigmix</small></button></div>`;
 }
 const kindForSlot = s => s === "kvelds" ? "snack" : s;
 function recipeBody(r, portions) {
@@ -489,10 +516,11 @@ function viewPlan() {
   const wk = plan.filter(p => p.date >= viewMon && p.date <= end), dn = new Set(wk.filter(p => p.slot === "middag").map(p => p.date)).size;
   let h = `<div class="wkn"><button class="btn" data-wk="-1" aria-label="Forrige uke">◀</button><div class="c"><b>Uke ${isoWeek(viewMon)}</b><span>${esc(fmt(viewMon))} – ${esc(fmt(end))}</span></div><button class="btn" data-wk="1" aria-label="Neste uke">▶</button></div>`;
   if (viewMon !== tm) h += `<div class="back"><button class="btn sm" data-wk="0">⟵ Denne uka</button></div>`;
+  h += `<div class="stack" style="margin:0 0 12px"><button class="btn go" data-auto="">✨ Auto-fyll uke</button></div>`;
   h += `<div class="sum">🍽️ ${dn} av 7 middager planlagt · ${wk.length} ${wk.length === 1 ? "rett" : "retter"} totalt</div>`;
   for (let i = 0; i < 7; i++) {
     const d = add(viewMon, i), ps = planOf(d);
-    h += `<section class="pday ${d === today() ? "today" : ""}" id="pd-${d}"><div class="ph"><b>${DL[i]}</b><span>${esc(fmt(d))}${relDay(d) ? " · " + relDay(d) : ""}</span></div>`;
+    h += `<section class="pday ${d === today() ? "today" : ""}" id="pd-${d}"><div class="ph"><div><b>${DL[i]}</b><span>${esc(fmt(d))}${relDay(d) ? " · " + relDay(d) : ""}</span></div>${d >= today() ? `<button class="btn aut" data-auto="${d}" aria-label="Auto-fyll middag ${DL[i]}">✨</button>` : ""}</div>`;
     for (const p of ps) {
       const r = R(p.recipe_id) || {name: "(slettet rett)"};
       h += `<button class="pe ${p.status ? SC[p.status] : ""}" data-pe="${p.id}"><span class="ic">${SI[p.slot]}</span><span class="pm"><span class="pn">${esc(r.name)}</span><br><span class="ps">${SL[p.slot]} · ${num(p.portions)} porsj.${p.status ? " · " + esc(statusText(p)) : ""}</span></span><span class="d">›</span></button>`;
@@ -657,7 +685,7 @@ const slotChips = (cur, attr) => `<div class="chips" style="margin-top:0">${SLOT
 function pickHtml(m) {
   const list = filterRecipes(m.f);
   return `<div class="top"><div><div class="lab">${m.swap ? "Bytt rett" : "Velg rett"}</div><h2>${DL[wd(m.date)]} ${esc(fmt(m.date))}</h2></div>${closeB}</div>
-    ${m.swap ? "" : slotChips(m.slot, "pslot")}
+    ${m.swap ? "" : slotChips(m.slot, "pslot")}<div class="fl"><button class="chip ${m.fast ? "on" : ""}" data-pfast>⚡ Bruk hurtig-variant når den finnes</button></div>
     ${filterBar(m.f, "p", false)}<div class="cntb">${list.length} retter · trykk for å legge til</div>
     ${list.map(r => `<button class="rc" data-padd="${r.id}"><div class="rn">${badges(r)}${esc(r.name)}</div><div class="rm">${esc(meta(r))}</div></button>`).join("") || `<div class="msg">Ingen treff. Prøv et annet filter.</div>`}`;
 }
@@ -665,7 +693,7 @@ function entryHtml(m) {
   const p = plan.find(x => x.id === m.id); if (!p) return null;
   const r = R(p.recipe_id) || {name: "?", ing: []}, wm = monday(p.date);
   return `<div class="top"><div><div class="lab">${SI[p.slot]} ${SL[p.slot]} · ${DL[wd(p.date)]} ${esc(fmt(p.date))}</div><h2>${esc(r.name)}</h2></div>${closeB}</div>
-    <div class="d">${esc(meta(r))}</div>
+    <div class="d">${esc(meta(r))}</div>${varToggle(r, "evar")}
     <label class="lbl">Porsjoner å lage</label>
     <div class="step"><button class="btn" data-port="-1" aria-label="Færre porsjoner">−</button><b>${num(p.portions)}</b><button class="btn" data-port="1" aria-label="Flere porsjoner">＋</button></div>
     <label class="lbl">Flytt til dag <span class="d">(uke ${isoWeek(wm)})</span></label>
@@ -678,7 +706,7 @@ function recHtml(m) {
   const r = R(m.id); if (!r) return null;
   const pl = m.pl, nf = fb.filter(f => f.recipe_id === r.id);
   return `${backBtn()}<div class="top"><div><div class="lab">${esc(KL[r.kind])}${r.custom ? " · egen rett" : ""}</div><h2>${badges(r)}${esc(r.name)}</h2></div>${closeB}</div>
-    <div class="d">${esc(nutri(r))} · per porsjon</div>
+    <div class="d">${esc(nutri(r))} · per porsjon</div>${varToggle(r, "rvar")}
     <div class="grid2"><button class="btn sm ${r.favorite ? "go" : ""}" data-fav>${r.favorite ? "★ Favoritt" : "☆ Favoritt"}</button><button class="btn sm ${pl ? "go" : ""}" data-plan-open>📅 Planlegg</button></div>
     ${pl ? `<div class="sheet" style="border-color:var(--acc);background:var(--accbg)"><label class="q">Hvilken dag? <span class="d">(uke ${isoWeek(pl.mon)})</span></label>
       ${dayPills(pl.mon, pl.date, "pld")}
@@ -739,6 +767,7 @@ function renderModal() {
     else if (M.t === "recipe") inner = recHtml(M);
     else if (M.t === "edit") inner = editHtml(M);
     else if (M.t === "add") inner = addSheetHtml(M.x);
+    else if (M.t === "auto") inner = autoHtml(M);
     else if (M.t === "fb") { const p = M.k[0] === "p" ? pe(M.k) : null, r = p ? R(p.recipe_id) : R(+M.k.slice(2)); inner = `${backBtn()}<div class="top"><div><div class="lab">Tilbakemelding</div><h2>${esc(r ? r.name : "")}</h2></div>${closeB}</div>${form(M.k, true)}`; }
   }
   if (inner == null) { M = null; el.innerHTML = ""; el.dataset.k = ""; document.body.classList.remove("nos"); return; }
@@ -775,6 +804,13 @@ async function swapEntry(oldId, rid) {
   await refreshPlan(); render();
   showToast("✓ Byttet til " + R(rid).name, async () => { await write(() => rpc("plan_remove", {p_id: nid})).catch(() => {}); await planAdd(old.date, old.slot, old.recipe_id, old.portions, true); showToast("Angret"); });
 }
+async function swapVariant(p, rid) {
+  const old = {...p}, nid = await planAdd(p.date, p.slot, rid, p.portions, true); if (!nid) return;
+  try { await write(() => rpc("plan_remove", {p_id: old.id})); } catch (_) {}
+  await refreshPlan(); if (M && M.t === "entry") M.id = nid; render();
+  const r = R(rid);
+  showToast((r.variant === "hurtig" ? "⚡ Hurtig-variant" : "🧑‍🍳 Fra bunnen") + " – handlelista følger valget", async () => { await write(() => rpc("plan_remove", {p_id: nid})).catch(() => {}); const id2 = await planAdd(old.date, old.slot, old.recipe_id, old.portions, true); if (M && M.t === "entry") M.id = id2; render(); showToast("Angret"); });
+}
 function setFlag(r, k, v, msg, undo) {
   r[k] = v; render(); showToast(msg, undo);
   write(() => rpc("recipe_flags", {p_id: r.id, p_favorite: k === "favorite" ? v : null, p_hidden: k === "hidden" ? v : null})).catch(() => { r[k] = !v; render(); });
@@ -798,7 +834,8 @@ document.addEventListener("click", async ev => {
   if (M && M.t === "pick") {
     if ((e = c("[data-pslot]"))) { M.slot = e.dataset.pslot; M.f.kind = kindForSlot(M.slot); return render(); }
     if ((e = c("[data-pf]"))) { const k = e.dataset.pf; M.f[k] = k === "time" ? +e.dataset.v : e.dataset.v; return render(); }
-    if ((e = c("[data-padd]"))) { const m = M, rid = +e.dataset.padd; if (m.swap) return swapEntry(m.swap, rid); M = null; render(); return planAdd(m.date, m.slot, rid); }
+    if (c("[data-pfast]")) { M.fast = !M.fast; return render(); }
+    if ((e = c("[data-padd]"))) { const m = M, r0 = +e.dataset.padd, hv = m.fast && hurtigOf(R(r0)), rid = hv ? hv.id : r0; if (m.swap) return swapEntry(m.swap, rid); M = null; render(); return planAdd(m.date, m.slot, rid); }
   }
   if (M && M.t === "entry") {
     const p = plan.find(x => x.id === M.id);
@@ -806,11 +843,13 @@ document.addEventListener("click", async ev => {
     if (p && (e = c("[data-mvd]"))) return moveEntry(p, e.dataset.mvd);
     if (p && (e = c("[data-mvwk]"))) return moveEntry(p, add(p.date, +e.dataset.mvwk));
     if (p && (e = c("[data-mvs]"))) return planUpdate(p.id, {slot: e.dataset.mvs});
+    if (p && (e = c("[data-evar]"))) { const rid = +e.dataset.evar; if (rid !== p.recipe_id) return swapVariant(p, rid); return; }
     if (p && c("[data-swap]")) return openPick(p.date, p.slot, p.id);
     if ((e = c("[data-prm]"))) { M = null; return planRemove(+e.dataset.prm); }
   }
   if (M && M.t === "recipe") {
     const r = R(M.id);
+    if ((e = c("[data-rvar]"))) { M.id = +e.dataset.rvar; return render(); }
     if (c("[data-fav]")) return setFlag(r, "favorite", !r.favorite, r.favorite ? "Fjernet fra favoritter" : "★ Lagt til i favoritter");
     if (c("[data-hide]")) { const v = !r.hidden; return setFlag(r, "hidden", v, v ? "Skjult – vises ikke når du planlegger" : "Vises igjen", () => setFlag(r, "hidden", !v, "Angret")); }
     if (c("[data-plan-open]")) { M.pl = M.pl ? null : {mon: monday(today()), date: today(), slot: r.kind}; return render(); }
@@ -829,7 +868,7 @@ document.addEventListener("click", async ev => {
     if (c("[data-esave]")) return saveRecipe();
     return;
   }
-  if ((e = c("[data-rec]"))) { M = {t: "recipe", id: +e.dataset.rec, back: e.hasAttribute("data-fromentry") ? M : null}; return render(); }
+  if ((e = c("[data-rec]"))) { M = {t: "recipe", id: +e.dataset.rec, back: e.hasAttribute("data-fromentry") || (M && M.t === "auto") ? M : null}; return render(); }
   if ((e = c("[data-edit]"))) return openEdit(+e.dataset.edit);
   if (c("[data-newrec]")) { M = null; return openEdit(null); }
   if ((e = c("[data-fb]"))) { M = {t: "fb", k: e.dataset.fb, back: M && M.t === "recipe" ? M : null}; dr(M.k).ok = false; return render(); }
@@ -923,6 +962,174 @@ if (TABS.includes(location.hash.slice(1))) tab = location.hash.slice(1);
 addEventListener("focus", load);
 document.addEventListener("visibilitychange", () => { if (!document.hidden) load(); });
 render(); load();
+
+/* ---------- Auto-fyll ---------- */
+const AMODES = [["mix","🎲","Blanding","Favoritter, noe fra lenge siden og 1–2 nye"],["lenge","⏳","Ikke spist på lenge","Det du ikke har hatt på lengst"],["ny","🆕","Noe nytt","Retter du ikke har prøvd"],["fav","❤️","Favoritter","Det du liker godt"],["raskt","⚡","Raskt","Maks 25 minutter"],["prot","💪","Høy protein","Mest protein per porsjon"],["oppvask","🧽","Lite oppvask","Airfryer, riskoker, én panne"]];
+const AML = Object.fromEntries(AMODES.map(m => [m[0], m[1] + " " + m[2]]));
+let hist = null;
+const PROTS = [["kylling",/kylling/i],["fisk",/laks|torsk|fisk|reke|tunfisk|sei/i],["svin",/svin|bacon|pølse|skinke/i],["storfe",/kjøttdeig|karbonade|kjøttboll|kjøttkak|hamburger|biff|entrec|storfe/i],["egg",/egg/i]];
+function mainProt(r) {
+  const n = (r.ing || []).filter(i => i.category === "Kjøtt, fisk og egg" || /reker|torsk/i.test(i.name)).map(i => i.name).join(" ") + " " + r.name;
+  for (const [k, re] of PROTS) if (re.test(n)) return k;
+  return "annet";
+}
+async function loadHist() {
+  const t = today(), rs = [[add(t, -119), t], [add(viewMon, -7), add(viewMon, 6)]];
+  const all = (await Promise.all(rs.map(([a, b]) => rpc("plan_list", {p_from: a, p_to: b})))).flat(), seen = new Set();
+  hist = all.filter(x => !seen.has(x.id) && seen.add(x.id));
+}
+function lastEaten() {
+  const t = today(), m = {};
+  for (const p of [...(hist || []), ...plan]) {
+    if (p.status === "hoppet_over") continue;
+    const d = p.date > t ? t : p.date;            // planlagt fram i tid = «nylig»
+    const k = baseId(p.recipe_id); if (!m[k] || m[k] < d) m[k] = d;
+  }
+  return m;
+}
+const restRec = () => recipes.find(r => r.name === "Rester fra middag");
+const isNew = (r, le) => !le[r.id] && r.tag === "prøv";
+function dinnerAt(d, A) {
+  const pv = A.prev.find(x => x.date === d);
+  if (pv) return pv.rest ? null : R(pv.rid);
+  const p = [...(hist || []), ...plan].find(x => x.date === d && x.slot === "middag" && !A.prev.some(y => y.date === d && y.old === x.id));
+  return p ? R(p.recipe_id) : null;
+}
+function autoDays(A) {
+  if (A.day) return [A.day];
+  const out = [];
+  for (let i = 0; i < (A.days === "hverdag" ? 5 : 7); i++) {
+    const d = add(viewMon, i); if (d < today()) continue;
+    const ex = planOf(d).filter(p => p.slot === "middag");
+    if (ex.length && (A.fill === "empty" || ex.some(p => p.status))) continue;
+    out.push(d);
+  }
+  return out;
+}
+function pickFor(d, mode, A, le, avoid) {
+  const t = today(), rr = restRec();
+  const wkFrom = add(monday(d), -7), wkTo = add(monday(d), 6);
+  const used = new Set([...(hist || []), ...plan].filter(p => p.date >= wkFrom && p.date <= wkTo && p.slot === "middag" && !A.prev.some(y => y.old === p.id)).map(p => baseId(p.recipe_id)));
+  A.prev.forEach(x => { if (x.date !== d) used.add(baseId(x.rid)); });
+  const nb = [dinnerAt(add(d, -1), A), dinnerAt(add(d, 1), A)].filter(Boolean).map(mainProt);
+  const newCnt = A.prev.filter(x => x.date !== d && x.isNew).length;
+  let base = recipes.filter(r => r.kind === "middag" && !r.hidden && r.variant !== "hurtig" && (!rr || r.id !== rr.id) && !(avoid || []).includes(r.id));
+  const fil = {
+    lenge: r => !!le[r.id] || r.tag === "liker" || r.favorite,
+    ny: r => !le[r.id],
+    fav: r => r.favorite || r.tag === "liker",
+    raskt: r => (((A.fast && hurtigOf(r)) || r).minutes || 99) <= 25,
+    prot: r => (r.protein || 0) >= 45,
+    oppvask: r => (r.equipment || []).length <= 1 || (r.equipment || []).every(e => ["airfryer", "riskoker", "mikro"].includes(e)),
+  }[mode] || (() => true);
+  const tiers = [r => fil(r) && !used.has(r.id) && !nb.includes(mainProt(r)), r => !used.has(r.id) && !nb.includes(mainProt(r)) && (mode === "mix" || mode === "lenge" || mode === "fav" ? true : fil(r)), r => fil(r) && !used.has(r.id), r => !used.has(r.id), r => fil(r), r => true];
+  for (const ok of tiers) {
+    let c = base.filter(ok);
+    if (mode !== "ny") { const c2 = c.filter(r => !isNew(r, le) || newCnt < A.maxNew); if (c2.length) c = c2; }
+    if (!c.length) continue;
+    const w = r => {
+      const ds_ = le[r.id] ? diffDays(le[r.id], t) : 999;
+      let x = 1;
+      if (mode === "lenge") x = Math.min(ds_, 365) + 5;
+      else if (mode === "prot") x = Math.pow((r.protein || 0) / 40, 4);
+      else if (mode === "ny") x = r.tag === "prøv" ? 3 : 1;
+      if (mode !== "ny") x *= r.favorite ? 3 : r.tag === "liker" ? 1.8 : 1;
+      if (mode !== "lenge" && ds_ < 14) x *= 0.3;
+      return x;
+    };
+    const ws = c.map(w), sum = ws.reduce((a, b) => a + b, 0);
+    let k = Math.random() * sum;
+    for (let i = 0; i < c.length; i++) { k -= ws[i]; if (k <= 0) return c[i]; }
+    return c[c.length - 1];
+  }
+  return null;
+}
+const vpick = (A, r) => (A.fast && hurtigOf(r)) || r;
+function mixPlan(n, maxNew) {
+  const nn = Math.min(maxNew, n > 3 ? 2 : 1), seq = Array(nn).fill("ny");
+  while (seq.length < n) seq.push(seq.filter(x => x === "fav").length <= seq.filter(x => x === "lenge").length ? "fav" : "lenge");
+  for (let i = seq.length - 1; i > 0; i--) { const j = Math.floor(Math.random() * (i + 1)); [seq[i], seq[j]] = [seq[j], seq[i]]; }
+  return seq;
+}
+function autoGen(A) {
+  const le = lastEaten(), days = autoDays(A), rr = restRec();
+  const sub = A.mode === "mix" ? (A.day ? [["fav", "lenge", "ny"][Math.floor(Math.random() * 3)]] : mixPlan(days.length, A.maxNew)) : days.map(() => A.mode);
+  A.prev = [];
+  const restAt = new Set();
+  if (A.rest && !A.day && rr) for (const ri of A.rest === 2 ? [2, 5] : [2]) { const d = add(viewMon, ri); if (days.includes(d) && days.includes(add(d, -1))) restAt.add(d); }
+  days.forEach((d, i) => {
+    const old = planOf(d).find(p => p.slot === "middag" && !p.status);
+    if (restAt.has(d)) { A.prev.push({date: d, rid: rr.id, rest: true, sub: "rest", old: old ? old.id : null}); return; }
+    const r = pickFor(d, sub[i], A, le);
+    if (r) A.prev.push({date: d, rid: vpick(A, r).id, sub: sub[i], isNew: isNew(r, le), old: old ? old.id : null});
+  });
+  for (const x of A.prev) if (x.rest) { const y = A.prev.find(z => z.date === add(x.date, -1)); if (y) y.double = true; }
+}
+function reroll(A, d) {
+  const le = lastEaten(), x = A.prev.find(z => z.date === d); if (!x || x.rest) return;
+  x.tried = [...(x.tried || []), baseId(x.rid)];
+  const mode = A.mode === "mix" ? x.sub : A.mode;
+  const r = pickFor(d, mode, A, le, x.tried) || pickFor(d, mode, A, le, [baseId(x.rid)]);
+  if (r) { x.rid = vpick(A, r).id; x.isNew = isNew(r, le); }
+}
+async function openAuto(day) {
+  M = {t: "auto", date: day || "", day: day || null, mode: "mix", days: "alle", fill: "empty", fast: false, maxNew: 2, rest: 0, prev: [], busy: true}; render();
+  try { await loadHist(); } catch (e) { console.error(e); hist = []; }
+  if (!M || M.t !== "auto") return;
+  M.busy = false; autoGen(M); render();
+}
+function autoHtml(A) {
+  const opt = (k, v, l) => `<button class="chip ${A[k] === v ? "on" : ""}" data-auopt="${k}" data-v="${v}">${l}</button>`;
+  let h = `<div class="top"><div><div class="lab">✨ Auto-fyll ${A.day ? "dag" : "uke " + isoWeek(viewMon)}</div><h2>${A.day ? DL[wd(A.day)] + " " + esc(fmt(A.day)) : "Middager for uka"}</h2></div>${closeB}</div>
+  <button class="chip fastt ${A.fast ? "on" : ""}" data-aufast>🏃 Travel uke – bruk ⚡ hurtig-variant (ferdigmix) når den finnes</button>
+  <div class="lab">Hva har du lyst på?</div><div class="amodes">${AMODES.map(m => `<button class="amode ${A.mode === m[0] ? "on" : ""}" data-aumode="${m[0]}"><span class="ae">${m[1]}</span><b>${m[2]}</b><small>${m[3]}</small></button>`).join("")}</div>`;
+  if (!A.day) h += `<details class="aopts"><summary>⚙️ Valg</summary>
+    <div class="lab">Dager</div><div class="arow">${opt("days", "alle", "Alle 7 dager")}${opt("days", "hverdag", "Man–fre")}</div>
+    <div class="lab">Dager som allerede har middag</div><div class="arow">${opt("fill", "empty", "Bare tomme dager")}${opt("fill", "all", "Erstatt (ikke loggede)")}</div>
+    <div class="lab">Maks nye retter</div><div class="arow">${[0, 1, 2, 3].map(n => opt("maxNew", n, n === 3 ? "3+" : String(n))).join("")}</div>
+    <div class="lab">Rest-dag (lag dobbelt, spis rester dagen etter)</div><div class="arow">${opt("rest", 0, "Nei")}${opt("rest", 1, "1 i uka")}${opt("rest", 2, "2 i uka")}</div>
+    <div class="hint">Retter med to varianter bruker «Fra bunnen» som standard. Skjulte retter brukes aldri. Ingen rett gjentas denne eller forrige uke, og samme hovedprotein unngås to dager på rad. Favoritter vektes høyere.</div></details>`;
+  if (A.busy) return h + `<div class="msg loading">Lager forslag …</div>`;
+  if (!A.prev.length) return h + `<div class="msg">${A.day ? "Fant ingen rett." : "Ingen ledige dager å fylle denne uka (fortid og loggede dager hoppes over). Velg «Erstatt» under ⚙️ Valg eller gå til neste uke."}</div>`;
+  h += `<div class="lab" style="margin-top:14px">Forslag – bytt det du ikke vil ha</div>`;
+  for (const x of A.prev) {
+    const r = R(x.rid), old = x.old ? R((plan.find(p => p.id === x.old) || {}).recipe_id) : null;
+    const tag = x.rest ? "♻️ Rester" : x.isNew ? "🆕 Ny" : AML[x.sub] ? AML[x.sub].split(" ")[0] + " " + {lenge: "Lenge siden", fav: "Favoritt", ny: "Ny"}[x.sub] : "";
+    h += `<div class="aprev"><div class="ad"><b>${DK[wd(x.date)]}</b><span>${esc(fmt(x.date))}</span></div><div class="am"><button class="an" data-rec="${r.id}">${esc(r.name)}</button>
+      <div class="as">${x.rest ? "Rester fra dagen før" : `${r.minutes || "?"} min · ${r.protein || "?"} g protein${x.double ? " · <b>lag dobbelt</b>" : ""}${r.variant === "hurtig" ? " · ⚡ Hurtig" : ""}`}${A.mode === "mix" && !x.rest ? " · " + tag : x.isNew && !x.rest ? " · 🆕" : ""}${old ? ` · erstatter ${esc(old.name)}` : ""}</div></div>
+      ${x.rest ? "" : `<button class="btn abyt" data-aureroll="${x.date}" aria-label="Bytt ${esc(r.name)}">🔄 Bytt</button>`}</div>`;
+  }
+  h += `<div class="stack"><button class="btn go" data-ausave ${A.saving ? "disabled" : ""}>${A.saving ? "Lagrer …" : `✓ Lagre i planen (${A.prev.length})`}</button><button class="btn" data-auall>🎲 Nye forslag for alle</button></div>`;
+  return h;
+}
+async function autoSave() {
+  const A = M; if (A.saving) return; A.saving = true; render();
+  const added = [], removed = [];
+  try {
+    for (const x of A.prev) {
+      if (x.old) { const o = plan.find(p => p.id === x.old); if (o) { await write(() => rpc("plan_remove", {p_id: o.id})); removed.push(o); } }
+      const r = R(x.rid), por = x.rest ? 1 : x.double ? (r.servings || 2) * 2 : null;
+      added.push(await write(() => rpc("plan_add", {p_date: x.date, p_slot: "middag", p_recipe: x.rid, p_portions: por}), "Kunne ikke lagre alt. Sjekk planen."));
+    }
+  } catch (e) { console.error(e); }
+  M = null; hist = null; await refreshPlan(); render();
+  showToast(`✨ ${added.length} ${added.length === 1 ? "middag" : "middager"} lagt inn`, async () => {
+    for (const id of added) await write(() => rpc("plan_remove", {p_id: id})).catch(() => {});
+    for (const o of removed) await write(() => rpc("plan_add", {p_date: o.date, p_slot: o.slot, p_recipe: o.recipe_id, p_portions: o.portions})).catch(() => {});
+    await refreshPlan(); render(); showToast("Angret auto-fyll");
+  });
+}
+document.addEventListener("click", ev => {
+  const c = s => ev.target.closest(s); let e;
+  if ((e = c("[data-auto]"))) return openAuto(e.dataset.auto || null);
+  if (!M || M.t !== "auto" || M.busy) return;
+  if (c("[data-aufast]")) { M.fast = !M.fast; M.prev.forEach(x => { if (!x.rest) { const b = R(baseId(x.rid)); x.rid = vpick(M, b).id; } }); return render(); }
+  if ((e = c("[data-aumode]"))) { M.mode = e.dataset.aumode; autoGen(M); return render(); }
+  if ((e = c("[data-auopt]"))) { const k = e.dataset.auopt, v = e.dataset.v; M[k] = ["maxNew", "rest"].includes(k) ? +v : v; autoGen(M); render(); const d = document.querySelector(".aopts"); if (d) d.open = true; return; }
+  if ((e = c("[data-aureroll]"))) { reroll(M, e.dataset.aureroll); return render(); }
+  if (c("[data-auall]")) { autoGen(M); return render(); }
+  if (c("[data-ausave]")) return autoSave();
+});
 </script>
 </body>
 </html>
