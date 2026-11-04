@@ -126,7 +126,7 @@ button{font:inherit;color:inherit}
 .tab{min-height:var(--tb);border:0;background:none;display:flex;flex-direction:column;align-items:center;justify-content:center;gap:2px;font-weight:700;font-size:.72rem;color:var(--mut);border-top:4px solid transparent;cursor:pointer;padding:0}
 .tab b{font-size:1.6rem;line-height:1.1}
 .tab.on{color:var(--acc);border-top-color:var(--acc);background:var(--accbg)}
-#toast{position:fixed;left:12px;right:12px;top:calc(env(safe-area-inset-top) + 10px);z-index:25;display:none;max-width:616px;margin:0 auto}
+#toast{position:fixed;left:12px;right:12px;top:calc(env(safe-area-inset-top) + 10px);z-index:45;display:none;max-width:616px;margin:0 auto}
 #toast .ts{display:flex;align-items:center;justify-content:space-between;gap:10px;background:var(--ink);color:var(--bg);border-radius:16px;padding:8px 8px 8px 18px;font-weight:800;font-size:1.1rem;box-shadow:0 6px 20px rgba(0,0,0,.3)}
 #toast{pointer-events:none}#toast button{pointer-events:auto;min-height:52px;padding:0 18px;border-radius:12px;border:0;background:var(--bg);color:var(--ink);font-weight:800;cursor:pointer}
 .ov{position:fixed;inset:0;z-index:40;background:rgba(0,0,0,.55);display:flex;align-items:flex-end;justify-content:center}
@@ -219,6 +219,13 @@ body.cooking{overflow:hidden}
 .cknav{display:grid;grid-template-columns:1fr 1.4fr;gap:10px;padding:10px 14px max(14px,env(safe-area-inset-bottom));border-top:1px solid var(--line)}
 .cknav .btn{min-height:64px;font-size:20px}
 .cknav .btn[disabled]{opacity:.4}
+.dblb{margin-top:10px;font-size:18px;min-height:56px;border-color:var(--acc);color:var(--acc);font-weight:800}
+.rbox.dbl{background:var(--accbg);border-color:var(--acc)}
+.rbox.dbl .btn{margin-top:8px}
+.rbox.rest{background:var(--ambbg);border-color:var(--amb);margin:8px 0}
+.warn{margin:8px 0;padding:10px 12px;border-radius:12px;background:var(--redbg);color:var(--red);font-weight:700;font-size:16px}
+.b2x{display:inline-block;font-size:15px;font-weight:800;padding:0 6px;border-radius:8px;background:var(--accbg);color:var(--acc)}
+.btn[disabled]{opacity:.45}
 </style>
 </head>
 <body>
@@ -338,11 +345,13 @@ async function planAdd(date, slot, rid, portions, quiet) {
 }
 async function planRemove(id, isUndo) {
   const e0 = plan.find(x => x.id === id); if (!e0) return;
-  const prev = plan; plan = plan.filter(x => x.id !== id); render();
+  const lo = leftOf(e0), prev = plan; plan = plan.filter(x => x.id !== id && x.leftover_of !== id); render();
   try { await write(() => rpc("plan_remove", {p_id: id}), "Kunne ikke fjerne. Prøv igjen."); }
   catch (_) { plan = prev; render(); return; }
   if (isUndo) showToast("Angret");
-  else showToast("Fjernet fra planen", async () => { await planAdd(e0.date, e0.slot, e0.recipe_id, e0.portions, true); showToast("Lagt tilbake"); });
+  else showToast(lo ? "Fjernet – restene " + DK[wd(lo.date)] + " også" : "Fjernet fra planen", async () => {
+    if (e0.leftover_of) { await relink(e0.leftover_of, e0); await refreshPlan(); render(); return showToast("Lagt tilbake"); }
+    const nid = await planAdd(e0.date, e0.slot, e0.recipe_id, e0.portions, true); if (nid && lo) { await relink(nid, lo); await refreshPlan(); render(); } showToast("Lagt tilbake"); });
 }
 async function planUpdate(id, ch) {
   const e0 = plan.find(x => x.id === id); if (!e0) return;
@@ -519,10 +528,11 @@ function viewIdag() {
   const ps = planOf(d);
   for (const p of ps) {
     const r = R(p.recipe_id) || {name: "(slettet rett)", ing: []}, k = "p:" + p.id, nfb = fb.filter(f => f.recipe_id === p.recipe_id).length;
-    h += `<section class="card" id="pe${p.id}"><div class="lab">${SI[p.slot]} ${SL[p.slot]}</div><h2>${esc(r.name)}</h2>
+    h += `<section class="card" id="pe${p.id}"><div class="lab">${SI[p.slot]} ${SL[p.slot]}</div><h2>${esc(pname(p, r))}</h2>${restInfo(p)}
       <div class="d">${esc(nutri(r))} · per porsjon${+p.portions !== 1 ? " · lag " + num(p.portions) + " porsjoner" : ""}</div>
       ${r.veg_addon ? `<div class="note">🥦 ${esc(r.veg_addon)}</div>` : ""}
       ${logButtons(k)}
+      ${p.slot === "middag" ? dblBlock(p) : ""}
       <div class="grid2" style="margin-top:10px"><button class="btn sm" data-showrec="${p.id}">${showRec.has(p.id) ? "Skjul oppskrift" : "📖 Oppskrift"}</button><button class="btn sm" data-fb="${k}">💬 Tilbakemelding${nfb ? " (" + nfb + ")" : ""}</button></div>
       ${showRec.has(p.id) ? recipeBody(r, p.portions) : ""}</section>`;
   }
@@ -552,7 +562,7 @@ function viewPlan() {
     h += `<section class="pday ${d === today() ? "today" : ""}" id="pd-${d}"><div class="ph"><div><b>${DL[i]}</b><span>${esc(fmt(d))}${relDay(d) ? " · " + relDay(d) : ""}</span></div>${d >= today() ? `<button class="btn aut" data-auto="${d}" aria-label="Auto-fyll middag ${DL[i]}">✨</button>` : ""}</div>`;
     for (const p of ps) {
       const r = R(p.recipe_id) || {name: "(slettet rett)"};
-      h += `<button class="pe ${p.status ? SC[p.status] : ""}" data-pe="${p.id}"><span class="ic">${SI[p.slot]}</span><span class="pm"><span class="pn">${esc(r.name)}</span><br><span class="ps">${SL[p.slot]} · ${num(p.portions)} porsj.${p.status ? " · " + esc(statusText(p)) : ""}</span></span><span class="d">›</span></button>`;
+      h += `<button class="pe ${p.status ? SC[p.status] : ""}" data-pe="${p.id}"><span class="ic">${SI[p.slot]}</span><span class="pm"><span class="pn">${esc(pname(p, r))}</span>${leftOf(p) ? ` <span class="b2x">2x</span>` : ""}<br><span class="ps">${SL[p.slot]} · ${num(p.portions)} porsj.${p.status ? " · " + esc(statusText(p)) : ""}</span></span><span class="d">›</span></button>`;
     }
     if (!ps.some(p => p.slot === "middag")) h += `<button class="pe addd" data-pick="${d}" data-slot="middag">＋ Middag</button>`;
     h += `<button class="pe addd" style="min-height:52px" data-pick="${d}" data-slot="frokost">＋ Annet måltid</button></section>`;
@@ -721,8 +731,9 @@ function pickHtml(m) {
 function entryHtml(m) {
   const p = plan.find(x => x.id === m.id); if (!p) return null;
   const r = R(p.recipe_id) || {name: "?", ing: []}, wm = monday(p.date);
-  return `<div class="top"><div><div class="lab">${SI[p.slot]} ${SL[p.slot]} · ${DL[wd(p.date)]} ${esc(fmt(p.date))}</div><h2>${esc(r.name)}</h2></div>${closeB}</div>
+  return `<div class="top"><div><div class="lab">${SI[p.slot]} ${SL[p.slot]} · ${DL[wd(p.date)]} ${esc(fmt(p.date))}</div><h2>${esc(pname(p, r))}</h2></div>${closeB}</div>${restInfo(p)}
     <div class="d">${esc(meta(r))}</div>${varToggle(r, "evar")}
+    ${dblBlock(p)}
     <label class="lbl">Porsjoner å lage</label>
     <div class="step"><button class="btn" data-port="-1" aria-label="Færre porsjoner">−</button><b>${num(p.portions)}</b><button class="btn" data-port="1" aria-label="Flere porsjoner">＋</button></div>
     <label class="lbl">Flytt til dag <span class="d">(uke ${isoWeek(wm)})</span></label>
@@ -797,6 +808,7 @@ function renderModal() {
     else if (M.t === "edit") inner = editHtml(M);
     else if (M.t === "add") inner = addSheetHtml(M.x);
     else if (M.t === "auto") inner = autoHtml(M);
+    else if (M.t === "dbl") inner = dblHtml(M);
     else if (M.t === "fb") { const p = M.k[0] === "p" ? pe(M.k) : null, r = p ? R(p.recipe_id) : R(+M.k.slice(2)); inner = `${backBtn()}<div class="top"><div><div class="lab">Tilbakemelding</div><h2>${esc(r ? r.name : "")}</h2></div>${closeB}</div>${form(M.k, true)}`; }
   }
   if (inner == null) { M = null; el.innerHTML = ""; el.dataset.k = ""; document.body.classList.remove("nos"); return; }
@@ -828,14 +840,16 @@ async function moveEntry(p, date) {
 }
 async function swapEntry(oldId, rid) {
   const old = plan.find(p => p.id === oldId); M = null; if (!old) return render();
-  const nid = await planAdd(old.date, old.slot, rid, null, true); if (!nid) return;
+  const lo = leftOf(old), nid = await planAdd(old.date, old.slot, rid, lo ? old.portions : null, true); if (!nid) return;
   try { await write(() => rpc("plan_remove", {p_id: old.id})); } catch (_) {}
+  if (lo) await relink(nid, lo);
   await refreshPlan(); render();
   showToast("✓ Byttet til " + R(rid).name, async () => { await write(() => rpc("plan_remove", {p_id: nid})).catch(() => {}); await planAdd(old.date, old.slot, old.recipe_id, old.portions, true); showToast("Angret"); });
 }
 async function swapVariant(p, rid) {
-  const old = {...p}, nid = await planAdd(p.date, p.slot, rid, p.portions, true); if (!nid) return;
+  const old = {...p}, lo = leftOf(p), nid = await planAdd(p.date, p.slot, rid, p.portions, true); if (!nid) return;
   try { await write(() => rpc("plan_remove", {p_id: old.id})); } catch (_) {}
+  if (lo) await relink(nid, lo);
   await refreshPlan(); if (M && M.t === "entry") M.id = nid; render();
   const r = R(rid);
   showToast((r.variant === "hurtig" ? "⚡ Hurtig-variant" : "🧑‍🍳 Fra bunnen") + " – handlelista følger valget", async () => { await write(() => rpc("plan_remove", {p_id: nid})).catch(() => {}); const id2 = await planAdd(old.date, old.slot, old.recipe_id, old.portions, true); if (M && M.t === "entry") M.id = id2; render(); showToast("Angret"); });
@@ -1133,12 +1147,14 @@ function autoHtml(A) {
 }
 async function autoSave() {
   const A = M; if (A.saving) return; A.saving = true; render();
-  const added = [], removed = [];
+  const added = [], removed = [], byDate = {};
   try {
     for (const x of A.prev) {
       if (x.old) { const o = plan.find(p => p.id === x.old); if (o) { await write(() => rpc("plan_remove", {p_id: o.id})); removed.push(o); } }
-      const r = R(x.rid), por = x.rest ? 1 : x.double ? (r.servings || 2) * 2 : null;
-      added.push(await write(() => rpc("plan_add", {p_date: x.date, p_slot: "middag", p_recipe: x.rid, p_portions: por}), "Kunne ikke lagre alt. Sjekk planen."));
+      const r = R(x.rid), por = x.rest ? 1 : x.double ? (r.servings || 2) * 2 : null, src = x.rest && byDate[add(x.date, -1)];
+      if (src) { const res = await write(() => rpc("plan_double", {p_src: src, p_date: x.date, p_replace: false, p_keep: true}), "Kunne ikke lagre alt. Sjekk planen."); added.push(res.id); continue; }
+      const nid = await write(() => rpc("plan_add", {p_date: x.date, p_slot: "middag", p_recipe: x.rid, p_portions: por}), "Kunne ikke lagre alt. Sjekk planen.");
+      added.push(nid); if (x.double) byDate[x.date] = nid;
     }
   } catch (e) { console.error(e); }
   M = null; hist = null; await refreshPlan(); render();
@@ -1196,6 +1212,68 @@ document.addEventListener("click", ev => {
   if (c("[data-ckin]")) { CK.ing = !CK.ing; renderCook(); }
 }, true);
 document.addEventListener("keydown", ev => { if (!CK) return; if (ev.key === "Escape") closeCook(); });
+/* ---------- 2x / rester ---------- */
+const leftOf = p => p && plan.find(x => x.leftover_of === p.id);
+const srcOf = p => p && p.leftover_of ? plan.find(x => x.id === p.leftover_of) || p.src || null : null;
+const dd = (a, b) => Math.round((pd(b) - pd(a)) / 864e5);
+function pname(p, r) { const s = srcOf(p); if (!p.leftover_of) return r.name; const sr = s && R(s.recipe_id); return "♻️ Rester: " + (sr ? sr.name : "middag"); }
+const HEAT = "Varm til rykende varm helt i midten (75 °C): mikro 2–3 min, rør, 1–2 min til · stekepanne middels varme 4–6 min (litt vann) · airfryer 180 °C 5–8 min. Varm bare én gang.";
+function restInfo(p) {
+  if (!p.leftover_of) return "";
+  const s = srcOf(p), n = s ? dd(s.date, p.date) : 0;
+  return `<div class="rbox rest"><div class="lab">♻️ Rester${s ? ` fra ${DL[wd(s.date)].toLowerCase()} ${esc(fmt(s.date))}` : ""} · ingenting på handlelista</div>
+    ${s && (n > 3 || n < 1) ? `<div class="warn">⚠️ ${n < 1 ? "Restene ligger før selve middagen – flytt dem." : n + " dager i kjøleskapet er for lenge (maks 3). Frys porsjonen heller, og tin i kjøleskapet."}</div>` : ""}
+    <div>🔥 ${HEAT}</div></div>`;
+}
+function dblBlock(p) {
+  const r = R(p.recipe_id); if (p.leftover_of || p.slot !== "middag" || !r || r.name === "Rester fra middag") return "";
+  const lo = leftOf(p);
+  if (lo) return `<div class="rbox dbl"><div>🍲 <b>Lages 2x</b> (${num(p.portions)} porsj.) · rester ${DL[wd(lo.date)].toLowerCase()} ${esc(fmt(lo.date))}</div>
+    <button class="btn sm" data-undbl="${p.id}">↩ Angre 2x (fjern restene)</button></div>`;
+  return `<button class="btn dblb" data-dbl="${p.id}">🍲 2x – lag til i morgen også</button>`;
+}
+function dblHtml(m) {
+  const p = plan.find(x => x.id === m.id); if (!p) return null;
+  const r = R(p.recipe_id), days = [1, 2, 3, 4].map(i => add(p.date, i)), n = dd(p.date, m.date);
+  const conf = plan.filter(x => x.date === m.date && x.slot === "middag" && x.id !== p.id);
+  const pc = Math.min(12, +p.portions * 2);
+  return `${backBtn()}<div class="top"><div><div class="lab">🍲 Lag 2x</div><h2>${esc(r.name)}</h2></div>${closeB}</div>
+    <div class="d">${DL[wd(p.date)]} ${esc(fmt(p.date))}: ${num(p.portions)} → <b>${num(pc)} porsjoner</b> (handlelista skaleres). Restene legges inn som egen middag og koster ingenting på handlelista.</div>
+    <label class="lbl">Når vil du spise restene?</label>
+    <div class="strip">${days.map((d, i) => `<button class="pill ${d === m.date ? "on" : ""}" data-dbd="${d}">${i === 0 ? "I morgen" : DK[wd(d)]}<span style="font-size:.85rem;font-weight:600">${pd(d).getDate()}.</span></button>`).join("")}</div>
+    ${n > 3 ? `<div class="warn">⚠️ ${n} dager er over grensen på 3 dager i kjøleskapet. Frys porsjonen samme dag, og tin den i kjøleskapet natten før.</div>` : `<div class="d">✓ ${n} ${n === 1 ? "dag" : "dager"} i kjøleskapet – innenfor 3 dager.</div>`}
+    ${conf.length ? `<label class="lbl">${DL[wd(m.date)]} har allerede: ${conf.map(x => esc(pname(x, R(x.recipe_id) || {name: "?"}))).join(", ")}</label>
+      <div class="grid2" style="margin:0"><button class="btn ${m.mode === "replace" ? "go" : ""}" data-dbm="replace">Erstatt</button><button class="btn ${m.mode === "extra" ? "go" : ""}" data-dbm="extra">Legg til som ekstra</button></div>` : ""}
+    <div class="stack"><button class="btn go" data-dbok ${conf.length && !m.mode ? "disabled" : ""}>🍲 Lag 2x · rester ${DK[wd(m.date)]} ${esc(fmt(m.date))}</button></div>`;
+}
+async function relink(srcId, lo) { try { await write(() => rpc("plan_double", {p_src: srcId, p_date: lo.date, p_replace: false, p_keep: true})); } catch (_) {} }
+async function doDouble(m) {
+  const p = plan.find(x => x.id === m.id); if (!p || m.busy) return; m.busy = true;
+  let res; try { res = await write(() => rpc("plan_double", {p_src: p.id, p_date: m.date, p_replace: m.mode === "replace", p_keep: false}), "Kunne ikke lage 2x. Prøv igjen."); } catch (_) { m.busy = false; return render(); }
+  M = m.back || null; if (M && M.t === "entry") M.id = p.id;
+  await refreshPlan(); render();
+  const removed = res.removed || [];
+  showToast(`🍲 2x – rester ${DK[wd(m.date)]} ${fmt(m.date)}${removed.length ? " (erstattet)" : ""}`, async () => {
+    await write(() => rpc("plan_undouble", {p_src: p.id})).catch(() => {});
+    for (const o of removed) await write(() => rpc("plan_add", {p_date: o.date, p_slot: o.slot, p_recipe: o.recipe_id, p_portions: o.portions})).catch(() => {});
+    await refreshPlan(); render(); showToast("Angret 2x");
+  });
+}
+async function unDouble(id) {
+  const p = plan.find(x => x.id === id), lo = leftOf(p); if (!p || !lo) return;
+  try { await write(() => rpc("plan_undouble", {p_src: id}), "Kunne ikke angre. Prøv igjen."); } catch (_) { return; }
+  await refreshPlan(); render();
+  showToast("2x fjernet – restene er borte", async () => { await write(() => rpc("plan_double", {p_src: id, p_date: lo.date, p_replace: false, p_keep: false})).catch(() => {}); await refreshPlan(); render(); showToast("Lagt tilbake"); });
+}
+document.addEventListener("click", ev => {
+  const c = s => ev.target.closest(s); let e;
+  if ((e = c("[data-dbl]"))) { ev.stopPropagation(); const p = plan.find(x => x.id === +e.dataset.dbl); if (!p) return; M = {t: "dbl", id: p.id, date: add(p.date, 1), mode: null, back: M && M.t === "entry" ? M : null}; return render(); }
+  if ((e = c("[data-undbl]"))) { ev.stopPropagation(); return unDouble(+e.dataset.undbl); }
+  if (!M || M.t !== "dbl") return;
+  if ((e = c("[data-dbd]"))) { ev.stopPropagation(); M.date = e.dataset.dbd; M.mode = null; return render(); }
+  if ((e = c("[data-dbm]"))) { ev.stopPropagation(); M.mode = e.dataset.dbm; return render(); }
+  if (c("[data-dbok]")) { ev.stopPropagation(); return doDouble(M); }
+}, true);
 </script>
 </body>
 </html>
