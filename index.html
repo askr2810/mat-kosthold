@@ -226,6 +226,18 @@ body.cooking{overflow:hidden}
 .warn{margin:8px 0;padding:10px 12px;border-radius:12px;background:var(--redbg);color:var(--red);font-weight:700;font-size:16px}
 .b2x{display:inline-block;font-size:15px;font-weight:800;padding:0 6px;border-radius:8px;background:var(--accbg);color:var(--acc)}
 .btn[disabled]{opacity:.45}
+.hvb{font-size:18px;min-height:56px}
+.hch .chip{font-size:17px;min-height:48px}
+.hh{margin:18px 0 6px}
+.hres{border:1px solid var(--line);border-radius:16px;padding:12px;margin:0 0 10px;background:var(--card)}
+.hres .rn{font-size:19px;font-weight:800}
+.hres .rm{font-size:16px;margin-top:2px}
+.hmiss{margin-top:6px;font-size:17px;color:var(--amb)}
+.hok{margin-top:6px;font-size:17px;color:var(--acc);font-weight:700}
+.hplan{display:grid;grid-template-columns:1fr 1fr;gap:8px;margin-top:8px}
+.hdate{grid-column:1/-1;display:grid;grid-template-columns:1fr auto;gap:8px}
+.hdate .btn{width:auto}
+.lnk{background:none;border:0;color:var(--acc);font-weight:800;text-decoration:underline;font-size:16px;min-height:48px;cursor:pointer}
 </style>
 </head>
 <body>
@@ -555,6 +567,7 @@ function viewPlan() {
   const wk = plan.filter(p => p.date >= viewMon && p.date <= end), dn = new Set(wk.filter(p => p.slot === "middag").map(p => p.date)).size;
   let h = `<div class="wkn"><button class="btn" data-wk="-1" aria-label="Forrige uke">◀</button><div class="c"><b>Uke ${isoWeek(viewMon)}</b><span>${esc(fmt(viewMon))} – ${esc(fmt(end))}</span></div><button class="btn" data-wk="1" aria-label="Neste uke">▶</button></div>`;
   if (viewMon !== tm) h += `<div class="back"><button class="btn sm" data-wk="0">⟵ Denne uka</button></div>`;
+  h += `<div class="stack" style="margin:0 0 10px"><button class="btn hvb" data-have>🧊 Hva har jeg? Finn middag</button></div>`;
   h += `<div class="stack" style="margin:0 0 12px"><button class="btn go" data-auto="">✨ Auto-fyll uke</button></div>`;
   h += `<div class="sum">🍽️ ${dn} av 7 middager planlagt · ${wk.length} ${wk.length === 1 ? "rett" : "retter"} totalt</div>`;
   for (let i = 0; i < 7; i++) {
@@ -575,7 +588,7 @@ function viewPlan() {
 function viewRetter() {
   const list = filterRecipes(RF);
   return `<h1>Retter</h1><p class="sub">${recipes.filter(r => !r.hidden).length} retter i banken · trykk for oppskrift og planlegging</p>
-    <div class="stack" style="margin:0 0 12px"><button class="btn go" data-newrec>＋ Ny rett</button></div>
+    <div class="stack" style="margin:0 0 12px"><button class="btn go hvb" data-have>🧊 Hva har jeg? Finn middag</button><button class="btn" data-newrec>＋ Ny rett</button></div>
     ${filterBar(RF, "r", true)}<div class="cntb">${list.length} treff</div>${list.map(recCard).join("") || `<div class="msg">Ingen treff. Prøv et annet filter.</div>`}`;
 }
 
@@ -809,6 +822,7 @@ function renderModal() {
     else if (M.t === "add") inner = addSheetHtml(M.x);
     else if (M.t === "auto") inner = autoHtml(M);
     else if (M.t === "dbl") inner = dblHtml(M);
+    else if (M.t === "have") inner = haveHtml(M);
     else if (M.t === "fb") { const p = M.k[0] === "p" ? pe(M.k) : null, r = p ? R(p.recipe_id) : R(+M.k.slice(2)); inner = `${backBtn()}<div class="top"><div><div class="lab">Tilbakemelding</div><h2>${esc(r ? r.name : "")}</h2></div>${closeB}</div>${form(M.k, true)}`; }
   }
   if (inner == null) { M = null; el.innerHTML = ""; el.dataset.k = ""; document.body.classList.remove("nos"); return; }
@@ -911,7 +925,7 @@ document.addEventListener("click", async ev => {
     if (c("[data-esave]")) return saveRecipe();
     return;
   }
-  if ((e = c("[data-rec]"))) { M = {t: "recipe", id: +e.dataset.rec, back: e.hasAttribute("data-fromentry") || (M && M.t === "auto") ? M : null}; return render(); }
+  if ((e = c("[data-rec]"))) { M = {t: "recipe", id: +e.dataset.rec, back: e.hasAttribute("data-fromentry") || (M && (M.t === "auto" || M.t === "have")) ? M : null}; return render(); }
   if ((e = c("[data-edit]"))) return openEdit(+e.dataset.edit);
   if (c("[data-newrec]")) { M = null; return openEdit(null); }
   if ((e = c("[data-fb]"))) { M = {t: "fb", k: e.dataset.fb, back: M && M.t === "recipe" ? M : null}; dr(M.k).ok = false; return render(); }
@@ -1274,6 +1288,80 @@ document.addEventListener("click", ev => {
   if ((e = c("[data-dbm]"))) { ev.stopPropagation(); M.mode = e.dataset.dbm; return render(); }
   if (c("[data-dbok]")) { ev.stopPropagation(); return doDouble(M); }
 }, true);
+/* ---------- Hva har jeg? ---------- */
+const STAPLE = /salt|pepper|^olje|krydder|pulver|spisskummen|oregano|garam|ingefær|sukker|hvetemel|maisenna|buljong|soyasaus|honning|^smør|ketchup|majones|tomatpuré|^vann/i;
+const NORM = [
+  [/kyllingpålegg/, "kyllingpålegg"], [/pølse/, "pølser"], [/nuggets/, "kyllingnuggets"], [/kebab \(|kyllingkebab/, "kebab"], [/suppe \(pose\)/, null],
+  [/kjøttdeig|karbonadedeig/, "kjøttdeig"], [/^kylling/, "kylling"], [/laks/, "laks"], [/torsk/, "torsk"], [/reker/, "reker"],
+  [/spaghetti|makaroni|^pasta$|lasagneplater/, "pasta"], [/nudler/, "nudler"], [/^ris$/, "ris"], [/potetbåter|pommes/, "potetbåter"], [/^poteter/, "poteter"],
+  [/revet ost|ost \(skiver\)|parmesan|^ost$/, "ost"], [/tortilla|lefse/, "tortilla"], [/fløte/, "fløte"], [/rømme/, "rømme"], [/hakkede tomater|^tomat/, "hakkede tomater"],
+  [/bacon/, "bacon"], [/skinke/, "skinke"], [/burgerbrød|pitabrød|rundstykke|^brød/, "brød"], [/skyr|kvarg|yoghurt/, "skyr/yoghurt"], [/^mais/, "mais"],
+  [/^egg$/, "egg"], [/^løk/, "løk"], [/paprika$/, "paprika"], [/kidneybønner|bønner/, "bønner"], [/storfe|biff|entrecôte/, "biff"], [/svine/, "svinekjøtt"],
+];
+const normIng = n => { const s = String(n).toLowerCase().trim(); if (STAPLE.test(s)) return null; for (const [re, k] of NORM) if (re.test(s)) return k; return s.replace(/\s*\(.*?\)\s*/g, " ").replace(/\s+\d.*$/, "").trim() || null; };
+const HAVE_CHIPS = ["kylling", "kjøttdeig", "egg", "ris", "pasta", "laks", "torsk", "løk", "mais", "paprika", "fløte", "ost", "tortilla", "poteter", "brokkoli", "gulrot", "hakkede tomater", "rømme", "bacon", "skinke", "nudler", "pølser", "reker", "melk"];
+const HKEY = "mat_have_v1";
+let HV = (() => { try { return JSON.parse(localStorage.getItem(HKEY)) || {sel: [], all: false}; } catch (_) { return {sel: [], all: false}; } })();
+const saveHave = () => { try { localStorage.setItem(HKEY, JSON.stringify(HV)); } catch (_) {} };
+function haveKeys() { const c = {}; for (const r of recipes) if (!r.hidden) for (const i of r.ing || []) { const k = normIng(i.name); if (k) c[k] = (c[k] || 0) + 1; } return c; }
+function needsOf(r) { const m = new Map(); for (const i of r.ing || []) { if (i.at_home) continue; const k = normIng(i.name); if (k && !m.has(k)) m.set(k, i); } return m; }
+function haveMatch() {
+  const have = new Set(HV.sel), out = [];
+  for (const r of recipes) {
+    if (r.hidden || (!HV.all && r.kind !== "middag")) continue;
+    const need = needsOf(r); if (!need.size) continue;
+    const miss = [...need.keys()].filter(k => !have.has(k)), hit = need.size - miss.length;
+    if (!hit || miss.length > 2) continue;
+    out.push({r, miss, missIng: miss.map(k => need.get(k)), hit, n: need.size});
+  }
+  out.sort((a, b) => a.miss.length - b.miss.length || b.hit / b.n - a.hit / a.n || (b.r.protein || 0) - (a.r.protein || 0));
+  return out;
+}
+function openHave() { M = {t: "have", q: "", open: null, date: add(today(), 2)}; render(); }
+function haveHtml(m) {
+  const cnt = haveKeys(), q = (m.q || "").toLowerCase().trim();
+  let chips = [...new Set([...HAVE_CHIPS.filter(k => cnt[k]), ...HV.sel])];
+  if (q) chips = Object.keys(cnt).filter(k => k.includes(q)).sort((a, b) => cnt[b] - cnt[a]).slice(0, 20);
+  const res = haveMatch(), now = res.filter(x => !x.miss.length), near = res.filter(x => x.miss.length).slice(0, 30);
+  const card = x => { const r = x.r, op = m.open === r.id;
+    return `<div class="hres"><div class="rn">${badges(r)}${esc(r.name)}</div>
+      <div class="rm">${r.minutes ? "⏱ " + r.minutes + " min · " : ""}${r.protein ? r.protein + " g protein · " : ""}${r.kcal ? "ca. " + r.kcal + " kcal" : ""} <span class="d">per porsjon</span></div>
+      ${x.miss.length ? `<div class="hmiss">🛒 Mangler: <b>${x.missIng.map(i => esc(i.name)).join(", ")}</b></div>` : `<div class="hok">✓ Du har alt (utenom salt, olje og krydder)</div>`}
+      <div class="grid2" style="margin:8px 0 0"><button class="btn sm" data-rec="${r.id}">📖 Oppskrift</button><button class="btn sm" data-cook="${r.id}">👨‍🍳 Kokemodus</button></div>
+      <div class="grid2" style="margin:8px 0 0"><button class="btn sm ${op ? "go" : ""}" data-hplan="${r.id}">📅 Legg i plan</button>${x.miss.length ? `<button class="btn sm" data-hshop="${r.id}">🛒 Manglende på lista</button>` : "<span></span>"}</div>
+      ${op ? `<div class="hplan"><button class="btn go" data-hpd="${today()}">I dag</button><button class="btn go" data-hpd="${add(today(), 1)}">I morgen</button>
+        <div class="hdate"><input class="inp" type="date" id="h-date" value="${m.date}" min="${today()}" aria-label="Velg dato"><button class="btn" data-hpd="pick">Legg til</button></div></div>` : ""}</div>`; };
+  return `<div class="top"><div><div class="lab">🧊 Hva har jeg?</div><h2>Trykk på det du har</h2></div>${closeB}</div>
+    <input class="inp" id="h-q" type="search" placeholder="Søk eller skriv f.eks. «laks» og trykk Enter" value="${esc(m.q || "")}" enterkeyhint="done" autocomplete="off">
+    <div class="chips hch">${chips.map(k => `<button class="chip ${HV.sel.includes(k) ? "on" : ""}" data-hv="${esc(k)}">${HV.sel.includes(k) ? "✓ " : ""}${esc(k)}</button>`).join("") || `<span class="d">Ingen treff – trykk Enter for å legge til «${esc(m.q)}».</span>`}</div>
+    <div class="grid2" style="margin:6px 0 0"><button class="chip ${HV.all ? "" : "on"}" data-hall="0">🍽️ Bare middag</button><button class="chip ${HV.all ? "on" : ""}" data-hall="1">Alle måltider</button></div>
+    ${HV.sel.length ? `<div class="d" style="margin:8px 0">${HV.sel.length} valgt · salt, pepper, olje og krydder regnes som noe du har. <button class="lnk" data-hclr>Nullstill</button></div>` : ""}
+    ${!HV.sel.length ? `<div class="msg">Velg minst én ting du har, så kommer forslagene her.</div>` :
+      `<h2 class="hh">✅ Kan lages nå (${now.length})</h2>${now.map(card).join("") || `<div class="d">Ingen ennå – se de som mangler litt under.</div>`}
+       <h2 class="hh">🛒 Mangler 1–2 ting (${near.length})</h2>${near.map(card).join("") || `<div class="d">Ingen.</div>`}`}`;
+}
+async function haveShop(r, x) {
+  const L = lists.find(l => l.id === curList) || lists[0];
+  if (!L) { showToast("Lag en handleliste i Handle først"); return; }
+  try { for (const i of x.missIng) await write(() => rpc("shop_add_item", {p_list: L.id, p_name: i.name, p_category: i.category || "Annet"})); } catch (_) { return; }
+  lists = await rpc("shop_lists"); if (L.id === curList) items = await rpc("shop_items", {p_list: L.id});
+  showToast(`🛒 ${x.missIng.length} lagt på «${L.title}»`);
+}
+document.addEventListener("click", ev => {
+  const c = s => ev.target.closest(s); let e;
+  if (c("[data-have]")) { ev.stopPropagation(); return openHave(); }
+  if (!M || M.t !== "have") return;
+  const stop = () => ev.stopPropagation();
+  if ((e = c("[data-hv]"))) { stop(); const k = e.dataset.hv; HV.sel = HV.sel.includes(k) ? HV.sel.filter(x => x !== k) : [...HV.sel, k]; saveHave(); return render(); }
+  if ((e = c("[data-hall]"))) { stop(); HV.all = e.dataset.hall === "1"; saveHave(); return render(); }
+  if (c("[data-hclr]")) { stop(); HV.sel = []; saveHave(); M.q = ""; return render(); }
+  if ((e = c("[data-hplan]"))) { stop(); M.open = M.open === +e.dataset.hplan ? null : +e.dataset.hplan; return render(); }
+  if ((e = c("[data-hpd]"))) { stop(); const r = R(M.open); let d = e.dataset.hpd; if (d === "pick") { d = ($("#h-date") || {}).value; if (!d) return; M.date = d; }
+    M.open = null; render(); return planAdd(d, r.kind === "middag" || !SL[r.kind] ? "middag" : r.kind, r.id); }
+  if ((e = c("[data-hshop]"))) { stop(); const x = haveMatch().find(y => y.r.id === +e.dataset.hshop); if (x) haveShop(x.r, x); }
+}, true);
+document.addEventListener("input", ev => { if (M && M.t === "have" && ev.target.id === "h-q") { M.q = ev.target.value; const p = ev.target.selectionStart; render(); const i = $("#h-q"); if (i) { i.focus(); i.setSelectionRange(p, p); } } });
+document.addEventListener("keydown", ev => { if (M && M.t === "have" && ev.target.id === "h-q" && ev.key === "Enter") { const k = normIng(ev.target.value) || ev.target.value.toLowerCase().trim(); if (k && !HV.sel.includes(k)) { HV.sel.push(k); saveHave(); } M.q = ""; render(); const i = $("#h-q"); if (i) i.focus(); } });
 </script>
 </body>
 </html>
