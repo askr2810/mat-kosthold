@@ -1296,10 +1296,10 @@ const NORM = [
   [/spaghetti|makaroni|^pasta$|lasagneplater/, "pasta"], [/nudler/, "nudler"], [/^ris$/, "ris"], [/potetbåter|pommes/, "potetbåter"], [/^poteter/, "poteter"],
   [/revet ost|ost \(skiver\)|parmesan|^ost$/, "ost"], [/tortilla|lefse/, "tortilla"], [/fløte/, "fløte"], [/rømme/, "rømme"], [/hakkede tomater|^tomat/, "hakkede tomater"],
   [/bacon/, "bacon"], [/skinke/, "skinke"], [/burgerbrød|pitabrød|rundstykke|^brød/, "brød"], [/skyr|kvarg|yoghurt/, "skyr/yoghurt"], [/^mais/, "mais"],
-  [/cream of rice/, "cream of rice"], [/eggehvite/, "eggehvite"], [/^kakao/, "kakao"], [/^egg$/, "egg"], [/^løk/, "løk"], [/paprika$/, "paprika"], [/kidneybønner|bønner/, "bønner"], [/storfe|biff|entrecôte/, "biff"], [/svine/, "svinekjøtt"],
+  [/cream of rice/, "cream of rice"], [/eggehvite/, "eggehvite"], [/^kakao/, "kakao"], [/chorizo|nduja/, "chorizo"], [/gochujang/, "gochujang"], [/^harissa/, "harissa"], [/chipotle/, "chipotle"], [/peri peri/, "peri peri-saus"], [/^jerk/, "jerkkrydder"], [/søt chilisaus|sterk chilisaus/, "chilisaus"], [/^egg$/, "egg"], [/^løk/, "løk"], [/paprika$/, "paprika"], [/kidneybønner|bønner/, "bønner"], [/storfe|biff|entrecôte/, "biff"], [/svine/, "svinekjøtt"],
 ];
 const normIng = n => { const s = String(n).toLowerCase().trim(); if (STAPLE.test(s)) return null; for (const [re, k] of NORM) if (re.test(s)) return k; return s.replace(/\s*\(.*?\)\s*/g, " ").replace(/\s+\d.*$/, "").trim() || null; };
-const HAVE_CHIPS = ["kylling", "kjøttdeig", "egg", "cream of rice", "eggehvite", "ris", "pasta", "laks", "torsk", "løk", "mais", "paprika", "fløte", "ost", "tortilla", "poteter", "brokkoli", "gulrot", "hakkede tomater", "rømme", "bacon", "skinke", "nudler", "pølser", "reker", "melk"];
+const HAVE_CHIPS = ["kylling", "kjøttdeig", "egg", "chorizo", "cream of rice", "eggehvite", "ris", "pasta", "laks", "torsk", "løk", "mais", "paprika", "fløte", "ost", "tortilla", "poteter", "brokkoli", "gulrot", "hakkede tomater", "rømme", "bacon", "skinke", "nudler", "pølser", "reker", "melk"];
 const HKEY = "mat_have_v1";
 let HV = (() => { try { return JSON.parse(localStorage.getItem(HKEY)) || {sel: [], all: false}; } catch (_) { return {sel: [], all: false}; } })();
 const saveHave = () => { try { localStorage.setItem(HKEY, JSON.stringify(HV)); } catch (_) {} };
