@@ -1,0 +1,21 @@
+{
+  "name": "Mat – plan og handleliste",
+  "short_name": "Mat",
+  "description": "Ukeplan, oppskrifter, handleliste og tilbud – proteinrik hverdagsmat.",
+  "lang": "nb",
+  "start_url": "./#idag",
+  "scope": "./",
+  "display": "standalone",
+  "background_color": "#f4f3ee",
+  "theme_color": "#17703f",
+  "icons": [
+    {"src": "icon-192.png", "sizes": "192x192", "type": "image/png"},
+    {"src": "icon-512.png", "sizes": "512x512", "type": "image/png"},
+    {"src": "icon.svg", "sizes": "any", "type": "image/svg+xml", "purpose": "any"}
+  ],
+  "shortcuts": [
+    {"name": "Handleliste", "url": "./#handle/liste"},
+    {"name": "Ukens plan", "url": "./#plan/uke"},
+    {"name": "Hva har jeg?", "url": "./#retter/have"}
+  ]
+}
