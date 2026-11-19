@@ -13,7 +13,7 @@
 <link rel="icon" href="icon.svg" type="image/svg+xml">
 <link rel="apple-touch-icon" href="icon-192.png">
 <link rel="preconnect" href="https://fonts.googleapis.com"><link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
-<link href="https://fonts.googleapis.com/css2?family=Plus+Jakarta+Sans:wght@400;500;600;700;800&display=swap" rel="stylesheet">
+<link href="https://fonts.googleapis.com/css2?family=Plus+Jakarta+Sans:wght@500;700;800&display=swap" rel="stylesheet">
 <style>
 :root{--bg:#f3f5f2;--card:#fff;--ink:#0f1512;--mut:#47515a;--line:#cfd6d1;--acc:#17703f;--onacc:#fff;--accbg:#dcf2e5;--amb:#9a5200;--ambbg:#fdebd0;--red:#b3261e;--redbg:#fde3e1;--skip:#4b5563;--skipbg:#e5e8eb;--star:#e59a00;--tb:68px}
 @media(prefers-color-scheme:dark){:root{--bg:#0b0f0d;--card:#161c19;--ink:#f4f7f5;--mut:#aab5af;--line:#2f3a35;--acc:#4cc986;--onacc:#05170d;--accbg:#173a28;--amb:#f2b04a;--ambbg:#3a2a10;--red:#ff8d84;--redbg:#3d1b18;--skip:#b9c2bd;--skipbg:#262e2a;--star:#ffb81f}}
@@ -357,7 +357,7 @@ html{scroll-padding-bottom:calc(var(--tb) + env(safe-area-inset-bottom) + 88px)}
 .havebody{padding-bottom:16px}
 .filtbtn{min-height:48px;font-weight:800}
 .fsheet{position:fixed;inset:0;z-index:50;background:rgba(15,21,18,.45);display:flex;align-items:flex-end;justify-content:center}
-.fsheetp{width:100%;max-width:640px;max-height:78vh;overflow:auto;background:var(--card);color:var(--ink);border-radius:20px 20px 0 0;padding:16px 16px calc(20px + env(safe-area-inset-bottom));box-shadow:0 -8px 28px rgba(0,0,0,.18);font-size:16px}
+.fsheetp{width:100%;max-width:640px;max-height:78vh;overflow:auto;background:var(--card);color:var(--ink);border-radius:20px 20px 0 0;padding:16px 16px calc(40px + env(safe-area-inset-bottom, 0px));box-shadow:0 -8px 28px rgba(0,0,0,.18);font-size:16px}
 .fshd{font-weight:800;font-size:1.15rem;margin:0 0 12px}
 @media (prefers-color-scheme:dark){.fsheet{background:rgba(0,0,0,.55)}}
 
@@ -608,7 +608,7 @@ details.tbl td,details.tbl th{padding:6px 4px;border-bottom:1px solid var(--line
 #cmdk{position:fixed;inset:0;z-index:150;background:rgba(8,14,10,.45);backdrop-filter:blur(4px);display:flex;justify-content:center;align-items:flex-start;padding:calc(env(safe-area-inset-top) + 12px) 12px 12px;animation:v7fade .15s both}
 #cmdk .box{width:100%;max-width:620px;max-height:82vh;display:flex;flex-direction:column;background:var(--bg);border-radius:24px;box-shadow:var(--sh2);overflow:hidden;animation:v7pop .2s both}
 #cmdk .bar{display:flex;gap:8px;align-items:center;padding:10px;border-bottom:1px solid var(--line)}
-#cmdk input{flex:1;min-height:50px;border:0;background:transparent;color:var(--ink);font:inherit;font-size:1.1rem;padding:0 8px;outline:none}
+#cmdk input{flex:1;min-width:0;min-height:50px;border:0;background:transparent;color:var(--ink);font:inherit;font-size:1.1rem;padding:0 12px 0 8px;outline:none}
 #cmdk .res{overflow:auto;padding:8px 10px 14px}
 #cmdk .grp{font-size:.74rem;font-weight:800;color:var(--mut);text-transform:uppercase;letter-spacing:.07em;margin:10px 6px 6px}
 #cmdk .cmd{display:flex;align-items:center;gap:12px;width:100%;padding:10px;border:0;border-radius:14px;background:none;color:var(--ink);font:inherit;text-align:left;cursor:pointer}
@@ -685,6 +685,28 @@ kbd{font:inherit;font-size:.75rem;font-weight:700;border:1px solid var(--line2);
 .vtag{display:inline-block;font-size:.76rem;font-weight:800;border-radius:999px;padding:2px 8px;background:var(--card2);border:1px solid var(--line);color:var(--ink)}
 .vtag.ok{background:var(--acc);color:var(--onacc);border-color:transparent}
 .krow{flex-wrap:wrap}.kbtns{display:flex;gap:6px;margin-left:auto}.kbtns .btn{min-height:44px;padding:0 14px}
+
+/* ================= v8.2 – tettere fane, tydelige fliser, fade, filtre ================= */
+.tb button.tab,.tb .tab{font-size:14px;letter-spacing:-.02em;gap:2px;padding:0 1px}
+.tb .tab svg{width:22px;height:22px}
+.tb .tab span{line-height:1.15;text-align:center}
+body{font-weight:500}
+.filtrow .chiprow{padding-right:18px;-webkit-mask-image:linear-gradient(to right,#000 calc(100% - 20px),transparent);mask-image:linear-gradient(to right,#000 calc(100% - 20px),transparent)}
+.ffrow{display:flex;align-items:center;gap:8px;margin:6px 0 8px}
+.ffrow .chiprow{flex:1;min-width:0;margin:0}
+.ffchip{display:inline-flex;align-items:center;gap:6px;flex:none}
+.ffchip .x{font-size:1.05rem;line-height:1;opacity:.7}
+.ffg{margin:0 0 14px}
+.ffg .lab{margin-bottom:8px}
+.ffg .chips{display:flex;flex-wrap:wrap;gap:8px}
+.ffg .chip{min-height:48px;font-size:1rem;padding:8px 14px}
+.fsheetp{display:flex;flex-direction:column;padding-bottom:0}
+.ffbody{flex:1;min-height:0;overflow:auto;-webkit-overflow-scrolling:touch}
+.fffoot{flex:none;margin:0;padding:12px 0 calc(16px + env(safe-area-inset-bottom, 0px));background:var(--card);border-top:1px solid var(--line)}
+@media(prefers-color-scheme:dark){:root:not([data-theme=light]) .a-kylling{--a1:#6a4214;--a2:#3d2710}:root:not([data-theme=light]) .a-fisk{--a1:#1a4a6a;--a2:#123044}:root:not([data-theme=light]) .a-egg{--a1:#5c4a14;--a2:#3a2f0e}:root:not([data-theme=light]) .a-frokost{--a1:#5a3f16;--a2:#3a2a10}:root:not([data-theme=light]) .a-snack{--a1:#3a2e66;--a2:#241c44}:root:not([data-theme=light]) .a-annet{--a1:#1c4a32;--a2:#123224}:root:not([data-theme=light]) .a-dessert{--a1:#6a2840;--a2:#3e1826}:root:not([data-theme=light]) .a-bakst{--a1:#5a3a18;--a2:#3a2610}:root:not([data-theme=light]) .a-creami{--a1:#1a4a5c;--a2:#123038}:root:not([data-theme=light]) .catt{background:linear-gradient(140deg,var(--a1),var(--a2));color:var(--ink);border-color:color-mix(in srgb,var(--a2) 55%,var(--line))}}
+:root[data-theme=dark] .a-kylling{--a1:#6a4214;--a2:#3d2710}:root[data-theme=dark] .a-fisk{--a1:#1a4a6a;--a2:#123044}:root[data-theme=dark] .a-egg{--a1:#5c4a14;--a2:#3a2f0e}:root[data-theme=dark] .a-frokost{--a1:#5a3f16;--a2:#3a2a10}:root[data-theme=dark] .a-snack{--a1:#3a2e66;--a2:#241c44}:root[data-theme=dark] .a-annet{--a1:#1c4a32;--a2:#123224}:root[data-theme=dark] .a-dessert{--a1:#6a2840;--a2:#3e1826}:root[data-theme=dark] .a-bakst{--a1:#5a3a18;--a2:#3a2610}:root[data-theme=dark] .a-creami{--a1:#1a4a5c;--a2:#123038}
+:root[data-theme=dark] .catt{background:linear-gradient(140deg,var(--a1),var(--a2));color:var(--ink);border-color:color-mix(in srgb,var(--a2) 55%,var(--line))}
+
 </style>
 </head>
 <body>
@@ -1073,7 +1095,7 @@ function viewHandle() {
   const L = lists.find(l => l.id === curList);
   if (L) {
     const got = items.filter(i => i.checked).length;
-    h += `<h2 id="curlist" style="margin:18px 0 4px">${esc(L.title)}</h2><p class="sub">Laget ${esc(new Date(L.created_at).toLocaleDateString("nb-NO", {day: "numeric", month: "short"}))}. Oppdateres ikke av seg selv hvis du endrer planen – lag en ny liste da.</p>
+    h += `<h2 id="curlist" style="margin:18px 0 4px">${esc(L.title)}</h2><p class="sub">Laget ${esc(new Date(L.created_at).toLocaleDateString("nb-NO", {day: "numeric", month: "short"}).replace(/\.$/,""))} · Oppdateres ikke av seg selv hvis du endrer planen – lag en ny liste da.</p>
       <div class="bar"><div class="prog"><i style="width:${items.length ? Math.round(got / items.length * 100) : 0}%"></i></div><span class="cnt">${got} av ${items.length} kjøpt</span></div>`;
     const cats = CATS.filter(c => items.some(i => i.category === c)).concat([...new Set(items.map(i => i.category))].filter(c => !CATS.includes(c)));
     for (const c of cats) {
@@ -2932,12 +2954,12 @@ function packBar(compact) {
   const packs = Object.entries((STORES_CFG && STORES_CFG.packages) || {}).map(([id, p]) => ({id, ...p}));
   packs.push({id: "egendefinert", name: "Egendefinert", blurb: "Kryss av kjedene du vil se"});
   const cur = packs.find(p => p.id === PACK.id) || packs[0];
-  let h = `<div class="packsel${compact ? " sm" : ""}"><div class="lab">Butikkpakke</div><div class="${compact ? "chiprow" : "chips"}">`;
+  let h = `<div class="packsel${compact ? " sm" : ""}"><div class="lab">Butikkpakke</div><div class="chiprow">`;
   h += packs.map(p => `<button type="button" class="chip ${PACK.id === p.id ? "on" : ""}" data-offpack="${esc(p.id)}">${esc(p.name)}</button>`).join("");
   h += `</div>`;
   if (!compact && cur && cur.blurb) h += `<p class="sub" style="margin:6px 0 0">${esc(cur.blurb)}</p>`;
   if (PACK.id === "egendefinert") {
-    h += `<div class="${compact ? "chiprow" : "chips"}">${ALL_CHAINS.map(id => `<button type="button" class="chip ${(PACK.custom || []).includes(id) ? "on" : ""}" data-offpchain="${esc(id)}">${esc(ch(id).short)}</button>`).join("")}</div>`;
+    h += `<div class="chiprow">${ALL_CHAINS.map(id => `<button type="button" class="chip ${(PACK.custom || []).includes(id) ? "on" : ""}" data-offpchain="${esc(id)}">${esc(ch(id).short)}</button>`).join("")}</div>`;
   }
   return h + `</div>`;
 }
@@ -3662,7 +3684,7 @@ function listCard(L, compact) {
   const got = items.filter(i => i.checked).length;
   const left = items.filter(i => !i.checked).slice(0, compact ? 4 : 0);
   return `<section class="card" id="curlist"><div class="lab">Aktiv liste</div><h2 style="margin:0 0 6px">${esc(L.title)}</h2>
-    <p class="sub">Laget ${esc(new Date(L.created_at).toLocaleDateString("nb-NO", {day: "numeric", month: "short"}))}. Oppdateres ikke av seg selv hvis du endrer planen.</p>
+    <p class="sub">Laget ${esc(new Date(L.created_at).toLocaleDateString("nb-NO", {day: "numeric", month: "short"}).replace(/\.$/,""))} · Oppdateres ikke av seg selv hvis du endrer planen.</p>
     <div class="bar"><div class="prog"><i style="width:${items.length ? Math.round(got / items.length * 100) : 0}%"></i></div><span class="cnt">${got} av ${items.length} kjøpt</span></div>
     ${compact && left.length ? `<ul class="stot">${left.map(i => `<li>${esc(i.name)}</li>`).join("")}${items.filter(i => !i.checked).length > left.length ? `<li class="d">… og ${items.filter(i => !i.checked).length - left.length} til</li>` : ""}</ul>` : ""}
     ${compact ? `<div class="stack"><button class="btn go" data-hubgo="liste">Åpne lista</button></div>` : ""}</section>`;
@@ -3692,7 +3714,7 @@ function viewHandleListe() {
     return h;
   }
   const got = items.filter(i => i.checked).length;
-  h += `<p class="sub">Laget ${esc(new Date(L.created_at).toLocaleDateString("nb-NO", {day: "numeric", month: "short"}))}. Oppdateres ikke av seg selv hvis du endrer planen – lag en ny liste da.</p>
+  h += `<p class="sub">Laget ${esc(new Date(L.created_at).toLocaleDateString("nb-NO", {day: "numeric", month: "short"}).replace(/\.$/,""))} · Oppdateres ikke av seg selv hvis du endrer planen – lag en ny liste da.</p>
     <div class="bar"><div class="prog"><i style="width:${items.length ? Math.round(got / items.length * 100) : 0}%"></i></div><span class="cnt">${got} av ${items.length} kjøpt</span></div>
     <div class="stack" style="margin:0 0 12px"><button type="button" class="btn go" data-offhvor>📍 Hvor bør jeg handle?</button></div>`;
   const cats = CATS.filter(c => items.some(i => i.category === c)).concat([...new Set(items.map(i => i.category))].filter(c => !CATS.includes(c)));
@@ -4242,8 +4264,8 @@ viewIdag = function () {
   const d = sel, sm = monday(d), t = dayTotals(d), isT = d === today(), rel = relDay(d);
   let h = `<div class="offpage"><section class="hero"><div class="hg">${isT ? greet() + " 👋" : esc(rel || "Planlagt")}</div><h1>${esc(DL[wd(d)])} ${esc(fmt(d, {day: "numeric", month: "long"}))}</h1>
     <div class="hd">Uke ${isoWeek(d)} · ${planOf(d).length} ${planOf(d).length === 1 ? "måltid" : "måltider"} planlagt</div>
-    <div class="rings" title="Lys del = planlagt, hvit del = spist (logget)"><div class="ring" title="Protein planlagt i dag">${ringSvg(t.pr, t.eatenP, GOAL.prot[0])}<div><div class="rl">Protein</div><div class="rv">${t.pr} g</div><div class="rs">${t.eatenP} g spist · mål ${GOAL.prot[0]}–${GOAL.prot[1]}</div></div></div>
-    <div class="ring" title="Kalorier planlagt i dag">${ringSvg(t.kc, t.eatenK, GOAL.kcal[0])}<div><div class="rl">Energi</div><div class="rv">${t.kc} kcal</div><div class="rs">${t.eatenK} spist · mål ${GOAL.kcal[0]}–${GOAL.kcal[1]}</div></div></div></div></section>`;
+    <div class="rings" title="Lys del = planlagt, hvit del = spist (logget)"><div class="ring" title="Protein planlagt i dag">${ringSvg(t.pr, t.eatenP, GOAL.prot[0])}<div><div class="rl">Protein</div><div class="rv">${t.pr} g</div><div class="rs">${t.eatenP} g spist · mål: ${GOAL.prot[0]}–${GOAL.prot[1]}</div></div></div>
+    <div class="ring" title="Kalorier planlagt i dag">${ringSvg(t.kc, t.eatenK, GOAL.kcal[0])}<div><div class="rl">Energi</div><div class="rv">${t.kc} kcal</div><div class="rs">${t.eatenK} spist · mål: ${GOAL.kcal[0]}–${GOAL.kcal[1]}</div></div></div></div></section>`;
   h += `<div class="strip">${DK.map((x, i) => { const dd = add(sm, i); return `<button class="pill ${dd === d ? "on" : ""} ${dd === today() ? "today" : ""}" data-sel="${dd}">${x}<i class="${dayState(dd)}"></i></button>`; }).join("")}</div>`;
   if (!isT) h += `<div class="back"><button class="btn sm" data-sel="${today()}">⟵ Tilbake til i dag</button></div>`;
   const shopN = (items || []).filter(i => !i.checked).length;
@@ -4401,7 +4423,7 @@ function viewPlanStats() {
   const uniq = new Set(past.filter(p => p.slot === "middag" && p.status !== "hoppet_over").map(p => baseId(p.recipe_id))).size;
   h += `<p class="sub">Uke ${isoWeek(viewMon)} · tall per porsjon fra planen${hist == null ? " · laster historikk …" : ""}</p>
   <div class="wkn"><button class="btn" data-wk="-1" aria-label="Forrige uke">◀</button><div class="c"><b>Uke ${isoWeek(viewMon)}</b><span>${esc(fmt(viewMon))} – ${esc(fmt(days[6]))}</span></div><button class="btn" data-wk="1" aria-label="Neste uke">▶</button></div>
-  <div class="kpis"><div class="kpi"><span>Snitt protein / dag</span><b>${avgP} g</b><small>mål ${GOAL.prot[0]}–${GOAL.prot[1]} g · ${withPlan.length} dager med plan</small></div>
+  <div class="kpis"><div class="kpi"><span>Snitt protein / dag</span><b>${avgP} g</b><small>mål: ${GOAL.prot[0]}–${GOAL.prot[1]} g · ${withPlan.length} dager med plan</small></div>
   <div class="kpi"><span>Middager planlagt</span><b>${dn} / 7</b><small>denne uka</small></div>
   <div class="kpi"><span>Spist som planlagt</span><b>${okPct == null ? "–" : okPct + " %"}</b><small>av loggede måltider, 4 uker</small></div>
   <div class="kpi"><span>Ulike middager</span><b>${uniq}</b><small>siste 4 uker</small></div></div>`;
@@ -4562,7 +4584,7 @@ const fold = s => String(s || "").toLowerCase().normalize("NFD").replace(/[̀-ͯ
 function openCmd() {
   if ($("#cmdk")) return; CK7 = {q: "", sel: 0};
   const d = document.createElement("div"); d.id = "cmdk"; d.setAttribute("role", "dialog"); d.setAttribute("aria-label", "Søk");
-  d.innerHTML = `<div class="box"><div class="bar">${svg("search")}<input id="cmdq" type="search" placeholder="Søk retter, ingredienser eller handlinger" autocomplete="off" enterkeyhint="go"><button class="ib" data-cmdx aria-label="Lukk">✕</button></div><div class="res"></div></div>`;
+  d.innerHTML = `<div class="box"><div class="bar">${svg("search")}<input id="cmdq" type="search" placeholder="Søk retter eller handlinger" autocomplete="off" enterkeyhint="go"><button class="ib" data-cmdx aria-label="Lukk">✕</button></div><div class="res"></div></div>`;
   document.body.appendChild(d); document.body.classList.add("nos"); cmdRender(); setTimeout(() => { const i = $("#cmdq"); if (i) i.focus(); }, 30);
 }
 function closeCmd() { const d = $("#cmdk"); if (d) d.remove(); CK7 = null; if (!M) document.body.classList.remove("nos"); }
@@ -4754,11 +4776,11 @@ HUB_VIEWS.mer = [null, "hjelp"];
 HUB_VIEWS.retter.push("middag", "lunsj", "frokost", "mellommaltid", "dessert", "bakst", "creami", "laktosefri", "reise", "alle");
 function initNav8() {
   const nav = $(".tb"); if (!nav || nav.dataset.v8) return; nav.dataset.v8 = "1";
-  const T = [["idag", "I dag"], ["plan", "Plan"], ["retter", "Oppskrifter"], ["handle", "Handle"], ["mer", "Mer"]];
+  const T = [["idag", "I dag"], ["plan", "Plan"], ["retter", "Retter"], ["handle", "Handle"], ["mer", "Mer"]];
   ICO.mer = '<circle cx="5.5" cy="12" r="1.6"/><circle cx="12" cy="12" r="1.6"/><circle cx="18.5" cy="12" r="1.6"/>';
   nav.innerHTML = T.map(([t, l]) => `<button class="tab" data-t="${t}">${svg(t)}<span>${l}</span></button>`).join("");
 }
-const navTab = () => tab === "tilbud" ? "handle" : tab === "fb" ? "mer" : tab;
+const navTab = () => tab === "tilbud" ? ((typeof offTab !== "undefined" && offTab === "mer") ? "mer" : "handle") : tab === "fb" ? "mer" : tab;
 function viewMer() {
   if (NAV.mer === "hjelp") return viewHjelp();
   const row = (attr, ico, t, s, right) => `<button type="button" class="mrow" ${attr}><span class="mi">${ico}</span><span class="mt"><b>${t}</b>${s ? `<small>${s}</small>` : ""}</span>${right || '<span class="chev">›</span>'}</button>`;
@@ -4774,9 +4796,9 @@ function viewMer() {
     ${row('data-v7go="plan/rester"', "🍲", "Rester og 2x", "Lag dobbelt og spis rester dagen etter")}
     ${row('data-v7go="plan/historikk"', "🕑", "Historikk", "Hva du har spist den siste tiden")}</div>
   <div class="mgh">Handle</div><div class="mgrp">
-    ${row('data-v8off=""', "🏷️", "Tilbud og priser", "Kundeaviser fra butikkene rundt deg")}
-    ${row('data-offhvor', "📍", "Hvor bør jeg handle?", "Billigste butikk for handlelista")}
-    ${row('data-v8off="favs"', "⭐", "Favorittvarer på tilbud", "Varer du kjøper ofte")}</div>
+    ${row('data-v8off="" data-offfrom="mer"', "🏷️", "Tilbud og priser", "Kundeaviser fra butikkene rundt deg")}
+    ${row('data-offhvor data-offfrom="mer"', "📍", "Hvor bør jeg handle?", "Billigste butikk for handlelista")}
+    ${row('data-v8off="favs" data-offfrom="mer"', "⭐", "Favorittvarer på tilbud", "Varer du kjøper ofte")}</div>
   <div class="mgh">Appen</div><div class="mgrp">
     ${row('data-v7go="fb"', "💬", "Notater og tilbakemelding", fb.length ? fb.length + " lagret" : "Skriv hva som fungerer og ikke")}
     ${row('data-v7set', "🎨", "Utseende", "Lys, mørk eller automatisk")}
@@ -4812,9 +4834,9 @@ viewRetter = function () {
   const sc = (go, ico, l) => `<button type="button" class="chip" data-hubgo="${go}">${ico} ${l}</button>`;
   return `<div class="offpage"><h1>Oppskrifter</h1><p class="offsum">${vis.length} retter i banken</p>
     <button type="button" class="fakesearch" data-v7search>${svg("search")}<span>Søk etter rett eller ingrediens …</span></button>
+    <div class="duo"><button type="button" class="bigact" data-have><span>🧊</span><b>Hva har jeg?</b><small>Finn retter fra kjøleskapet</small></button><button type="button" class="bigact" data-v7sup=""><span>🎲</span><b>Overrask meg</b><small>Et tilfeldig forslag</small></button></div>
     <div class="catg">${CAT8.map(([k, l, i]) => `<button type="button" class="catt a-${["dessert", "bakst", "creami", "frokost", "snack"].includes(k) ? (k === "snack" ? "annet" : k) : k === "middag" ? "kylling" : k === "lunsj" ? "fisk" : "egg"}" data-hubgo="${Object.keys(CATV).find(x => CATV[x] === k)}"><span class="ce">${i}</span><b>${l}</b><small>${cnt[k] || 0} retter</small></button>`).join("")}
       <button type="button" class="catt a-annet" data-hubgo="alle"><span class="ce">📚</span><b>Alle</b><small>${vis.length} retter</small></button></div>
-    <div class="duo"><button type="button" class="bigact" data-have><span>🧊</span><b>Hva har jeg?</b><small>Finn retter fra kjøleskapet</small></button><button type="button" class="bigact" data-v7sup=""><span>🎲</span><b>Overrask meg</b><small>Et tilfeldig forslag</small></button></div>
     <div class="sech"><h2>Snarveier</h2></div>
     <div class="chips">${sc("favs", "⭐", "Favoritter (" + nFav + ")")}${sc("raske", "⚡", "Raske")}${sc("protein", "💪", "Mest protein")}${sc("laktosefri", "🥛", "Laktosefri (" + nLf + ")")}${sc("smak", "🌶️", "Mye smak")}${sc("reise", "🌍", "Smaksreise")}${sc("nyeste", "🆕", "Nyeste")}${sc("nytt", "🔁", "Ikke prøvd")}</div>
     <div class="sech"><h2>✨ Ukens inspirasjon</h2></div><div class="car">${insp.map(ccard).join("")}</div>
@@ -4833,7 +4855,7 @@ viewRetterBrowse = function (title, mode) {
   else if (V8.rcat) list = list.filter(r => catOf(r) === V8.rcat);
   if (DIET.lfOnly && mode !== "laktosefri") list = list.filter(lacOk);
   const chip = (attr, on, l) => `<button type="button" class="chip ${on ? "on" : ""}" ${attr}>${l}</button>`;
-  let h = hubBar(title, "Oppskrifter");
+  let h = hubBar(title, "Retter");
   if (cat === "creami") h += `<div class="rbox prep" style="margin:0 0 12px"><div class="lab">🍦 Ninja Creami – slik lykkes du</div><div>Fyll til streken, frys flatt i <b>24 timer</b>, kjør «Lite Ice Cream». Smuldrete? Ha i 1–2 ss melk og kjør <b>Re-spin</b>. Puddingpulver gir kremete is uten fløte.</div></div>`;
   if (cat === "bakst") h += `<div class="rbox" style="margin:0 0 12px"><div class="lab">🥐 Tips</div><div>Bakst fryses best samme dag. Plantemargarin og laktosefri melk gjør nesten all bakst laktosefri.</div></div>`;
   h += `<input type="search" class="srch" id="r-q" placeholder="🔍 Søk i ${esc(cat ? CATL[cat].toLowerCase() : "oppskrifter")}" value="${esc(RF.q)}" enterkeyhint="search">`;
@@ -4844,7 +4866,7 @@ viewRetterBrowse = function (title, mode) {
 };
 function viewReise() {
   const le = lastEaten(), t = today(), vis = recipes.filter(r => !r.hidden && r.variant !== "hurtig" && r.kind !== "snack");
-  let h = hubBar("🌍 Smaksreise", "Oppskrifter") + `<p class="sub">Variert mat gir bredere næring – og mindre lei. Prøv ett nytt kjøkken i uka. Grønn hake = spist siste 30 dager.</p>`;
+  let h = hubBar("🌍 Smaksreise", "Retter") + `<p class="sub">Variert mat gir bredere næring – og mindre lei. Prøv ett nytt kjøkken i uka. Grønn hake = spist siste 30 dager.</p>`;
   const ch = weekChallenge();
   if (ch) h += `<section class="card chal"><div class="lab">🎯 Ukens smaksutfordring</div>${rc7(ch)}</section>`;
   for (const [k, l, i] of CUIS) {
@@ -4872,7 +4894,7 @@ const _v6HandleHub = viewHandle;
 viewHandle = function () {
   const h = _v6HandleHub();
   if (NAV.handle) return h;
-  return h.replace('<nav class="offhub">', '<nav class="offhub">' + `<button type="button" class="offtile" data-v8off=""><span class="otico">🏷️</span><span class="ottxt"><b>Tilbud og priser</b><span>Kundeaviser, billigste butikk og favorittvarer</span></span></button>`);
+  return h.replace('<nav class="offhub">', '<nav class="offhub">' + `<button type="button" class="offtile" data-v8off="" data-offfrom="handle"><span class="otico">🏷️</span><span class="ottxt"><b>Tilbud og priser</b><span>Kundeaviser, billigste butikk og favorittvarer</span></span></button>`);
 };
 function decorateShop() {
   if (!DIET.lf || tab !== "handle" || NAV.handle !== "liste") return;
@@ -5074,6 +5096,384 @@ document.addEventListener("click", ev => {
     const v = variantOf(o); if (v) { PREF[prefKey(M.name)] = v; LS.set("mat_offpref_v8", PREF); }
     M = null; render();
     return showToast("✓ " + o.product + " hos " + ch(o.chain).short + " · " + kr(o.price) + (v ? " – husker " + VARL[v].toLowerCase() : ""));
+  }
+}, true);
+
+
+/* ================= v8.2 – kombinérbare filtre + fane/tilbud-retting ================= */
+V7.ver = "8.2";
+let offTab = LS.get("mat_offtab_v82", "handle");
+
+const FF_DEF = {q: "", kinds: [], cuisines: [], time: 0, proteins: [], vmode: "", krav: [], tag: "", sort: "match"};
+function ffLoad() {
+  const raw = LS.get("mat_ff_v82", {});
+  const o = Object.assign({}, FF_DEF, raw || {});
+  ["kinds", "cuisines", "proteins", "krav"].forEach(k => { if (!Array.isArray(o[k])) o[k] = []; });
+  o.time = +o.time || 0;
+  o.q = String(o.q || "");
+  o.vmode = o.vmode || "";
+  o.tag = o.tag || "";
+  o.sort = o.sort || "match";
+  return o;
+}
+let FF = ffLoad();
+const saveFF = () => LS.set("mat_ff_v82", FF);
+function ffReset() {
+  FF = Object.assign({}, FF_DEF, {sort: "match"});
+  RF.q = ""; RF.tag = ""; RF.time = 0; RF.eq = "";
+  if (typeof HV !== "undefined") { HV.time = 0; HV.vmode = ""; HV.smak = false; HV.kind = ""; HV.sort = "match"; if (typeof saveHave === "function") saveHave(); }
+  saveFF();
+}
+
+const CUIS_XTRA = [
+  ["asia", /asiatisk|kinesisk|japansk|koreansk|thai|vietname|indones|miso|edamame|sesamolje|sesamfrø|søtpotet-wok|gyoza|dumpling|chow mein|teriyaki|soyasaus|risvin|wasabi|nori|kimchi|gochujang/i],
+  ["mex", /meksikansk|salsa|guacamole|jalape|koriander|tortilla|maisbrød|lime og chili/i],
+  ["ita", /italiensk|mozzarella|parmesan|ricotta|passata|ragu|marinara|prosciutto|basilikum og tomat/i],
+  ["ind", /indisk|garam masala|rødlinser|chana|naan|raita|tamarind|kardemomme|gurkemeie/i],
+  ["med", /midtøsten|middelhav|libanes|tyrkisk|gresk|falafel|tahini|zaatar|za'atar|sumac|labneh|halloumi/i],
+  ["usa", /amerikansk|ranch|cheddar|maple|pancake|cornbread|sloppy|tex-mex/i],
+  ["nor", /norsk|nordisk|pinnekjøtt|raspeball|fårikål|kjøttdeig og kål|makrell i tomat|brun saus|sauseskål|sodd|rømmegrøt|flatbrød/i]
+];
+cuisOf = function (r) {
+  if (!r) return "annet";
+  if (r.cuisine) return (r._cu = r.cuisine);
+  if (r._cu82) return r._cu82;
+  const n = (r.name || "") + " " + ((r.ing || []).map(i => i.name).join(" "));
+  for (const c of CUIS) if (c[3].test(n)) return (r._cu82 = r._cu = c[0]);
+  for (const [k, re] of CUIS_XTRA) if (re.test(n)) return (r._cu82 = r._cu = k);
+  return (r._cu82 = r._cu = "annet");
+};
+function isRestFriendly(r) {
+  if (!r) return false;
+  const c = catOf(r);
+  if (c === "dessert" || c === "bakst" || c === "creami" || r.kind === "snack") return false;
+  const n = (r.name || "") + " " + (r.steps || "");
+  if (/gryte|suppe|karri|curry|grateng|gratin|lasagne|bolognese|chili|lapskaus|ovns|pasta|risotto|wok|saus|tikka|masala|dal\b|gryte|pannen|stuing|ragu|chili con|chili sin/i.test(n)) return true;
+  return r.kind === "middag" && (r.minutes || 0) >= 25;
+}
+function protKeys(r) {
+  const p = mainProt(r);
+  const out = [];
+  if (p && p !== "annet") out.push(p);
+  if (p !== "kylling" && p !== "storfe" && p !== "svin" && p !== "fisk") out.push("vegetar");
+  return out;
+}
+function ffMeal(r) { return catOf(r); }
+function ffTextHit(r, q) {
+  const s = (q || "").trim().toLowerCase();
+  if (!s) return true;
+  const words = s.split(/\s+/).filter(Boolean);
+  const n = (r.name || "").toLowerCase(), ing = (r.ing || []).map(i => i.name.toLowerCase()).join(" ");
+  return words.every(w => n.includes(w) || ing.includes(w));
+}
+function ffMatch(r, opt) {
+  opt = opt || {};
+  if (!r) return false;
+  const tag = opt.tag != null ? opt.tag : FF.tag;
+  const hiddenOk = tag === "hidden";
+  if (r.hidden ? !hiddenOk : hiddenOk) return false;
+  if (opt.includeHurtig) { /* keep */ }
+  else if (FF.vmode === "hurtig") {
+    const ok = r.variant === "hurtig" || (typeof hurtigOf === "function" && hurtigOf(r)) || (r.minutes || 999) <= 20;
+    if (!ok) return false;
+  } else if (r.variant === "hurtig") return false;
+  if (tag && tag !== "hidden") {
+    if (tag === "fav" && !r.favorite) return false;
+    if (tag === "liker" && r.tag !== "liker") return false;
+    if (tag === "prøv" && r.tag !== "prøv") return false;
+  }
+  const kinds = opt.kinds != null ? opt.kinds : FF.kinds;
+  if (kinds && kinds.length && !kinds.includes(ffMeal(r))) return false;
+  if (opt.cat && ffMeal(r) !== opt.cat) return false;
+  if (FF.cuisines.length && !FF.cuisines.includes(cuisOf(r))) return false;
+  const time = opt.time != null && opt.time !== 0 ? opt.time : FF.time;
+  const mins = (typeof showRecipe === "function" && opt.useShow) ? (showRecipe(r).minutes || 999) : (r.minutes || 999);
+  if (time && mins > time) return false;
+  if (FF.proteins.length) {
+    const pk = protKeys(r);
+    if (!FF.proteins.some(k => pk.includes(k))) return false;
+  }
+  if (FF.vmode === "bunnen" && r.variant === "hurtig") return false;
+  const krav = FF.krav || [];
+  for (let i = 0; i < krav.length; i++) {
+    const k = krav[i];
+    if (k === "protein40" && !(r.protein >= 40)) return false;
+    if (k === "lf" && typeof lacOk === "function" && !lacOk(r)) return false;
+    if (k === "spicy" && !isSpicy(r)) return false;
+    if (k === "airfryer" && !((r.equipment || []).includes("airfryer"))) return false;
+    if (k === "riskoker" && !((r.equipment || []).includes("riskoker"))) return false;
+    if (k === "rest" && !isRestFriendly(r)) return false;
+  }
+  if (opt.eq && !((r.equipment || []).includes(opt.eq))) return false;
+  if (!ffTextHit(r, opt.q != null ? opt.q : FF.q)) return false;
+  return true;
+}
+function ffActive() {
+  const a = [];
+  const KL = {middag: "Middag", lunsj: "Lunsj", frokost: "Frokost", snack: "Snack", dessert: "Dessert", bakst: "Bakst", creami: "Ninja Creami"};
+  const CL = Object.fromEntries((CUIS || []).map(c => [c[0], c[1]])); CL.annet = "Andre";
+  const PL = {kylling: "Kylling", storfe: "Kjøttdeig/storfe", svin: "Svin", fisk: "Fisk/laks", egg: "Egg", vegetar: "Vegetar"};
+  const RL = {protein40: "Høyt protein", lf: "Laktosefri", spicy: "Krydret", airfryer: "Airfryer", riskoker: "Riskoker", rest: "2x / rester"};
+  const TL = {liker: "Liker", "prøv": "Prøv noe nytt", fav: "Favoritter", hidden: "Skjulte"};
+  (FF.kinds || []).forEach(v => a.push({k: "kinds", v, l: KL[v] || v}));
+  (FF.cuisines || []).forEach(v => a.push({k: "cuisines", v, l: CL[v] || v}));
+  if (FF.time) a.push({k: "time", v: String(FF.time), l: "≤ " + FF.time + " min"});
+  (FF.proteins || []).forEach(v => a.push({k: "proteins", v, l: PL[v] || v}));
+  if (FF.vmode === "hurtig") a.push({k: "vmode", v: "hurtig", l: "Hurtig"});
+  if (FF.vmode === "bunnen") a.push({k: "vmode", v: "bunnen", l: "Fra bunnen"});
+  (FF.krav || []).forEach(v => a.push({k: "krav", v, l: RL[v] || v}));
+  if (FF.tag) a.push({k: "tag", v: FF.tag, l: TL[FF.tag] || FF.tag});
+  if (FF.q && String(FF.q).trim()) a.push({k: "q", v: FF.q, l: "«" + String(FF.q).trim() + "»"});
+  return a;
+}
+function ffCount() { return ffActive().length; }
+function ffToggle(k, v) {
+  if (k === "kinds" || k === "cuisines" || k === "proteins" || k === "krav") {
+    const arr = FF[k] || (FF[k] = []);
+    const i = arr.indexOf(v);
+    if (v === "" || v == null) FF[k] = [];
+    else if (i >= 0) arr.splice(i, 1); else arr.push(v);
+  } else if (k === "time") {
+    const n = +v || 0;
+    FF.time = FF.time === n ? 0 : n;
+  } else if (k === "vmode" || k === "tag" || k === "sort") {
+    FF[k] = (FF[k] === v ? (k === "sort" ? "match" : "") : v);
+  } else if (k === "q") {
+    FF.q = "";
+    if (typeof RF !== "undefined") RF.q = "";
+  }
+  if (k === "kinds" || k === "time" || k === "vmode") {
+    if (k === "kinds") HV.kind = (FF.kinds.length === 1 ? FF.kinds[0] : "");
+    if (k === "time") HV.time = FF.time;
+    if (k === "vmode") HV.vmode = FF.vmode;
+    if (k === "krav" && typeof HV !== "undefined") HV.smak = FF.krav.includes("spicy");
+    if (typeof saveHave === "function") saveHave();
+  }
+  if (k === "tag" && typeof RF !== "undefined") RF.tag = FF.tag;
+  if (k === "time" && typeof RF !== "undefined") RF.time = FF.time;
+  saveFF();
+}
+function ffWithRemoved(k, v, fn) {
+  const snap = JSON.parse(JSON.stringify(FF));
+  if (k === "kinds" || k === "cuisines" || k === "proteins" || k === "krav") FF[k] = (FF[k] || []).filter(x => x !== v);
+  else if (k === "time") FF.time = 0;
+  else if (k === "q") FF.q = "";
+  else FF[k] = k === "sort" ? "match" : "";
+  let n = 0;
+  try { n = fn(); } finally {
+    FF = Object.assign({}, FF_DEF, snap);
+    ["kinds", "cuisines", "proteins", "krav"].forEach(key => { if (!Array.isArray(FF[key])) FF[key] = []; });
+  }
+  return n;
+}
+function ffHint(countFn) {
+  const acts = ffActive();
+  if (!acts.length) return "Ingen treff. Prøv et annet søkeord.";
+  for (let i = 0; i < acts.length; i++) {
+    const n = ffWithRemoved(acts[i].k, acts[i].v, countFn);
+    if (n > 0) return "Ingen treff med denne kombinasjonen. Prøv å fjerne «" + acts[i].l + "» (" + n + " " + (n === 1 ? "rett" : "retter") + " uten den).";
+  }
+  return "Ingen treff med denne kombinasjonen. Trykk Nullstill og legg til ett filter om gangen.";
+}
+function ffPool(opt) {
+  return recipes.filter(r => ffMatch(r, opt || {}));
+}
+function ffVisCount(ctx) {
+  if (ctx === "have") {
+    const res = haveFiltered();
+    const now = res.filter(x => !x.miss.length), near = res.filter(x => x.miss.length);
+    const onNear = HV.rtab === "near";
+    return (onNear ? near : now).length;
+  }
+  let cat = "";
+  if (tab === "retter" && NAV.retter && typeof CATV !== "undefined" && CATV[NAV.retter]) cat = CATV[NAV.retter];
+  if (tab === "retter" && NAV.retter && String(NAV.retter).startsWith("cat:")) cat = NAV.retter.slice(4);
+  return ffPool({cat: cat || undefined, q: FF.q}).length;
+}
+
+function ffBar(ctx) {
+  const acts = ffActive();
+  const n = ffCount();
+  const meals = [["middag", "Middag"], ["lunsj", "Lunsj"], ["frokost", "Frokost"], ["snack", "Snack"], ["dessert", "Dessert"], ["creami", "Creami"], ["", "Alle"]];
+  const mealOn = v => v === "" ? !FF.kinds.length : FF.kinds.includes(v);
+  let row;
+  if (acts.length) {
+    row = acts.map(a => `<button type="button" class="chip on ffchip" data-ffx="${esc(a.k)}" data-v="${esc(a.v)}">${esc(a.l)} <span class="x">×</span></button>`).join("");
+  } else {
+    row = meals.map(([v, l]) => `<button type="button" class="chip ${mealOn(v) ? "on" : ""}" data-ff="kinds" data-v="${v}">${l}</button>`).join("");
+  }
+  return `<div class="filtrow ffrow"><div class="chiprow">${row}</div>${filterBtn(n)}</div>
+    ${FS.open && (FS.ctx === ctx || (ctx === "r" && FS.ctx === "r") || (ctx === "have" && FS.ctx === "have")) ? ffSheet(ctx) : ""}`;
+}
+function ffSheet(ctx) {
+  const onArr = (k, v) => (FF[k] || []).includes(v);
+  const chA = (k, v, l) => `<button type="button" class="chip ${onArr(k, v) ? "on" : ""}" data-ff="${k}" data-v="${esc(v)}">${l}</button>`;
+  const ch1 = (k, v, l) => `<button type="button" class="chip ${String(FF[k] || "") === String(v) ? "on" : ""}" data-ff="${k}" data-v="${esc(v)}">${l}</button>`;
+  const meals = [["middag", "Middag"], ["lunsj", "Lunsj"], ["frokost", "Frokost"], ["snack", "Snack"], ["dessert", "Dessert"], ["bakst", "Bakst"], ["creami", "Ninja Creami"]];
+  const n = ffVisCount(ctx);
+  let inner = `<div class="ffg"><div class="lab">Måltid</div><div class="chips">${meals.map(([k, l]) => chA("kinds", k, l)).join("")}</div></div>
+    <div class="ffg"><div class="lab">Kjøkken / stil</div><div class="chips">${CUIS.map(c => chA("cuisines", c[0], c[2] + " " + c[1])).join("")}${chA("cuisines", "annet", "Andre")}</div></div>
+    <div class="ffg"><div class="lab">Tid</div><div class="chips">${ch1("time", 0, "Alle tider")}${ch1("time", 10, "≤ 10 min")}${ch1("time", 20, "≤ 20 min")}${ch1("time", 30, "≤ 30 min")}${ch1("time", 45, "≤ 45 min")}</div></div>
+    <div class="ffg"><div class="lab">Protein</div><div class="chips">${chA("proteins", "kylling", "Kylling")}${chA("proteins", "storfe", "Kjøttdeig/storfe")}${chA("proteins", "svin", "Svin")}${chA("proteins", "fisk", "Fisk/laks")}${chA("proteins", "egg", "Egg")}${chA("proteins", "vegetar", "Vegetar")}</div></div>
+    <div class="ffg"><div class="lab">Variant</div><div class="chips">${ch1("vmode", "bunnen", "Fra bunnen")}${ch1("vmode", "hurtig", "Hurtig")}${ch1("vmode", "", "Begge")}</div></div>
+    <div class="ffg"><div class="lab">Krav</div><div class="chips">${chA("krav", "protein40", "💪 Høyt protein")}${chA("krav", "lf", "🥛 Laktosefri")}${chA("krav", "spicy", "🌶️ Krydret")}${chA("krav", "airfryer", "Airfryer")}${chA("krav", "riskoker", "Riskoker")}${chA("krav", "rest", "2x / rester")}</div></div>
+    <div class="ffg"><div class="lab">Merke</div><div class="chips">${ch1("tag", "", "Alle")}${ch1("tag", "liker", "Liker")}${ch1("tag", "prøv", "Prøv noe nytt")}${ch1("tag", "fav", "★ Favoritter")}</div></div>`;
+  if (ctx === "have") {
+    inner += `<div class="ffg"><div class="lab">Sortering</div><div class="chips">${ch1("sort", "match", "Best treff")}${ch1("sort", "protein", "Mest protein")}${ch1("sort", "time", "Raskest")}</div></div>`;
+  }
+  return `<div class="fsheet" data-fsbg><div class="fsheetp" role="dialog" aria-label="Filter">
+    <div class="fshd">⚙️ Filter</div>
+    <div class="ffbody">${inner}</div>
+    <div class="stack fffoot"><button type="button" class="btn go" data-ffdone>Vis ${n} ${n === 1 ? "rett" : "retter"}</button>
+    <button type="button" class="btn sm" data-ffreset>Nullstill</button></div></div></div>`;
+}
+
+filterBar = function (f, pfx, withHidden) {
+  if (f && f.q != null && f.q !== FF.q) { /* keep box in sync when caller passes q */ }
+  const q = (f && f.q != null) ? f.q : FF.q;
+  return `<input type="search" class="srch" id="${pfx}-q" placeholder="🔍 Søk etter rett eller ingrediens" value="${esc(q)}" enterkeyhint="search">
+  ${ffBar(pfx === "p" ? "p" : "r")}`;
+};
+filterCountRF = function () { return ffCount(); };
+filterCountHave = function () { return ffCount() + (FF.sort && FF.sort !== "match" ? 1 : 0); };
+haveFilterSheet = function () { return ffSheet("have"); };
+filterSheetRF = function (f, pfx) { return ffSheet(pfx === "p" ? "p" : "r"); };
+
+const _filterRecipes82 = filterRecipes;
+filterRecipes = function (f) {
+  f = f || RF || {};
+  const opt = {q: (f.q != null && String(f.q).length) ? f.q : FF.q, tag: (f.tag != null && f.tag !== "") ? f.tag : FF.tag, time: f.time || 0, eq: f.eq || "", kinds: f.kind ? [f.kind] : null};
+  if (opt.kinds && FF.kinds.length) opt.kinds = FF.kinds.filter(k => opt.kinds.includes(k)).length ? FF.kinds.filter(k => opt.kinds.includes(k)) : opt.kinds;
+  const list = recipes.filter(r => ffMatch(r, opt));
+  return list.sort((a, b) => (b.favorite - a.favorite) || ((a.tag === "liker" ? 0 : 1) - (b.tag === "liker" ? 0 : 1)) || a.name.localeCompare(b.name, "nb"));
+};
+
+const _haveFiltered82 = haveFiltered;
+haveFiltered = function () {
+  ensureHave();
+  let res = haveMatchRaw();
+  const optBase = {useShow: true};
+  res = res.filter(x => ffMatch(x.r, optBase));
+  const sort = FF.sort || HV.sort || "match";
+  res.sort((a, b) => {
+    if (sort === "protein") return (b.r.protein || 0) - (a.r.protein || 0) || a.miss.length - b.miss.length;
+    if (sort === "time") return (showRecipe(a.r).minutes || 999) - (showRecipe(b.r).minutes || 999) || a.miss.length - b.miss.length;
+    return a.miss.length - b.miss.length || b.hit / b.n - a.hit / a.n || (b.r.protein || 0) - (a.r.protein || 0);
+  });
+  return res;
+};
+
+viewHaveResults = function () {
+  ensureHave();
+  if (!M || M.t !== "haveui") M = {t: "haveui", q: "", open: null, date: add(today(), 2)};
+  const m = M, res = haveFiltered(), now = res.filter(x => !x.miss.length), near = res.filter(x => x.miss.length);
+  if (!HV.forceNow && now.length === 0 && near.length) HV.rtab = "near";
+  const onNear = HV.rtab === "near";
+  const show = onNear ? near : now;
+  let h = hubBar("Retter du kan lage", "Hva har jeg?");
+  h += haveSelSummary();
+  h += `<div class="seg" role="tablist">
+    <button type="button" class="segbtn ${!onNear ? "on" : ""}" data-hf="rtab" data-v="now">Kan lages nå (${now.length})</button>
+    <button type="button" class="segbtn ${onNear ? "on" : ""}" data-hf="rtab" data-v="near">Mangler 1–2 (${near.length})</button></div>`;
+  h += ffBar("have");
+  if (!HV.sel.length) h += `<div class="msg">Ingen varer valgt. Gå tilbake og kryss av det du har.</div>`;
+  else if (!show.length) {
+    const hint = ffHint(() => {
+      const r = haveFiltered();
+      return (onNear ? r.filter(x => x.miss.length) : r.filter(x => !x.miss.length)).length;
+    });
+    h += `<div class="msg">${esc(hint)}</div>`;
+    if (!onNear && near.length) h += `<p class="sub">Forslag som mangler 1–2:</p>` + near.map(x => haveCard(x, m)).join("");
+  } else h += show.map(x => haveCard(x, m)).join("");
+  return h + `</div>`;
+};
+
+const _browse82 = viewRetterBrowse;
+viewRetterBrowse = function (title, mode) {
+  const f = Object.assign({}, RF, {kind: ""});
+  f.q = FF.q != null ? FF.q : f.q;
+  let list = filterRecipes(f);
+  const cat = mode && String(mode).startsWith("cat:") ? mode.slice(4) : "";
+  if (mode === "favsliker") list = list.filter(r => r.favorite || r.tag === "liker");
+  else if (mode === "prøv") list = filterRecipes(Object.assign({}, f, {tag: "prøv"})).filter(r => !(typeof lastEaten === "function" && lastEaten()[r.id]));
+  else if (mode === "raske") list = filterRecipes(Object.assign({}, f, {time: FF.time || f.time || 20}));
+  else if (mode === "protein") list = list.slice().sort((a, b) => (b.protein || 0) - (a.protein || 0) || a.name.localeCompare(b.name, "nb"));
+  else if (mode === "smak") list = list.filter(isSpicy);
+  else if (mode === "nyeste") list = list.slice().sort((a, b) => b.id - a.id).slice(0, 60);
+  else if (mode === "laktosefri") list = list.filter(lacOk);
+  else if (mode === "nytt") list = list.filter(r => r.tag === "prøv" && !(typeof lastEaten === "function" && lastEaten()[r.id]));
+  if (cat) list = list.filter(r => catOf(r) === cat);
+  if (DIET && DIET.lfOnly && mode !== "laktosefri" && !FF.krav.includes("lf")) list = list.filter(lacOk);
+  let h = hubBar(title, "Retter");
+  if (cat === "creami") h += `<div class="rbox prep" style="margin:0 0 12px"><div class="lab">🍦 Ninja Creami – slik lykkes du</div><div>Fyll til streken, frys flatt i <b>24 timer</b>, kjør «Lite Ice Cream». Smuldrete? Ha i 1–2 ss melk og kjør <b>Re-spin</b>. Puddingpulver gir kremete is uten fløte.</div></div>`;
+  if (cat === "bakst") h += `<div class="rbox" style="margin:0 0 12px"><div class="lab">🥐 Tips</div><div>Bakst fryses best samme dag. Plantemargarin og laktosefri melk gjør nesten all bakst laktosefri.</div></div>`;
+  h += `<input type="search" class="srch" id="r-q" placeholder="🔍 Søk i ${esc(cat && CATL[cat] ? CATL[cat].toLowerCase() : "oppskrifter")}" value="${esc(FF.q || RF.q || "")}" enterkeyhint="search">`;
+  h += ffBar("r");
+  const empty = list.length ? "" : `<div class="msg">${esc(ffHint(() => {
+    let xs = filterRecipes(f);
+    if (mode === "favsliker") xs = xs.filter(r => r.favorite || r.tag === "liker");
+    if (mode === "smak") xs = xs.filter(isSpicy);
+    if (mode === "laktosefri") xs = xs.filter(lacOk);
+    if (cat) xs = xs.filter(r => catOf(r) === cat);
+    return xs.length;
+  }))}</div>`;
+  return h + `<div class="cntb">${list.length} ${list.length === 1 ? "rett" : "retter"}</div>${list.map(r => rc7(r)).join("") || empty}</div>`;
+};
+
+const _cmdResults82 = cmdResults;
+cmdResults = function () {
+  const out = _cmdResults82();
+  if (!CK7 || !CK7.q || !String(CK7.q).trim()) return out;
+  if (!ffCount()) return out;
+  const cmds = out.filter(x => x.type === "c");
+  const recs = out.filter(x => x.type === "r" && ffMatch(x.r, {q: ""}));
+  const more = recipes.filter(r => !r.hidden && r.variant !== "hurtig" && ffMatch(r, {q: CK7.q})).slice(0, 14);
+  const seen = new Set(recs.map(x => x.r.id));
+  more.forEach(r => { if (!seen.has(r.id)) { recs.push({type: "r", r}); seen.add(r.id); } });
+  return cmds.concat(recs.slice(0, 14));
+};
+
+document.addEventListener("input", ev => {
+  const t = ev.target;
+  if (t && t.id === "r-q") { FF.q = t.value; if (typeof RF !== "undefined") RF.q = t.value; saveFF(); }
+}, true);
+{ const _r82 = render;
+  render = function () {
+    _r82();
+    const apply = () => {
+      const nt = typeof navTab === "function" ? navTab() : tab;
+      document.querySelectorAll(".tb .tab").forEach(t => t.classList.toggle("on", t.dataset.t === nt));
+    };
+    apply();
+    requestAnimationFrame(apply);
+  };
+}
+
+document.addEventListener("click", ev => {
+  const c = s => ev.target.closest && ev.target.closest(s);
+  let e;
+  if ((e = c("[data-v8off],[data-offhvor]"))) {
+    offTab = e.dataset.offfrom || (tab === "mer" ? "mer" : "handle");
+    LS.set("mat_offtab_v82", offTab);
+  }
+  if ((e = c("[data-ff]"))) {
+    ev.preventDefault(); ev.stopPropagation();
+    const k = e.dataset.ff, v = e.dataset.v;
+    ffToggle(k, v);
+    return render();
+  }
+  if ((e = c("[data-ffx]"))) {
+    ev.preventDefault(); ev.stopPropagation();
+    ffToggle(e.dataset.ffx, e.dataset.v);
+    return render();
+  }
+  if (c("[data-ffreset]")) {
+    ev.preventDefault(); ev.stopPropagation();
+    ffReset(); return render();
+  }
+  if (c("[data-ffdone]")) {
+    ev.preventDefault(); ev.stopPropagation();
+    FS.open = false; render(); scrollTo(0, 0); return;
   }
 }, true);
 
