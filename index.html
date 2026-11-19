@@ -238,6 +238,43 @@ body.cooking{overflow:hidden}
 .hdate{grid-column:1/-1;display:grid;grid-template-columns:1fr auto;gap:8px}
 .hdate .btn{width:auto}
 .lnk{background:none;border:0;color:var(--acc);font-weight:800;text-decoration:underline;font-size:16px;min-height:48px;cursor:pointer}
+
+/* Tilbud */
+.tb{grid-template-columns:repeat(6,1fr)}
+.tab{font-size:.62rem}
+.tab b{font-size:1.35rem}
+.offstores{display:grid;grid-template-columns:1fr 1fr;gap:8px;margin:0 0 10px}
+.offst{background:var(--card);border:2px solid var(--line);border-radius:14px;padding:10px 12px;display:flex;flex-direction:column;gap:2px}
+.offst b{font-size:1.05rem}
+.favrow{display:flex;flex-direction:column;gap:6px;margin:0 0 8px;padding:8px 0;border-bottom:1px solid var(--line)}
+.favrow.add,.favrow.ren{flex-direction:row;flex-wrap:wrap;align-items:center;border-bottom:0;padding-top:4px}
+.favmeta{display:flex;justify-content:space-between;align-items:baseline;gap:8px}
+.favn{font-weight:800;font-size:1.05rem}
+.favbtns{display:grid;grid-template-columns:1fr 1fr;gap:8px}
+.favrow .btn{width:100%;min-height:48px}
+.favrow.add .btn,.favrow.ren .btn{width:auto;flex:none}
+.offc{display:block;background:var(--card);border:2px solid var(--line);border-radius:16px;padding:10px 12px;margin:0 0 10px}
+.offc.on{border-color:var(--acc);background:var(--accbg)}
+.offc.fav{border-color:var(--star)}
+.offlab{display:flex;gap:10px;align-items:flex-start;cursor:pointer}
+.offlab input{width:22px;height:22px;margin-top:4px;flex:none}
+.offb{display:flex;flex-direction:column;gap:3px;min-width:0;flex:1}
+.offtop{display:flex;flex-wrap:wrap;gap:6px;align-items:baseline}
+.chn{font-weight:800;color:var(--acc);font-size:.85rem;text-transform:uppercase}
+.starb{font-size:1.1rem}
+.offpr{font-weight:800;font-size:1.15rem}
+.pre{font-weight:600;color:var(--mut);text-decoration:line-through;font-size:.95rem}
+.offacts{margin:8px 0 0 32px}
+.offacts .btn{width:auto}
+.offtag{display:inline-block;margin-left:6px;background:var(--ambbg);color:var(--amb);font-weight:800;font-size:.8rem;border-radius:8px;padding:2px 6px;vertical-align:middle}
+.bestbox{background:var(--accbg);border-radius:14px;padding:12px;margin:0 0 12px}
+.bestbox.two{background:var(--ambbg)}
+.offh{margin:16px 0 6px;font-size:1.05rem}
+.hres.cheap{margin:0 0 12px;padding-bottom:10px;border-bottom:1px solid var(--line)}
+.storetot{margin:0 0 12px;padding-top:8px;border-top:1px solid var(--line);display:flex;flex-direction:column;gap:2px}
+.stot{margin:6px 0 0;padding-left:1.2em}
+.stot .miss{color:var(--mut)}
+.offc.nested{margin:0 0 6px;padding:0;border:0;background:none}
 </style>
 </head>
 <body>
@@ -250,12 +287,13 @@ body.cooking{overflow:hidden}
   <button class="tab" data-t="plan"><b>📅</b>Plan</button>
   <button class="tab" data-t="handle"><b>🛒</b>Handle</button>
   <button class="tab" data-t="retter"><b>📖</b>Retter</button>
+  <button class="tab" data-t="tilbud"><b>🏷️</b>Tilbud</button>
   <button class="tab" data-t="fb"><b>💬</b>Feedback</button>
 </nav>
 <script>
 const URL_ = "https://yhzgdipjpdmovegbkybx.supabase.co", KEY = "eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJpc3MiOiJzdXBhYmFzZSIsInJlZiI6InloemdkaXBqcGRtb3ZlZ2JreWJ4Iiwicm9sZSI6ImFub24iLCJpYXQiOjE3OTAzMzY5NzcsImV4cCI6MjEwNTkxMjk3N30.13nVIkVWVIb-fh7oPKA1tHdCeX8tKqIpVi_o80rXIo4";
 const H = {apikey: KEY, Authorization: "Bearer " + KEY, "Content-Type": "application/json"};
-const TABS = ["idag", "plan", "handle", "retter", "fb"];
+const TABS = ["idag", "plan", "handle", "retter", "tilbud", "fb"];
 const DK = ["Man","Tir","Ons","Tor","Fre","Lør","Søn"];
 const DL = ["Mandag","Tirsdag","Onsdag","Torsdag","Fredag","Lørdag","Søndag"];
 const SLOTS = [["frokost","Frokost","🥣"],["lunsj","Lunsj","🥪"],["middag","Middag","🍽️"],["snack","Mellommåltid","🍌"],["kvelds","Kvelds","🌙"]];
@@ -269,7 +307,7 @@ const CATS = ["Kjøtt, fisk og egg","Meieri","Grønnsaker og frukt","Brød","Tø
 const UNITS = ["g","kg","stk","dl","l","ml","ss","ts","pk","boks","glass","pose","beger","skive","fl"];
 const GOAL = {kcal: [2100, 2300], prot: [130, 150]};
 
-let recipes = [], plan = [], entries = [], fb = [], lists = [], items = [];
+let recipes = [], plan = [], entries = [], fb = [], lists = [], items = [], offers = [], favs = [];
 let tab = "idag", sel = ds(new Date()), viewMon = monday(ds(new Date())), curList = null, M = null, loaded = false;
 const drafts = {}, logDraft = {}, logOpen = new Set(), catOpen = {}, showRec = new Set();
 let RF = {q: "", tag: "", kind: "", time: 0, eq: ""};
@@ -314,14 +352,15 @@ async function load() {
   try {
     const sm = monday(sel);
     const res = await Promise.all([rpc("recipes_list"), fetchPlan(), rpc("list_entries", {p_from: sm, p_to: add(sm, 6)}),
-      rpc("list_feedback_recent", {p_limit: 100}).catch(() => fb), rpc("shop_lists").catch(() => lists)]);
+      rpc("list_feedback_recent", {p_limit: 100}).catch(() => fb), rpc("shop_lists").catch(() => lists),
+      rpc("offers_list").catch(() => offers || []), rpc("fav_list").catch(() => favs || [])]);
     const ls = res[4];
     let cl = curList;
     if (cl == null || !ls.some(l => l.id === cl)) cl = ls[0] ? ls[0].id : null;
     const it = cl ? await rpc("shop_items", {p_list: cl}) : [];
     if (loaded && (pending > 0 || seq !== writeSeq)) return;
     const sig = JSON.stringify([res, it]), same = sig === lastSig; lastSig = sig;
-    [recipes, plan, entries, fb, lists] = res; items = it; curList = cl; loaded = true;
+    [recipes, plan, entries, fb, lists] = res; offers = Array.isArray(res[5]) ? res[5] : []; favs = Array.isArray(res[6]) ? res[6] : []; items = it; curList = cl; loaded = true;
     err();
     if (same && $("#view").children.length && !$("#view .msg.loading")) return;
     const ae = document.activeElement;
@@ -628,7 +667,7 @@ function viewHandle() {
     for (const c of cats) {
       const its = items.filter(i => i.category === c), g = its.filter(i => i.checked).length, open = catOpen[c] ?? (g < its.length);
       h += `<button class="gh" data-cat="${esc(c)}"><div>${esc(c)}</div><span>${g}/${its.length} ${open ? "▾" : "▸"}</span></button>`;
-      if (open) h += [...its.filter(i => !i.checked), ...its.filter(i => i.checked)].map(i => `<label class="it ${i.checked ? "got" : ""}" data-id="${i.id}"><input type="checkbox" ${i.checked ? "checked" : ""}><span style="flex:1;min-width:0"><span class="n">${esc(i.name)}</span>${i.qty != null ? ` <span class="q">– ${esc(qtyTxt(i.qty, i.unit))}</span>` : ""}${i.note ? ` <span class="q">– ${esc(i.note)}</span>` : ""}${i.at_home ? `<br><span class="tag">Sjekk om du har</span>` : ""}${i.recipes ? `<span class="rr">Til: ${esc(i.recipes)}</span>` : ""}</span>${i.manual ? `<button class="ix" data-rmitem="${i.id}" aria-label="Fjern">✕</button>` : ""}</label>`).join("");
+      if (open) h += [...its.filter(i => !i.checked), ...its.filter(i => i.checked)].map(i => `<label class="it ${i.checked ? "got" : ""}" data-id="${i.id}"><input type="checkbox" ${i.checked ? "checked" : ""}><span style="flex:1;min-width:0"><span class="n">${esc(i.name)}</span>${i.qty != null ? ` <span class="q">– ${esc(qtyTxt(i.qty, i.unit))}</span>` : ""}${i.note ? ` <span class="q">– ${esc(i.note)}</span>` : ""}${i.at_home ? `<br><span class="tag">Sjekk om du har</span>` : ""}${typeof offerHint === "function" ? offerHint(i.name) : ""}${i.recipes ? `<span class="rr">Til: ${esc(i.recipes)}</span>` : ""}</span>${i.manual ? `<button class="ix" data-rmitem="${i.id}" aria-label="Fjern">✕</button>` : ""}</label>`).join("");
     }
     h += `<div class="card" style="margin-top:16px"><label class="lbl" style="margin-top:0" for="sh-new">Legg til noe selv</label><div class="row"><input type="text" class="inp" id="sh-new" maxlength="60" placeholder="F.eks. dopapir" enterkeyhint="done"><button class="btn go" style="width:auto;flex:none;padding:0 22px" data-additem aria-label="Legg til vare">＋</button></div></div>
       <div class="grid2"><button class="btn sm" data-shreset>Nullstill avkryssing</button><button class="btn sm" data-sharch>Arkiver lista</button></div>`;
@@ -838,7 +877,7 @@ function renderModal() {
 function render() {
   document.querySelectorAll(".tab").forEach(t => t.classList.toggle("on", t.dataset.t === tab));
   if (!loaded) { renderModal(); return; }
-  const f = {idag: viewIdag, plan: viewPlan, handle: viewHandle, retter: viewRetter, fb: viewFb}[tab];
+  const f = {idag: viewIdag, plan: viewPlan, handle: viewHandle, retter: viewRetter, tilbud: viewTilbud, fb: viewFb}[tab];
   const ae = document.activeElement, fid = ae && ae.id && $("#view").contains(ae) ? ae.id : null, ss = fid ? ae.selectionStart : null;
   $("#view").innerHTML = f();
   if (fid) { const n = document.getElementById(fid); if (n) { n.focus({preventScroll: true}); try { n.setSelectionRange(ss, ss); } catch (_) {} } }
@@ -1362,6 +1401,499 @@ document.addEventListener("click", ev => {
 }, true);
 document.addEventListener("input", ev => { if (M && M.t === "have" && ev.target.id === "h-q") { M.q = ev.target.value; const p = ev.target.selectionStart; render(); const i = $("#h-q"); if (i) { i.focus(); i.setSelectionRange(p, p); } } });
 document.addEventListener("keydown", ev => { if (M && M.t === "have" && ev.target.id === "h-q" && ev.key === "Enter") { const k = normIng(ev.target.value) || ev.target.value.toLowerCase().trim(); if (k && !HV.sel.includes(k)) { HV.sel.push(k); saveHave(); } M.q = ""; render(); const i = $("#h-q"); if (i) i.focus(); } });
+/* ---------- Tilbud ---------- */
+const CHAINS = {
+  rema:     {id:"rema",     name:"REMA 1000",  short:"Rema",     store:"REMA 1000 Rådhusplassen", place:"Rådhusplassen 35, Ås", km:0.8, walk:10, drive:2},
+  europris: {id:"europris", name:"Europris",   short:"Europris", store:"Europris Ås",             place:"Rådhusplassen 3, Ås",  km:1.0, walk:12, drive:3},
+  extra:    {id:"extra",    name:"Coop Extra", short:"Extra",    store:"Extra Raveien",           place:"Brekkeveien 1, Ås",   km:1.0, walk:12, drive:3},
+  kiwi:     {id:"kiwi",     name:"KIWI",       short:"Kiwi",     store:"KIWI Ås",                 place:"Brekkeveien 3a, Ås",  km:1.1, walk:13, drive:3}
+};
+const CHORD = ["rema", "europris", "extra", "kiwi"];
+const CORE_KEYS = new Set(["kylling","kjøttdeig","egg","eggehvite","ris","pasta","nudler","laks","torsk","reker","mais","skyr/yoghurt","ost","fløte","rømme","løk","brokkoli","gulrot","poteter","tortilla","bacon","skinke","pølser","chorizo","melk","brød","hakkede tomater","cottage cheese","tunfisk","peanøttsmør","havregryn","biff","svinekjøtt","smågodt","ferdigpizza","ferdigmat","cream of rice"]);
+const OFK = "mat_off_tick_v1";
+let OF = {q:"", all:false, shop:false, favsOn:false, tick: (() => { try { return new Set(JSON.parse(localStorage.getItem(OFK)) || []); } catch (_) { return new Set(); } })(), rename: null, more: 15};
+
+const kr = n => { if (n == null || !isFinite(+n)) return ""; const x = Math.round(+n * 100) / 100; const s = x % 1 === 0 ? String(x) : x.toFixed(2).replace(/0$/, "").replace(".", ","); return s + " kr"; };
+const ch = id => CHAINS[id] || {short: id, name: id, store: id, place:"", km:null, walk:null, drive:null};
+const saveTick = () => { try { localStorage.setItem(OFK, JSON.stringify([...OF.tick])); } catch (_) {} };
+const oid = o => String(o.offer_id || o.id);
+const offText = o => ((o.product || "") + " " + (o.description || "") + " " + (o.ing_key || "")).toLowerCase();
+function offerKey(o) {
+  if (o.ing_key) return o.ing_key;
+  return normIng(o.product || "") || normIng((o.product || "") + " " + (o.description || "")) || null;
+}
+function isReadyMeal(o) {
+  const t = offText(o);
+  if (/pizzasaus|pizzabunn|pizzakrydder/.test(t)) return false;
+  return o.ing_key === "ferdigpizza" || o.ing_key === "ferdigmat" || /grandiosa|\bpizza\b|ferdigrett|ferdigmiddag|ovnsrett|lasagne|risgrøt/.test(t);
+}
+function favNameKey(name) {
+  const n = String(name || "").toLowerCase().trim();
+  if (n === "skyr") return "skyr/yoghurt";
+  return normIng(n) || n;
+}
+function offerMatchesFav(o, name) {
+  const n = String(name || "").toLowerCase().trim();
+  const t = offText(o);
+  if (n === "smågodt" || favNameKey(n) === "smågodt") {
+    return /smågodt|candyking|bland selv|bland-selv|pick.?[n'’]?.?mix|godteri/.test(t) || o.ing_key === "smågodt";
+  }
+  const fk = favNameKey(n), k = offerKey(o);
+  if (fk === "pasta" && /pastasaus/.test(t) && !/pasta(?!saus)/.test(t)) return false;
+  if (fk === "ris") return k === "ris" || /grøtris|(^|[^a-zæøå])ris([^a-zæøå]|$)/i.test(t) && !/risgrøt|pris/.test(t);
+  if (fk === "egg" || fk === "eggehvite") return k === "egg" || k === "eggehvite" || (/(^|[^a-zæøå])eggehvite|((^|[^a-zæøå])egg([^a-zæøå]|$))/i.test(t) && !/mandel|marsipan/.test(t));
+  if (k && fk && (k === fk || (fk.length >= 4 && (k.startsWith(fk) || fk.startsWith(k))))) return true;
+  if (fk && fk.length >= 3) {
+    const rx = new RegExp("(?:^|[^a-zæøå])" + fk.replace(/[.*+?^${}()|[\]\\]/g, "\\$&") + "(?:$|[^a-zæøå])", "i");
+    return rx.test(t);
+  }
+  return false;
+}
+const isFavOffer = o => (favs || []).some(f => offerMatchesFav(o, f.name));
+function recipeKeys() {
+  const s = new Set();
+  for (const r of recipes) if (!r.hidden) for (const i of r.ing || []) { const k = normIng(i.name); if (k) s.add(k); }
+  return s;
+}
+let RKEYS = new Set();
+function isUseful(o) {
+  if (isFavOffer(o)) return true;
+  if (isReadyMeal(o)) return true;
+  const k = offerKey(o);
+  if (k && (CORE_KEYS.has(k) || RKEYS.has(k))) return true;
+  return false;
+}
+function offerHitsItem(o, name) {
+  const k = offerKey(o), nk = normIng(name) || String(name || "").toLowerCase().trim();
+  if (k && nk && (k === nk || (nk.length >= 4 && (k.startsWith(nk) || nk.startsWith(k))))) return true;
+  return offerMatchesFav(o, name);
+}
+function offersForItem(name) { return (offers || []).filter(o => offerHitsItem(o, name) && o.price != null); }
+function offerHint(name) {
+  const hits = offersForItem(name);
+  if (!hits.length) return "";
+  const best = hits.slice().sort((a, b) => a.price - b.price)[0];
+  const more = new Set(hits.map(o => o.chain)).size;
+  return `<span class="offtag">🏷️ ${esc(ch(best.chain).short)} ${esc(kr(best.price))}${more > 1 ? " +" : ""}</span>`;
+}
+function fmtWhen(s) {
+  if (!s) return "";
+  const d = new Date(s);
+  if (isNaN(d)) return "";
+  return d.toLocaleString("nb-NO", {timeZone: "Europe/Oslo", day: "numeric", month: "short", hour: "2-digit", minute: "2-digit"});
+}
+function validTxt(o) {
+  const a = fmtWhen(o.valid_from), b = fmtWhen(o.valid_to);
+  if (a && b) return "Gyldig " + a + " – " + b + " (Europe/Oslo)";
+  return b ? "Gyldig til " + b + " (Europe/Oslo)" : "";
+}
+function distTxt(c) { return c.km != null ? `${String(c.km).replace(".", ",")} km · ${c.walk} min gange · ${c.drive} min bil` : ""; }
+
+function wantedSlots() {
+  const ticked = (offers || []).filter(o => OF.tick.has(oid(o)));
+  const map = new Map();
+  for (const o of ticked) {
+    const k = offerKey(o) || offText(o).slice(0, 40);
+    const label = ({
+      "kjøttdeig":"kjøttdeig","kylling":"kylling","laks":"laks","pasta":"pasta","ris":"ris",
+      "mais":"mais","egg":"egg","smågodt":"smågodt","skyr/yoghurt":"skyr/yoghurt",
+      "ferdigpizza":"pizza / Grandiosa","ferdigmat":"ferdigmat","bacon":"bacon"
+    })[k] || o.product;
+    if (!map.has(k)) map.set(k, {key: k, label, offers: []});
+    map.get(k).offers.push(o);
+  }
+  return [...map.values()];
+}
+function chainPrice(slot, chain) {
+  // A tick means "I want this type of item" – compare the cheapest current offer
+  // of the same key at each store, not only the exact row that was ticked.
+  const rows = (offers || []).filter(o => {
+    if (o.chain !== chain || o.price == null) return false;
+    const k = offerKey(o) || offText(o).slice(0, 40);
+    return k === slot.key;
+  });
+  if (!rows.length) return null;
+  return rows.slice().sort((a, b) => a.price - b.price)[0];
+}
+function storeBasket(chain) {
+  const slots = wantedSlots();
+  const got = [], miss = [];
+  let sum = 0;
+  for (const s of slots) {
+    const o = chainPrice(s, chain);
+    if (o) { got.push({slot: s, o}); sum += +o.price; }
+    else miss.push(s);
+  }
+  return {chain, got, miss, sum, n: slots.length, c: ch(chain)};
+}
+function bestSingle() {
+  const rows = CHORD.map(storeBasket).filter(b => b.got.length);
+  rows.sort((a, b) => b.got.length - a.got.length || a.sum - b.sum || a.c.km - b.c.km);
+  return rows;
+}
+function bestPair() {
+  const slots = wantedSlots();
+  if (slots.length < 2) return null;
+  let best = null;
+  for (let i = 0; i < CHORD.length; i++) for (let j = i + 1; j < CHORD.length; j++) {
+    const a = CHORD[i], b = CHORD[j];
+    const got = [], miss = [];
+    let sum = 0, split = {a: 0, b: 0};
+    for (const s of slots) {
+      const oa = chainPrice(s, a), ob = chainPrice(s, b);
+      if (oa && ob) {
+        const pick = oa.price <= ob.price ? oa : ob;
+        got.push({slot: s, o: pick}); sum += +pick.price;
+        if (pick === oa) split.a++; else split.b++;
+      } else if (oa || ob) {
+        const pick = oa || ob;
+        got.push({slot: s, o: pick}); sum += +pick.price;
+        if (pick === oa) split.a++; else split.b++;
+      } else miss.push(s);
+    }
+    if (!got.length) continue;
+    const row = {a, b, got, miss, sum, split, ca: ch(a), cb: ch(b)};
+    if (!best || row.got.length > best.got.length || (row.got.length === best.got.length && row.sum < best.sum)) best = row;
+  }
+  return best;
+}
+
+function bestOfferForKey(k) {
+  const rows = (offers || []).filter(o => offerKey(o) === k && o.unit_price != null && o.price != null);
+  if (!rows.length) return null;
+  return rows.slice().sort((a, b) => a.unit_price - b.unit_price || a.price - b.price)[0];
+}
+function scaleCost(o, qty, unit) {
+  if (qty == null || o.unit_price == null) return null;
+  const u = String(unit || "").toLowerCase(), ou = String(o.unit || "").toLowerCase();
+  if ((u === "g" || u === "kg") && (ou === "kg" || ou === "g")) return o.unit_price * (u === "kg" ? qty : qty / 1000);
+  if ((u === "l" || u === "ml") && (ou === "l" || ou === "ml")) return o.unit_price * (u === "l" ? qty : qty / 1000);
+  return null;
+}
+function mainIngKey(r) {
+  const keys = [...(typeof needsOf === "function" ? needsOf(r).keys() : [])];
+  const order = ["kylling","kjøttdeig","laks","torsk","reker","svinekjøtt","biff","chorizo","pølser","bacon","egg","skinke"];
+  for (const k of order) if (keys.includes(k)) return k;
+  return keys[0] || null;
+}
+function recipeOfferCost(r) {
+  const serv = r.servings || 1, need = typeof needsOf === "function" ? needsOf(r) : new Map();
+  let krSum = 0, used = 0, lines = [], miss = [];
+  const protKey = mainIngKey(r);
+  let protOn = false;
+  for (const [k, ing] of need) {
+    const o = bestOfferForKey(k);
+    const portionQty = ing.qty != null ? +ing.qty / serv : null;
+    const c = o ? scaleCost(o, portionQty, ing.unit) : null;
+    if (c == null) { miss.push(ing.name); continue; }
+    krSum += c; used++; lines.push({name: ing.name, kr: c, o});
+    if (protKey && (k === protKey)) protOn = true;
+  }
+  return {kr: krSum, used, miss, lines, protKey, protOn, n: need.size};
+}
+
+function viewTilbud() {
+  RKEYS = recipeKeys();
+  const all = offers || [];
+  const q = (OF.q || "").trim().toLowerCase();
+  let rows = all.slice();
+  if (!OF.all) rows = rows.filter(isUseful);
+  if (OF.shop) {
+    const names = (items || []).filter(i => !i.checked).map(i => i.name);
+    rows = rows.filter(o => names.some(n => offerHitsItem(o, n)));
+  }
+  if (q) rows = rows.filter(o => offText(o).includes(q) || (ch(o.chain).name + ch(o.chain).short).toLowerCase().includes(q));
+  const favRows = rows.filter(isFavOffer);
+  const rest = rows.filter(o => !isFavOffer(o));
+  const sortFn = (a, b) => (a.chain || "").localeCompare(b.chain || "") || (a.product || "").localeCompare(b.product || "", "nb");
+  favRows.sort(sortFn); rest.sort(sortFn);
+  const shown = OF.favsOn && favRows.length ? favRows : favRows.concat(rest);
+  const fetched = all[0] && all[0].fetched_at;
+  const nTick = OF.tick.size;
+
+  let h = `<h1>Tilbud</h1>
+    <p class="sub">Ukas kundeaviser for Rema, Kiwi, Extra og Europris i Ås. Prisene er fra avisen (Tjek/eTilbudsavis)${fetched ? ", hentet " + fmtWhen(fetched) + " (Europe/Oslo)" : ""}. Ordinære hyllepriser har vi ikke – varer uten tilbud vises som «ikke på tilbud her». Oppdiktede priser brukes aldri.</p>
+    <div class="offstores">${CHORD.map(id => { const c = ch(id); return `<div class="offst"><b>${esc(c.short)}</b><span>${esc(c.store)}</span><span class="d">${esc(distTxt(c))}</span></div>`; }).join("")}</div>
+    <p class="sub">Rema på Rådhusplassen er nærmest. Extra Ås (Idrettsveien) og REMA 1000 Ås (Johan K. Skanckes vei) ligger også i sentrum. Europris og Rema på Vinterbro er ca. 11 km / 14 min med bil.</p>`;
+
+  h += favBlock();
+  h += cheapDinnerBlock();
+
+  h += `<section class="card" style="margin-top:14px">
+    <label class="lbl" style="margin-top:0" for="off-q">Søk i tilbudene</label>
+    <input type="search" class="inp" id="off-q" value="${esc(OF.q)}" placeholder="F.eks. kylling, pizza, smågodt" enterkeyhint="search">
+    <div class="chips">
+      <button class="chip ${!OF.all ? "on" : ""}" data-offall="0">Bare relevant</button>
+      <button class="chip ${OF.all ? "on" : ""}" data-offall="1">Vis alle</button>
+      <button class="chip ${OF.shop ? "on" : ""}" data-offshop>Fra handlelista</button>
+      <button class="chip ${OF.favsOn ? "on" : ""}" data-offfavs>Bare ⭐ favoritter</button>
+    </div>
+    <div class="stack" style="margin-top:8px">
+      <button class="btn go" data-offfromshop ${!(items && items.length) ? "disabled" : ""}>Hent fra handlelista</button>
+    </div>
+    <p class="sub" style="margin:8px 0 0">${shown.length} treff${ !OF.all ? " (skjuler irelevante, f.eks. mye av Europris)" : ""}. Kryss av det du vil ha – «Billigst» oppdateres rett under.</p>
+  </section>`;
+  h += billigstBlock();
+
+  if (!all.length) h += `<div class="msg">Ingen tilbud lastet ennå. Kjør <code>python3 offers/fetch_offers.py</code> og last siden på nytt.</div>`;
+
+  if (favRows.length && !OF.favsOn) {
+    const fv = favRows.slice(0, OF.favMore || 12);
+    h += `<h2 style="margin:18px 0 8px">⭐ Mine favoritter på tilbud</h2>` + fv.map(offerCard).join("")
+      + (favRows.length > fv.length ? `<button class="btn go" data-offfavmore>Vis flere favoritter (${favRows.length - fv.length} igjen)</button>` : "");
+  }
+  const restTitle = OF.favsOn ? "⭐ Favoritter" : OF.all ? "Alle tilbud" : (favRows.length ? "Andre relevante tilbud" : "Tilbud");
+  if (shown.length) {
+    const list = OF.favsOn ? favRows : (favRows.length ? rest : shown);
+    const cap = OF.favsOn ? list.length : OF.more;
+    const vis = list.slice(0, cap);
+    if (list.length) h += `<h2 style="margin:18px 0 8px">${restTitle}</h2>` + vis.map(offerCard).join("")
+      + (list.length > vis.length ? `<button class="btn go" data-offmore>Vis flere (${list.length - vis.length} igjen)</button>` : "");
+  } else if (all.length) h += `<div class="msg">Ingen treff. Prøv «Vis alle» eller et annet søk.</div>`;
+
+  return h;
+}
+
+function favBlock() {
+  const list = favs || [];
+  let h = `<section class="card" id="minefav">
+    <h2 style="margin:0 0 8px">⭐ Mine favorittvarer</h2>
+    <p class="sub" style="margin:0 0 10px">Tilbud som matcher lista vises øverst med stjerne. Du kan legge til, endre og fjerne. Lista lagres i skyen.</p>`;
+  if (!list.length) h += `<div class="msg">Ingen favoritter ennå.</div>`;
+  for (const f of list) {
+    if (OF.rename === f.id) {
+      h += `<div class="favrow ren"><input type="text" class="inp" id="fav-ren" maxlength="60" value="${esc(f.name)}" enterkeyhint="done"><button class="btn go" style="width:auto;flex:none" data-favsave="${f.id}">Lagre</button><button class="btn sm" style="width:auto;flex:none" data-favcanc>Avbryt</button></div>`;
+    } else {
+      const n = (offers || []).filter(o => offerMatchesFav(o, f.name)).length;
+      h += `<div class="favrow"><div class="favmeta"><span class="favn">⭐ ${esc(f.name)}</span><span class="d">${n ? n + " på tilbud" : "ikke på tilbud nå"}</span></div><div class="favbtns"><button class="btn sm" data-favren="${f.id}">Endre</button><button class="btn sm" data-favdel="${f.id}">Fjern</button></div></div>`;
+    }
+  }
+  h += `<div class="favrow add"><input type="text" class="inp" id="fav-new" maxlength="60" placeholder="Legg til f.eks. bacon" enterkeyhint="done"><button class="btn go" style="width:auto;flex:none" data-favadd>＋ Legg til</button></div></section>`;
+  return h;
+}
+
+function offerCard(o) {
+  const c = ch(o.chain), on = OF.tick.has(oid(o)), fav = isFavOffer(o);
+  const pre = o.pre_price != null ? ` <span class="pre">før ${esc(kr(o.pre_price))}</span>` : "";
+  const qty = o.quantity_text ? `<span class="d">${esc(o.quantity_text)}</span>` : "";
+  const up = o.unit_price != null && o.unit ? `<span class="d">${esc(kr(o.unit_price))} / ${esc(o.unit)}</span>` : "";
+  return `<div class="offc ${on ? "on" : ""} ${fav ? "fav" : ""}">
+    <label class="offlab"><input type="checkbox" data-offtick="${esc(oid(o))}" ${on ? "checked" : ""}>
+    <span class="offb">
+      <span class="offtop">${fav ? `<span class="starb">⭐</span>` : ""}<span class="chn">${esc(c.short)}</span><span class="rn">${esc(o.product)}</span></span>
+      <span class="offpr">${esc(kr(o.price))}${pre} ${qty} ${up}</span>
+      ${o.description ? `<span class="d">${esc(o.description)}</span>` : ""}
+      <span class="d">${esc(c.store)} · ${esc(distTxt(c))}</span>
+      <span class="d">${esc(validTxt(o))}</span>
+    </span></label>
+    <div class="offacts"><button type="button" class="btn sm" data-offshopadd="${esc(oid(o))}">Legg i handleliste</button></div>
+  </div>`;
+}
+
+function billigstBlock() {
+  const slots = wantedSlots();
+  if (!slots.length) return `<section class="card" id="billigst" style="margin-top:16px"><h2 style="margin:0 0 8px">Billigst</h2><p class="sub" style="margin:0">Kryss av varene du vil ha, så summerer vi tilbudspris per butikk. Varer som ikke står i avisen i en butikk merkes «ikke på tilbud her» – vi har ikke ordinære priser.</p></section>`;
+  const singles = bestSingle();
+  const pair = bestPair();
+  const best = singles[0];
+  let h = `<section class="card" id="billigst" style="margin-top:16px"><h2 style="margin:0 0 8px">Billigst for ${slots.length} ${slots.length === 1 ? "vare" : "varer"}</h2>`;
+  if (best) {
+    const miss = best.miss.length ? best.miss.map(s => s.label).join(", ") : "";
+    h += `<div class="bestbox"><div class="lab">Billigste enkeltbutikk</div><div class="rn">${esc(best.c.store)}</div>
+      <div class="offpr">${esc(kr(best.sum))} på tilbud (${best.got.length} av ${best.n})</div>
+      <div class="d">${esc(distTxt(best.c))}</div>
+      ${miss ? `<div class="warn" style="margin:8px 0 0">Ikke på tilbud her: ${esc(miss)}</div>` : ""}</div>`;
+  }
+  for (const b of singles) {
+    h += `<div class="storetot"><b>${esc(b.c.short)}</b><span>${esc(kr(b.sum))} · ${b.got.length}/${b.n} på tilbud</span><span class="d">${esc(distTxt(b.c))}</span>
+      <ul class="stot">${b.got.map(x => `<li>${esc(x.o.product)} — ${esc(kr(x.o.price))}</li>`).join("")}
+      ${b.miss.map(s => `<li class="miss">${esc(s.label)} — ikke på tilbud her</li>`).join("")}</ul></div>`;
+  }
+  if (pair && pair.got.length) {
+    const same = best && pair.got.length === best.got.length;
+    const save = same && best ? best.sum - pair.sum : null;
+    const coversMore = best && pair.got.length > best.got.length;
+    h += `<div class="bestbox two"><div class="lab">Beste to butikker</div>
+      <div class="rn">${esc(pair.ca.store)} + ${esc(pair.cb.store)}</div>
+      <div class="offpr">${esc(kr(pair.sum))} på tilbud (${pair.got.length} av ${slots.length})</div>
+      <div class="d">${esc(pair.ca.short)}: ${esc(distTxt(pair.ca))}<br>${esc(pair.cb.short)}: ${esc(distTxt(pair.cb))}</div>
+      ${save != null && save > 0.05 ? `<div class="hok">Spar ${esc(kr(save))} mot bare ${esc(best.c.short)}</div>` : ""}
+      ${coversMore ? `<div class="hok">Dekker flere tilbudsvarer enn én butikk alene.</div>` : ""}
+      ${save != null && save <= 0.05 && !coversMore ? `<p class="sub" style="margin:8px 0 0">To butikker er ikke billigere enn ${esc(best.c.short)} alene for varene som er på tilbud der.</p>` : ""}
+      <ul class="stot">${pair.got.map(x => `<li>${esc(x.o.product)} — ${esc(kr(x.o.price))} (${esc(ch(x.o.chain).short)})</li>`).join("")}
+      ${pair.miss.map(s => `<li class="miss">${esc(s.label)} — ikke på tilbud i noen av de to</li>`).join("")}</ul>
+    </div>`;
+  }
+  h += `<p class="sub" style="margin:10px 0 0">Summerer bare priser fra avisen. Mangler = «ikke på tilbud her», ikke anslått hyllepris.</p></section>`;
+  return h;
+}
+
+function cheapDinnerBlock() {
+  const dinners = cheapHealthy();
+  const ready = (offers || []).filter(isReadyMeal).filter(o => o.price != null).slice().sort((a, b) => a.price - b.price);
+  let h = `<section class="card" id="billigmiddag"><h2 style="margin:0 0 8px">Billig middag nå</h2>
+    <h3 class="offh">Sunnere og billig</h3>
+    <p class="sub" style="margin:0 0 8px">Middager fra rettbanken der hovedproteinet er på tilbud denne uka. Pris per porsjon er beregnet bare fra kjente tilbudspriser og merket «ca.». Ingredienser uten tilbud er ikke tatt med i summen.</p>`;
+  if (!dinners.length) h += `<div class="msg">Ingen middager der hovedproteinet har kjennbar tilbudspris denne uka.</div>`;
+  for (const x of dinners.slice(0, 6)) {
+    const r = x.r, c = x.c;
+    const cov = c.lines.map(l => l.name + " " + kr(l.kr)).join(", ");
+    const miss = c.miss.length ? " Ikke i summen (ingen kjennbar tilbudspris): " + c.miss.join(", ") + "." : "";
+    h += `<div class="hres cheap"><div class="rn">${esc(r.name)}</div>
+      <div class="rm">${r.protein != null ? r.protein + " g protein" : ""} ${r.kcal != null ? "· " + r.kcal + " kcal" : ""} ${r.minutes ? "· " + r.minutes + " min" : ""}</div>
+      <div class="offpr">ca. ${esc(kr(c.kr))} / porsjon <span class="d">(${c.used} av ${c.n} ingredienser på tilbud)</span></div>
+      <div class="d">${esc(cov)}.${esc(miss)}</div>
+      <div class="hplan"><button class="btn sm" data-rec="${r.id}">Oppskrift</button><button class="btn sm ${OF.open===r.id ? "go" : ""}" data-offplan="${r.id}">Legg i plan</button></div>
+      ${OF.open===r.id ? `<div class="hplan" style="margin-top:8px"><button class="btn go" data-offpd="${today()}">I dag</button><button class="btn go" data-offpd="${add(today(), 1)}">I morgen</button>
+        <div class="hdate"><input class="inp" type="date" id="off-date" value="${today()}" min="${today()}" aria-label="Velg dato"><button class="btn" data-offpd="pick">Legg til</button></div></div>` : ""}
+    </div>`;
+  }
+  h += `<h3 class="offh">Ferdigmat-kupp</h3>
+    <p class="sub" style="margin:0 0 8px">Grandiosa, frossenpizza, ferdigretter og lignende når de står i avisen. Pris per måltid = prisen i avisen for pakken (ikke oppdiktet). Protein er ikke oppgitt i avisen – sjekk pakken, eller boost med egg, kylling eller skyr ved siden av.</p>`;
+  if (!ready.length) h += `<div class="msg">Ingen ferdigmat på tilbud i de lastede avisene.</div>`;
+  for (const o of ready) {
+    const rec = readyRecipeHint(o);
+    const c = ch(o.chain);
+    const on = OF.tick.has(oid(o));
+    h += `<div class="hres cheap ready">
+      <label class="offlab"><input type="checkbox" data-offtick="${esc(oid(o))}" ${on ? "checked" : ""}>
+        <span class="offb"><span class="offtop">${isFavOffer(o) ? `<span class="starb">⭐</span>` : ""}<span class="chn">${esc(c.short)}</span><span class="rn">${esc(o.product)}</span></span>
+        <span class="offpr">${esc(kr(o.price))} / måltid <span class="d">(${esc(o.quantity_text || "1 pakke, prisen i avisen")})</span></span>
+        <span class="d">Protein: ikke oppgitt i avisen.${esc(rec)}</span>
+      </span></label>
+    </div>`;
+  }
+  return h + `</section>`;
+}
+
+function readyRecipeHint(o) {
+  const t = offText(o);
+  const hit = recipes.find(r => !r.hidden && /grandiosa/i.test(r.name) && /grandiosa/.test(t));
+  if (hit && hit.protein != null) return ` I rettbanken: «${hit.name}» har ${hit.protein} g protein og ${hit.kcal != null ? hit.kcal + " kcal" : "ukjent kcal"} per porsjon (oppskriften, ikke avisen).`;
+  return "";
+}
+
+function cheapHealthy() {
+  const out = [];
+  for (const r of recipes) {
+    if (r.hidden || r.kind !== "middag" || r.variant === "hurtig") continue;
+    if (/grandiosa|pizza|ferdig/i.test(r.name)) continue;
+    const c = recipeOfferCost(r);
+    if (!c.protOn || c.used < 1) continue;
+    out.push({r, c});
+  }
+  out.sort((a, b) => a.c.kr - b.c.kr || (b.r.protein || 0) - (a.r.protein || 0));
+  return out;
+}
+
+function recipesOnOfferBlock() {
+  const rows = cheapHealthy();
+  if (!rows.length) return "";
+  return `<section class="card" style="margin-top:14px"><h2 style="margin:0 0 8px">Retter som passer ukas tilbud</h2>
+    <p class="sub" style="margin:0 0 8px">Middager der hovedproteinet er på tilbud. Samme utvalg som «Sunnere og billig» over.</p>
+    <div class="stack">${rows.slice(0, 8).map(x => `<button class="btn sm" style="justify-content:space-between" data-rec="${x.r.id}"><span>${esc(x.r.name)}</span><span class="d">ca. ${esc(kr(x.c.kr))} · ${x.r.protein != null ? x.r.protein + " g" : ""}</span></button>`).join("")}</div>
+  </section>`;
+}
+
+async function favAdd() {
+  const i = $("#fav-new"), v = i ? i.value.trim() : ""; if (!v) return;
+  try {
+    await write(() => rpc("fav_add", {p_name: v}));
+    favs = await rpc("fav_list");
+    showToast("✓ Lagt til: " + v);
+  } catch (_) {}
+  render();
+}
+async function favSave(id) {
+  const i = $("#fav-ren"), v = i ? i.value.trim() : ""; if (!v) return;
+  try {
+    await write(() => rpc("fav_rename", {p_id: id, p_name: v}));
+    favs = await rpc("fav_list"); OF.rename = null;
+    showToast("✓ Oppdatert");
+  } catch (_) {}
+  render();
+}
+async function favDel(id) {
+  const old = (favs || []).find(f => f.id === id);
+  try {
+    await write(() => rpc("fav_remove", {p_id: id}));
+    favs = (favs || []).filter(f => f.id !== id);
+    showToast("Fjernet " + (old ? old.name : "favoritt"), async () => {
+      if (old) { await write(() => rpc("fav_add", {p_name: old.name})).catch(() => {}); favs = await rpc("fav_list"); render(); }
+    });
+  } catch (_) {}
+  render();
+}
+function tickFromShop() {
+  const names = (items || []).filter(i => !i.checked).map(i => i.name);
+  if (!names.length) { showToast("Ingen varer i handlelista"); return; }
+  let n = 0;
+  for (const name of names) {
+    const hits = offersForItem(name);
+    const by = {};
+    for (const o of hits) {
+      if (by[o.chain] == null || o.price < by[o.chain].price) by[o.chain] = o;
+    }
+    for (const o of Object.values(by)) { if (!OF.tick.has(oid(o))) { OF.tick.add(oid(o)); n++; } }
+  }
+  saveTick();
+  showToast(n ? "✓ Krysset av " + n + " tilbud fra lista" : "Ingen av varene er på tilbud i avisen");
+  render();
+  const el = $("#billigst"); if (el) el.scrollIntoView({block: "start"});
+}
+async function offerToShop(id) {
+  const o = (offers || []).find(x => oid(x) === String(id));
+  if (!o) return;
+  if (!curList) { showToast("Lag eller åpne en handleliste først"); return; }
+  const name = (o.product || "").slice(0, 80);
+  try {
+    await write(() => rpc("shop_add_item", {p_list: curList, p_name: name, p_category: o.category || "Annet"}));
+    items = await rpc("shop_items", {p_list: curList}); lists = await rpc("shop_lists");
+    showToast("✓ Lagt i handlelista: " + name);
+  } catch (_) {}
+  render();
+}
+
+document.addEventListener("click", e => {
+  const t = e.target.closest ? (e.target.closest("[data-offall],[data-offshop],[data-offfavs],[data-offfromshop],[data-offshopadd],[data-favadd],[data-favsave],[data-favcanc],[data-favren],[data-favdel],[data-offplan],[data-offpd],[data-offtick]") || e.target) : e.target;
+  if (t.dataset && t.dataset.offall != null) { OF.all = t.dataset.offall === "1"; render(); return; }
+  if (t.dataset && "offshop" in t.dataset && !t.dataset.offshopadd && t.dataset.offfromshop == null) { OF.shop = !OF.shop; render(); return; }
+  if (t.dataset && "offfavs" in t.dataset) { OF.favsOn = !OF.favsOn; render(); return; }
+  if (t.dataset && "offfromshop" in t.dataset) { tickFromShop(); return; }
+  if (t.dataset && t.dataset.offshopadd) { e.preventDefault(); offerToShop(t.dataset.offshopadd); return; }
+  if (t.dataset && "favadd" in t.dataset) { favAdd(); return; }
+  if (t.dataset && t.dataset.favsave) { favSave(+t.dataset.favsave); return; }
+  if (t.dataset && "favcanc" in t.dataset) { OF.rename = null; render(); return; }
+  if (t.dataset && t.dataset.favren) { OF.rename = +t.dataset.favren; render(); const i = $("#fav-ren"); if (i) i.focus(); return; }
+  if (t.dataset && t.dataset.favdel) { favDel(+t.dataset.favdel); return; }
+  if (t.dataset && t.dataset.offplan) { OF.open = OF.open === +t.dataset.offplan ? null : +t.dataset.offplan; render(); return; }
+  if (t.dataset && t.dataset.offpd) {
+    const r = R(OF.open); if (!r) return;
+    let d = t.dataset.offpd;
+    if (d === "pick") { d = ($("#off-date") || {}).value; if (!d) return; }
+    OF.open = null; render();
+    planAdd(d, r.kind === "middag" || !SL[r.kind] ? "middag" : r.kind, r.id);
+    return;
+  }
+});
+document.addEventListener("change", e => {
+  const t = e.target;
+  if (t && t.id === "off-q") return;
+  if (t && t.dataset && t.dataset.offtick) {
+    const id = t.dataset.offtick;
+    if (t.checked) OF.tick.add(id); else OF.tick.delete(id);
+    saveTick(); render();
+    return;
+  }
+});
+document.addEventListener("input", e => {
+  if (e.target && e.target.id === "off-q") { OF.q = e.target.value; /* live filter */ clearTimeout(OF._t); OF._t = setTimeout(() => render(), 200); }
+});
+document.addEventListener("keydown", e => {
+  if (e.key !== "Enter") return;
+  if (e.target && e.target.id === "fav-new") { e.preventDefault(); favAdd(); }
+  if (e.target && e.target.id === "fav-ren") { e.preventDefault(); const b = document.querySelector("[data-favsave]"); if (b) favSave(+b.dataset.favsave); }
+});
 </script>
 </body>
 </html>
