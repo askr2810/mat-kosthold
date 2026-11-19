@@ -315,6 +315,42 @@ body.cooking{overflow:hidden}
 .krow .btn{width:auto;flex:none;min-height:48px}
 .storetot.hi{background:var(--accbg);border-radius:12px;padding:8px}
 .save{color:var(--acc);font-weight:800}
+
+/* v6.0 hubs */
+.offpage{font-size:16px}
+.hubglance{display:flex;flex-direction:column;gap:8px;margin:10px 0 16px}
+.gday{display:flex;align-items:baseline;gap:10px;width:100%;min-height:52px;padding:10px 14px;border-radius:14px;border:2px solid var(--line);background:var(--card);color:var(--ink);text-align:left;font:inherit;cursor:pointer}
+.gday.today{border-color:var(--acc);background:var(--accbg)}
+.gday b{min-width:2.4em}
+.gday span{flex:1;font-weight:600}
+.hpin{background:var(--accbg);border:2px solid var(--acc);border-radius:16px;padding:10px 12px;margin:0 0 12px}
+.hpin .lnk{margin-top:6px}
+.hgrp{border:2px solid var(--line);border-radius:16px;margin:0 0 8px;background:var(--card);overflow:hidden}
+.hgt{display:flex;justify-content:space-between;align-items:center;width:100%;min-height:52px;padding:0 14px;border:0;background:none;color:var(--ink);font:inherit;font-weight:800;cursor:pointer}
+.hgrp .chips{padding:0 12px 12px}
+.hsticky{position:sticky;bottom:calc(var(--tb) + env(safe-area-inset-bottom) + 8px);z-index:8;padding:10px 0 4px;background:linear-gradient(transparent,var(--bg) 30%)}
+.hsticky .btn{min-height:56px;font-size:1.05rem}
+@media (prefers-color-scheme:dark){.hsticky{background:linear-gradient(transparent,var(--bg) 30%)}}
+
+/* compact filters v6.0 */
+html{scroll-padding-bottom:calc(var(--tb) + env(safe-area-inset-bottom) + 88px)}
+.filtrow{display:flex;align-items:center;gap:8px;margin:6px 0 8px}
+.filtrow .chiprow{flex:1;min-width:0;margin:0}
+.filtrow .filtbtn{flex:none}
+.chiprow{display:flex;flex-wrap:nowrap;align-items:center;gap:8px;overflow-x:auto;padding:0 2px 8px;margin:6px 0 8px;scrollbar-width:none;-webkit-overflow-scrolling:touch}
+.chiprow::-webkit-scrollbar{display:none}
+.chiprow .chip,.chiprow .filtbtn{flex:none}
+.seg{display:grid;grid-template-columns:1fr 1fr;gap:0;margin:4px 0 10px;border:2px solid var(--line);border-radius:16px;overflow:hidden;background:var(--card)}
+.segbtn{min-height:52px;border:0;background:transparent;color:var(--ink);font:inherit;font-weight:800;font-size:15px;cursor:pointer;padding:8px 10px}
+.segbtn.on{background:var(--acc);color:var(--onacc)}
+.hsum{display:block;width:100%;text-align:left;border:0;background:none;color:var(--mut);font:inherit;font-size:15px;font-weight:600;padding:0 0 6px;min-height:40px;cursor:pointer}
+.hsum b{color:var(--ink)}
+.havebody{padding-bottom:16px}
+.filtbtn{min-height:48px;font-weight:800}
+.fsheet{position:fixed;inset:0;z-index:50;background:rgba(15,21,18,.45);display:flex;align-items:flex-end;justify-content:center}
+.fsheetp{width:100%;max-width:640px;max-height:78vh;overflow:auto;background:var(--card);color:var(--ink);border-radius:20px 20px 0 0;padding:16px 16px calc(20px + env(safe-area-inset-bottom));box-shadow:0 -8px 28px rgba(0,0,0,.18);font-size:16px}
+.fshd{font-weight:800;font-size:1.15rem;margin:0 0 12px}
+@media (prefers-color-scheme:dark){.fsheet{background:rgba(0,0,0,.55)}}
 </style>
 </head>
 <body>
@@ -330,7 +366,8 @@ body.cooking{overflow:hidden}
   <button class="tab" data-t="tilbud"><b>🏷️</b>Tilbud</button>
   <button class="tab" data-t="fb"><b>💬</b>Feedback</button>
 </nav>
-<script>const URL_ = "https://yhzgdipjpdmovegbkybx.supabase.co", KEY = "eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJpc3MiOiJzdXBhYmFzZSIsInJlZiI6InloemdkaXBqcGRtb3ZlZ2JreWJ4Iiwicm9sZSI6ImFub24iLCJpYXQiOjE3OTAzMzY5NzcsImV4cCI6MjEwNTkxMjk3N30.13nVIkVWVIb-fh7oPKA1tHdCeX8tKqIpVi_o80rXIo4";
+<script>
+const URL_ = "https://yhzgdipjpdmovegbkybx.supabase.co", KEY = "eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJpc3MiOiJzdXBhYmFzZSIsInJlZiI6InloemdkaXBqcGRtb3ZlZ2JreWJ4Iiwicm9sZSI6ImFub24iLCJpYXQiOjE3OTAzMzY5NzcsImV4cCI6MjEwNTkxMjk3N30.13nVIkVWVIb-fh7oPKA1tHdCeX8tKqIpVi_o80rXIo4";
 const H = {apikey: KEY, Authorization: "Bearer " + KEY, "Content-Type": "application/json"};
 const TABS = ["idag", "plan", "handle", "retter", "tilbud", "fb"];
 const DK = ["Man","Tir","Ons","Tor","Fre","Lør","Søn"];
@@ -348,6 +385,8 @@ const GOAL = {kcal: [2100, 2300], prot: [130, 150]};
 
 let recipes = [], plan = [], entries = [], fb = [], lists = [], items = [], offers = [], favs = [];
 let tab = "idag", sel = ds(new Date()), viewMon = monday(ds(new Date())), curList = null, M = null, loaded = false;
+const NAV = {idag: null, plan: null, handle: null, retter: null, haveRes: false, fb: null, planDay: null};
+let hubNav = 0;
 const drafts = {}, logDraft = {}, logOpen = new Set(), catOpen = {}, showRec = new Set();
 let RF = {q: "", tag: "", kind: "", time: 0, eq: ""};
 let shopF = {from: ds(new Date()), days: 7, to: null, preview: null, busy: false};
@@ -892,6 +931,10 @@ async function saveRecipe() {
 function renderModal() {
   const el = $("#modal"), old = el.querySelector(".sh"), top = old ? old.scrollTop : 0, oldT = el.dataset.k || "";
   let inner = null;
+  if (M && M.t === "have") { M = null; }
+  if (M && M.t === "auto" && typeof NAV !== "undefined" && NAV.plan === "auto") {
+    el.innerHTML = ""; el.dataset.k = ""; document.body.classList.remove("nos"); return;
+  }
   if (M) {
     if (M.t === "pick") inner = pickHtml(M);
     else if (M.t === "entry") inner = entryHtml(M);
@@ -1099,10 +1142,10 @@ document.addEventListener("change", ev => {
   rec.checked = on; render();
   write(() => rpc("shop_toggle", {p_item: id, p_checked: on}), "Kunne ikke lagre. Sjekk nettforbindelsen.").catch(() => { rec.checked = !on; render(); });
 });
-{ const raw = location.hash.slice(1); if (raw === "tilbud" || raw.startsWith("tilbud/")) tab = "tilbud"; else if (TABS.includes(raw)) tab = raw; }
+{ const raw = location.hash.slice(1), t0 = raw.split("/")[0]; if (TABS.includes(t0)) tab = t0; }
 addEventListener("focus", load);
 document.addEventListener("visibilitychange", () => { if (!document.hidden) load(); });
-render(); load();
+/* start render+load i a11.js når NAV er klar */
 
 /* ---------- Auto-fyll ---------- */
 const AMODES = [["mix","🎲","Blanding","Favoritter, noe fra lenge siden og 1–2 nye"],["lenge","⏳","Ikke spist på lenge","Det du ikke har hatt på lengst"],["ny","🆕","Noe nytt","Retter du ikke har prøvd"],["fav","❤️","Favoritter","Det du liker godt"],["raskt","⚡","Raskt","Maks 25 minutter"],["prot","💪","Høy protein","Mest protein per porsjon"],["oppvask","🧽","Lite oppvask","Airfryer, riskoker, én panne"]];
@@ -2546,7 +2589,7 @@ function renderKeep() {
 }
 function chipCh(id) { const c = ch(id); return `<span class="chn chn-${esc(c.color || id)}">${esc(c.short)}</span>`; }
 function catChips() {
-  return `<div class="chips offcats">${OFF_CATS.map(([id, lab]) =>
+  return `<div class="chiprow offcats">${OFF_CATS.map(([id, lab]) =>
     `<button type="button" class="chip ${OF.cat === id ? "on" : ""}" data-offcat="${esc(id)}">${esc(lab)}</button>`
   ).join("")}</div>`;
 }
@@ -2555,12 +2598,12 @@ function packBar(compact) {
   const packs = Object.entries((STORES_CFG && STORES_CFG.packages) || {}).map(([id, p]) => ({id, ...p}));
   packs.push({id: "egendefinert", name: "Egendefinert", blurb: "Kryss av kjedene du vil se"});
   const cur = packs.find(p => p.id === PACK.id) || packs[0];
-  let h = `<div class="packsel${compact ? " sm" : ""}"><div class="lab">Butikkpakke</div><div class="chips">`;
+  let h = `<div class="packsel${compact ? " sm" : ""}"><div class="lab">Butikkpakke</div><div class="${compact ? "chiprow" : "chips"}">`;
   h += packs.map(p => `<button type="button" class="chip ${PACK.id === p.id ? "on" : ""}" data-offpack="${esc(p.id)}">${esc(p.name)}</button>`).join("");
   h += `</div>`;
   if (!compact && cur && cur.blurb) h += `<p class="sub" style="margin:6px 0 0">${esc(cur.blurb)}</p>`;
   if (PACK.id === "egendefinert") {
-    h += `<div class="chips">${ALL_CHAINS.map(id => `<button type="button" class="chip ${(PACK.custom || []).includes(id) ? "on" : ""}" data-offpchain="${esc(id)}">${esc(ch(id).short)}</button>`).join("")}</div>`;
+    h += `<div class="${compact ? "chiprow" : "chips"}">${ALL_CHAINS.map(id => `<button type="button" class="chip ${(PACK.custom || []).includes(id) ? "on" : ""}" data-offpchain="${esc(id)}">${esc(ch(id).short)}</button>`).join("")}</div>`;
   }
   return h + `</div>`;
 }
@@ -3043,10 +3086,732 @@ document.addEventListener("keydown", e => {
 });
 addEventListener("popstate", () => {
   offNav = Math.max(0, offNav - 1);
-  applyOffHash();
+  if (typeof hubNav !== "undefined") hubNav = Math.max(0, hubNav - 1);
+  if (typeof applyHubHash === "function") applyHubHash();
+  else applyOffHash();
   if (loaded) { render(); scrollTo(0, 0); }
 });
 applyOffHash();
+/* ---------- App-hubber (v6.0) – samme mønster som Tilbud ---------- */
+const HUB_VIEWS = {
+  idag: [null, "mer"],
+  plan: [null, "uke", "auto", "dato", "rester", "historikk"],
+  handle: [null, "liste", "ny", "tidligere"],
+  retter: [null, "have", "sok", "favs", "nytt", "raske", "protein", "smak", "ny"],
+  fb: [null, "historikk"]
+};
+
+function hubHash() {
+  if (tab === "tilbud" && typeof tilbudHash === "function") return tilbudHash();
+  const v = NAV[tab];
+  if (tab === "retter" && v === "have" && NAV.haveRes) return "#retter/have/resultat";
+  if (!v) return "#" + tab;
+  return "#" + tab + "/" + v;
+}
+function applyHubHash() {
+  const raw = (location.hash || "").slice(1);
+  const parts = raw.split("/").filter(Boolean);
+  const t0 = parts[0];
+  if (t0 === "tilbud") {
+    if (typeof applyOffHash === "function") applyOffHash();
+    return;
+  }
+  if (TABS.includes(t0)) tab = t0;
+  NAV.haveRes = false;
+  if (!t0 || !HUB_VIEWS[tab]) return;
+  let v = parts[1] || null;
+  if (tab === "retter" && v === "have" && parts[2] === "resultat") { NAV.retter = "have"; NAV.haveRes = true; return; }
+  const allow = HUB_VIEWS[tab];
+  NAV[tab] = allow.includes(v) ? v : null;
+}
+function go(t, view) {
+  tab = t;
+  Object.keys(HUB_VIEWS).forEach(k => { if (k !== t) { /* keep other tab views */ } });
+  if (HUB_VIEWS[t]) NAV[t] = view || null;
+  if (t === "retter" && view !== "have") NAV.haveRes = false;
+  if (t === "tilbud" && typeof OF !== "undefined" && !view) { OF.view = null; OF.store = null; }
+  const hash = (t === "tilbud" && !view && typeof tilbudHash === "function") ? "#tilbud" : (view ? "#" + t + "/" + view : "#" + t);
+  history.replaceState({tab: t, view: view || null}, "", hash);
+  render();
+  scrollTo(0, 0);
+}
+function goHub(view, extra) {
+  if (typeof view === "string" && view.includes("/")) {
+    const [t, v, more] = view.split("/");
+    if (t === "tilbud") {
+      tab = "tilbud";
+      if (typeof goOff === "function") { goOff(v, more || null); return; }
+    }
+    tab = t;
+    view = v;
+    if (t === "retter" && v === "have" && more === "resultat") NAV.haveRes = true;
+  }
+  if (tab === "tilbud" && typeof goOff === "function") { goOff(view, extra); return; }
+  if (view === "auto") return openAuto(extra || null);
+  if (view === "ny" && tab === "retter") { NAV.retter = "ny"; openEdit(null); return; }
+  NAV[tab] = view || null;
+  if (!(tab === "retter" && view === "have" && NAV.haveRes)) {
+    if (tab === "retter" && view !== "have") NAV.haveRes = false;
+  }
+  hubNav++;
+  history.pushState({tab, view: NAV[tab], haveRes: NAV.haveRes}, "", hubHash());
+  render();
+  scrollTo(0, 0);
+}
+function hubBack() {
+  if (hubNav > 0 || offNav > 0) { history.back(); return; }
+  NAV[tab] = null;
+  NAV.haveRes = false;
+  if (tab === "plan" && M && M.t === "auto") M = null;
+  history.replaceState({tab, view: null}, "", "#" + tab);
+  render();
+  scrollTo(0, 0);
+}
+function hubBar(title, backLabel) {
+  return `<div class="offpage"><div class="offbar"><button type="button" class="btn sm offback" data-hubback>← ${esc(backLabel || "Tilbake")}</button></div><h1>${esc(title)}</h1>`;
+}
+function hubTile(go, ico, title, sub) {
+  return `<button type="button" class="offtile" data-hubgo="${esc(go)}"><span class="otico">${ico}</span><span class="ottxt"><b>${esc(title)}</b><span>${esc(sub)}</span></span></button>`;
+}
+
+/* ---------- I dag ---------- */
+function viewIdag() {
+  if (NAV.idag === "mer") return viewIdagMer();
+  const d = sel, sm = monday(d);
+  let h = `<div class="offpage"><div class="strip">${DK.map((x, i) => { const dd = add(sm, i); return `<button class="pill ${dd === d ? "on" : ""} ${dd === today() ? "today" : ""}" data-sel="${dd}">${x}<i class="${dayState(dd)}"></i></button>`; }).join("")}</div>`;
+  const rel = relDay(d);
+  h += `<h1>${rel ? rel + " · " : ""}${DL[wd(d)]}</h1><p class="offsum">${esc(fmt(d, {day: "numeric", month: "long"}))} · uke ${isoWeek(d)}</p>`;
+  if (d !== today()) h += `<div class="back"><button class="btn sm" data-sel="${today()}">⟵ Tilbake til i dag</button></div>`;
+  const ps = planOf(d);
+  for (const p of ps) {
+    const r = R(p.recipe_id) || {name: "(slettet rett)", ing: []}, k = "p:" + p.id, nfb = fb.filter(f => f.recipe_id === p.recipe_id).length;
+    h += `<section class="card" id="pe${p.id}"><div class="lab">${SI[p.slot]} ${SL[p.slot]}</div><h2>${esc(pname(p, r))}</h2>${restInfo(p)}
+      <div class="d">${esc(nutri(r))} · per porsjon${+p.portions !== 1 ? " · lag " + num(p.portions) + " porsjoner" : ""}</div>
+      ${r.veg_addon ? `<div class="note">🥦 ${esc(r.veg_addon)}</div>` : ""}
+      ${logButtons(k)}
+      ${p.slot === "middag" ? dblBlock(p) : ""}
+      <div class="grid2" style="margin-top:10px"><button class="btn sm" data-showrec="${p.id}">${showRec.has(p.id) ? "Skjul oppskrift" : "📖 Oppskrift"}</button><button class="btn sm" data-fb="${k}">💬 Tilbakemelding${nfb ? " (" + nfb + ")" : ""}</button></div>
+      ${showRec.has(p.id) ? recipeBody(r, p.portions) : ""}</section>`;
+  }
+  if (!ps.some(p => p.slot === "middag")) h += `<section class="card"><div class="lab">🍽️ Middag</div><div class="d">Ingen middag planlagt ${d === today() ? "i dag" : "denne dagen"}.</div><div class="stack"><button class="btn go" data-pick="${d}" data-slot="middag">＋ Velg middag</button></div></section>`;
+  const nLog = dayItems(d).filter(x => !x.skip).length;
+  h += `<nav class="offhub">${hubTile("mer", "➕", "Mer", nLog ? nLog + " andre måltider · dagsmål og mer logging" : "Legg til annet måltid, dagsmål og mer")}</nav></div>`;
+  return h;
+}
+function viewIdagMer() {
+  const d = sel, hn = hhmm();
+  const li = dayItems(d), n = li.filter(x => !x.skip).length;
+  const ps = planOf(d);
+  const kc = ps.reduce((s, p) => s + ((R(p.recipe_id) || {}).kcal || 0), 0), pr = ps.reduce((s, p) => s + ((R(p.recipe_id) || {}).protein || 0), 0);
+  let h = hubBar("Mer i dag", "I dag");
+  h += `<p class="sub">${esc(DL[wd(d)])} ${esc(fmt(d))}</p>`;
+  h += `<div class="stack"><button class="btn go" data-add>＋ Legg til måltid</button>
+    <button class="btn sm" data-pick="${d}" data-slot="${hn < "10:00" ? "frokost" : hn < "14:00" ? "lunsj" : "snack"}">＋ Planlegg en rett til</button></div>`;
+  h += `<section class="card" id="sl"><div class="lab">🍴 Annet i dag</div><div class="cntb">${cntTxt(n)} ${d === today() ? "i dag" : "logget"}</div>
+    ${li.length ? `<div style="margin-top:10px">${li.map(x => `<div class="le ${x.skip ? "skip" : ""}"><div class="lt">${x.time ? esc(x.time) : x.icon}</div><div class="lm"><div class="ln">${esc(x.name)}</div><div class="ls">${esc(x.sub)}</div></div><button class="lx" ${x.eid ? `data-deid="${x.eid}"` : `data-dlk="${x.k}"`} aria-label="Fjern">✕</button></div>`).join("")}</div>` : `<div class="hint" style="margin-top:10px">Ingenting logget ennå.</div>`}</section>`;
+  h += `<div class="card" style="background:var(--accbg)"><b>Dagsmål: ${GOAL.kcal[0]}–${GOAL.kcal[1]} kcal · ${GOAL.prot[0]}–${GOAL.prot[1]} g protein</b>
+    <div>Planlagt i dag (1 porsjon av hver): ca. ${kc} kcal · ${pr} g protein.${pr < GOAL.prot[0] ? " Fyll på med f.eks. skyr, proteinshake eller egg." : ""}</div></div></div>`;
+  return h;
+}
+
+/* ---------- Plan ---------- */
+function planWeekSummary() {
+  const end = add(viewMon, 6);
+  const wk = plan.filter(p => p.date >= viewMon && p.date <= end);
+  const dn = new Set(wk.filter(p => p.slot === "middag").map(p => p.date)).size;
+  return {end, wk, dn};
+}
+function planGlance() {
+  let h = `<div class="hubglance">`;
+  for (let i = 0; i < 7; i++) {
+    const d = add(viewMon, i), ps = planOf(d), din = ps.find(p => p.slot === "middag");
+    const r = din ? (R(din.recipe_id) || {name: "?"}) : null;
+    h += `<button type="button" class="gday ${d === today() ? "today" : ""}" data-hubgo="uke" data-planday="${d}">
+      <b>${DK[i]}</b><span>${r ? esc(pname(din, r)) : "Ingen middag"}</span><span class="d">${ps.length ? ps.length + " måltid" + (ps.length > 1 ? "er" : "") : ""}</span></button>`;
+  }
+  return h + `</div>`;
+}
+function viewPlan() {
+  if (NAV.plan === "uke") return viewPlanUke();
+  if (NAV.plan === "auto") return viewPlanAuto();
+  if (NAV.plan === "dato") return viewPlanDato();
+  if (NAV.plan === "rester") return viewPlanRester();
+  if (NAV.plan === "historikk") return viewPlanHist();
+  const {end, wk, dn} = planWeekSummary();
+  return `<div class="offpage"><h1>Plan</h1>
+    <p class="offsum">Uke ${isoWeek(viewMon)} · ${esc(fmt(viewMon))} – ${esc(fmt(end))} · ${dn} av 7 middager · ${wk.length} ${wk.length === 1 ? "rett" : "retter"} totalt</p>
+    ${planGlance()}
+    <nav class="offhub">
+      ${hubTile("uke", "📅", "Ukens plan", "Åpne dagen, legg til og endre retter")}
+      ${hubTile("auto", "✨", "Auto-fyll", "Få middagsforslag for uka eller én dag")}
+      ${hubTile("dato", "🗓️", "Velg uke/dato", "Bytt uke eller hopp til en dato")}
+      ${hubTile("rester", "🍲", "Rester / 2x", "Lag dobbelt og spis rester dagen etter")}
+      ${hubTile("historikk", "🕑", "Historikk", "Hva du har spist den siste tiden")}
+    </nav></div>`;
+}
+function viewPlanUke() {
+  const {end, wk, dn} = planWeekSummary();
+  let h = hubBar("Ukens plan", "Plan");
+  h += `<div class="wkn"><button class="btn" data-wk="-1" aria-label="Forrige uke">◀</button><div class="c"><b>Uke ${isoWeek(viewMon)}</b><span>${esc(fmt(viewMon))} – ${esc(fmt(end))}</span></div><button class="btn" data-wk="1" aria-label="Neste uke">▶</button></div>`;
+  h += `<p class="offsum">🍽️ ${dn} av 7 middager · ${wk.length} ${wk.length === 1 ? "rett" : "retter"} totalt</p>`;
+  for (let i = 0; i < 7; i++) {
+    const d = add(viewMon, i), ps = planOf(d);
+    h += `<section class="pday ${d === today() ? "today" : ""}" id="pd-${d}"><div class="ph"><div><b>${DL[i]}</b><span>${esc(fmt(d))}${relDay(d) ? " · " + relDay(d) : ""}</span></div>${d >= today() ? `<button class="btn aut" data-auto="${d}" aria-label="Auto-fyll middag ${DL[i]}">✨</button>` : ""}</div>`;
+    for (const p of ps) {
+      const r = R(p.recipe_id) || {name: "(slettet rett)"};
+      h += `<button class="pe ${p.status ? SC[p.status] : ""}" data-pe="${p.id}"><span class="ic">${SI[p.slot]}</span><span class="pm"><span class="pn">${esc(pname(p, r))}</span>${leftOf(p) ? ` <span class="b2x">2x</span>` : ""}<br><span class="ps">${SL[p.slot]} · ${num(p.portions)} porsj.${p.status ? " · " + esc(statusText(p)) : ""}</span></span><span class="d">›</span></button>`;
+    }
+    if (!ps.some(p => p.slot === "middag")) h += `<button class="pe addd" data-pick="${d}" data-slot="middag">＋ Middag</button>`;
+    h += `<button class="pe addd" style="min-height:52px" data-pick="${d}" data-slot="frokost">＋ Annet måltid</button></section>`;
+  }
+  h += `<div class="stack"><button class="btn go" data-shopweek>🛒 Lag handleliste for uke ${isoWeek(viewMon)}</button></div></div>`;
+  return h;
+}
+function viewPlanAuto() {
+  if (!M || M.t !== "auto") {
+    return hubBar("Auto-fyll", "Plan") + `<div class="stack"><button class="btn go" data-auto="">✨ Start auto-fyll for uka</button></div></div>`;
+  }
+  const body = autoHtml(M).replace(closeB, "");
+  return hubBar("Auto-fyll", "Plan") + body + `</div>`;
+}
+function viewPlanDato() {
+  const {end, dn} = planWeekSummary();
+  return hubBar("Velg uke/dato", "Plan") + `
+    <div class="wkn"><button class="btn" data-wk="-1" aria-label="Forrige uke">◀</button><div class="c"><b>Uke ${isoWeek(viewMon)}</b><span>${esc(fmt(viewMon))} – ${esc(fmt(end))}</span></div><button class="btn" data-wk="1" aria-label="Neste uke">▶</button></div>
+    <p class="offsum">${dn} av 7 middager planlagt</p>
+    <div class="stack"><button class="btn sm" data-wk="0">⟵ Denne uka</button></div>
+    <label class="lbl" for="pl-date">Hopp til dato</label>
+    <input type="date" class="inp" id="pl-date" value="${esc(sel)}">
+    <div class="stack"><button class="btn go" data-pljump>Gå til dato</button></div>
+    ${planGlance()}
+    </div>`;
+}
+function viewPlanRester() {
+  const end = add(viewMon, 6);
+  const dinners = plan.filter(p => p.date >= viewMon && p.date <= end && p.slot === "middag" && p.date >= today() && !p.leftover_of);
+  let h = hubBar("Rester / 2x", "Plan");
+  h += `<p class="sub">Lag dobbelt av en middag og spis rester neste dag. Gjelder middager fra i dag og ut uka som vises.</p>`;
+  if (!dinners.length) h += `<div class="msg">Ingen kommende middager å lage 2x av i uke ${isoWeek(viewMon)}. Legg inn middag i ukens plan først.</div>`;
+  for (const p of dinners) {
+    const r = R(p.recipe_id) || {name: "?"};
+    h += `<section class="card"><div class="lab">${DL[wd(p.date)]} ${esc(fmt(p.date))}</div><h2>${esc(pname(p, r))}</h2>${dblBlock(p)}</section>`;
+  }
+  return h + `</div>`;
+}
+function viewPlanHist() {
+  const src = [...(hist || []), ...plan];
+  const seen = new Set();
+  const rows = src.filter(p => {
+    if (seen.has(p.id) || p.date > today()) return false;
+    seen.add(p.id);
+    return p.status && p.status !== "hoppet_over";
+  }).sort((a, b) => b.date.localeCompare(a.date) || (SORD.indexOf(a.slot) - SORD.indexOf(b.slot)));
+  const le = lastEaten();
+  let h = hubBar("Historikk", "Plan");
+  h += `<p class="sub">Loggede måltider og når du spiste rettene sist. Vi viser det vi har lastet (ca. de siste ukene).</p>`;
+  if (!rows.length && !Object.keys(le).length) h += `<div class="msg">Ingen historikk lastet ennå.</div>`;
+  const byDay = {};
+  for (const p of rows.slice(0, 60)) (byDay[p.date] = byDay[p.date] || []).push(p);
+  for (const d of Object.keys(byDay).sort().reverse().slice(0, 21)) {
+    h += `<h2 style="margin:16px 0 6px">${esc(relDay(d) || DL[wd(d)])} ${esc(fmt(d))}</h2>`;
+    for (const p of byDay[d]) {
+      const r = R(p.recipe_id) || {name: "?"};
+      h += `<button class="rc" data-rec="${p.recipe_id}"><div class="rn">${SI[p.slot] || ""} ${esc(pname(p, r))}</div><div class="rm">${esc(statusText(p))}</div></button>`;
+    }
+  }
+  return h + `</div>`;
+}
+
+/* ---------- Handle ---------- */
+function listCard(L, compact) {
+  if (!L) return `<div class="msg">Ingen aktiv handleliste ennå.</div>`;
+  const got = items.filter(i => i.checked).length;
+  const left = items.filter(i => !i.checked).slice(0, compact ? 4 : 0);
+  return `<section class="card" id="curlist"><div class="lab">Aktiv liste</div><h2 style="margin:0 0 6px">${esc(L.title)}</h2>
+    <p class="sub">Laget ${esc(new Date(L.created_at).toLocaleDateString("nb-NO", {day: "numeric", month: "short"}))}. Oppdateres ikke av seg selv hvis du endrer planen.</p>
+    <div class="bar"><div class="prog"><i style="width:${items.length ? Math.round(got / items.length * 100) : 0}%"></i></div><span class="cnt">${got} av ${items.length} kjøpt</span></div>
+    ${compact && left.length ? `<ul class="stot">${left.map(i => `<li>${esc(i.name)}</li>`).join("")}${items.filter(i => !i.checked).length > left.length ? `<li class="d">… og ${items.filter(i => !i.checked).length - left.length} til</li>` : ""}</ul>` : ""}
+    ${compact ? `<div class="stack"><button class="btn go" data-hubgo="liste">Åpne lista</button></div>` : ""}</section>`;
+}
+function viewHandle() {
+  if (NAV.handle === "liste") return viewHandleListe();
+  if (NAV.handle === "ny") return viewHandleNy();
+  if (NAV.handle === "tidligere") return viewHandlePrev();
+  const L = lists.find(l => l.id === curList);
+  const others = lists.filter(l => l.id !== curList).length;
+  const shopN = (items || []).filter(i => !i.checked).length;
+  let h = `<div class="offpage"><h1>Handle</h1>`;
+  h += L ? `<p class="offsum">${esc(L.title)} · ${shopN} gjenstår av ${items.length}</p>` : `<p class="offsum">Ingen aktiv liste – lag en fra planen</p>`;
+  h += listCard(L, true);
+  h += `<nav class="offhub">
+    ${hubTile("ny", "🛒", "Ny liste", "5, 7 eller 14 dager – eller velg datoer selv")}
+    ${hubTile("tilbud/hvor", "📍", "Hvor bør jeg handle?", shopN ? "Anbefaling ut fra lista (" + shopN + " varer)" : "Bruker den aktive handlelista")}
+    ${hubTile("tidligere", "📂", "Tidligere lister", others ? others + " andre lister" : "Ingen andre lister akkurat nå")}
+  </nav></div>`;
+  return h;
+}
+function viewHandleListe() {
+  const L = lists.find(l => l.id === curList);
+  let h = hubBar(L ? L.title : "Handleliste", "Handle");
+  if (!L) {
+    h += `<div class="msg">Ingen handleliste ennå.</div><div class="stack"><button class="btn go" data-hubgo="ny">🛒 Lag ny liste</button></div></div>`;
+    return h;
+  }
+  const got = items.filter(i => i.checked).length;
+  h += `<p class="sub">Laget ${esc(new Date(L.created_at).toLocaleDateString("nb-NO", {day: "numeric", month: "short"}))}. Oppdateres ikke av seg selv hvis du endrer planen – lag en ny liste da.</p>
+    <div class="bar"><div class="prog"><i style="width:${items.length ? Math.round(got / items.length * 100) : 0}%"></i></div><span class="cnt">${got} av ${items.length} kjøpt</span></div>
+    <div class="stack" style="margin:0 0 12px"><button type="button" class="btn go" data-offhvor>📍 Hvor bør jeg handle?</button></div>`;
+  const cats = CATS.filter(c => items.some(i => i.category === c)).concat([...new Set(items.map(i => i.category))].filter(c => !CATS.includes(c)));
+  for (const c of cats) {
+    const its = items.filter(i => i.category === c), g = its.filter(i => i.checked).length, open = catOpen[c] ?? (g < its.length);
+    h += `<button class="gh" data-cat="${esc(c)}"><div>${esc(c)}</div><span>${g}/${its.length} ${open ? "▾" : "▸"}</span></button>`;
+    if (open) h += [...its.filter(i => !i.checked), ...its.filter(i => i.checked)].map(i => `<label class="it ${i.checked ? "got" : ""}" data-id="${i.id}"><input type="checkbox" ${i.checked ? "checked" : ""}><span style="flex:1;min-width:0"><span class="n">${esc(i.name)}</span>${i.qty != null ? ` <span class="q">– ${esc(qtyTxt(i.qty, i.unit))}</span>` : ""}${i.note ? ` <span class="q">– ${esc(i.note)}</span>` : ""}${i.at_home ? `<br><span class="tag">Sjekk om du har</span>` : ""}${typeof offerHint === "function" ? offerHint(i.name) : ""}${i.recipes ? `<span class="rr">Til: ${esc(i.recipes)}</span>` : ""}</span>${i.manual ? `<button class="ix" data-rmitem="${i.id}" aria-label="Fjern">✕</button>` : ""}</label>`).join("");
+  }
+  h += `<div class="card" style="margin-top:16px"><label class="lbl" style="margin-top:0" for="sh-new">Legg til noe selv</label><div class="row"><input type="text" class="inp" id="sh-new" maxlength="60" placeholder="F.eks. dopapir" enterkeyhint="done"><button class="btn go" style="width:auto;flex:none;padding:0 22px" data-additem aria-label="Legg til vare">＋</button></div></div>
+    <div class="grid2"><button class="btn sm" data-shreset>Nullstill avkryssing</button><button class="btn sm" data-sharch>Arkiver lista</button></div></div>`;
+  return h;
+}
+function viewHandleNy() {
+  const [f, t] = shopRange(), bad = t < f ? "Til-dato er før fra-dato." : diffDays(f, t) > 31 ? "Maks 32 dager om gangen." : "";
+  const pv = shopF.preview && shopF.preview.key === f + t ? shopF.preview : null;
+  if (!pv && !bad) updatePreview();
+  const lf = s => esc(fmt(s, {weekday: "short", day: "numeric", month: "short"}));
+  return hubBar("Ny liste", "Handle") + `<section class="card"><div class="lab">Lag ny liste fra planen</div>
+    <label class="lbl" style="margin-top:0" for="sh-from">Fra dato</label><input type="date" class="inp" id="sh-from" value="${esc(f)}">
+    <div class="chips"><button class="chip ${f === today() ? "on" : ""}" data-shfrom="${today()}">Fra i dag</button><button class="chip ${f === add(today(), 1) ? "on" : ""}" data-shfrom="${add(today(), 1)}">Fra i morgen</button><button class="chip ${f === add(monday(today()), 7) ? "on" : ""}" data-shfrom="${add(monday(today()), 7)}">Fra neste mandag</button></div>
+    <label class="lbl">Hvor mange dager?</label>
+    <div class="prot" style="margin:0">${[5, 7, 14].map(n => `<button class="chip ${shopF.days === n ? "on" : ""}" data-shdays="${n}">${n} dager</button>`).join("")}</div>
+    <div class="chips"><button class="chip ${!shopF.days ? "on" : ""}" data-shdays="0">Velg til-dato selv</button></div>
+    ${!shopF.days ? `<label class="lbl" for="sh-to">Til og med</label><input type="date" class="inp" id="sh-to" value="${esc(t)}">` : ""}
+    <div class="sum" style="margin:12px 0 0">📅 ${lf(f)} – ${lf(t)} (${diffDays(f, t) + 1} dager)${pv ? `<br>${pv.n} ${pv.n === 1 ? "rett" : "retter"} planlagt, ${pv.dn} middager` : ""}</div>
+    ${bad ? `<div class="bad">${bad}</div>` : pv && pv.n === 0 ? `<div class="warn" style="margin:10px 0 0">Ingen retter planlagt i perioden. Planlegg først i 📅 Plan.</div>` : ""}
+    <div class="stack"><button class="btn go" data-shgen ${bad || shopF.busy || (pv && pv.n === 0) ? "disabled" : ""}>${shopF.busy ? "Lager liste …" : "🛒 Lag handleliste"}</button></div></section></div>`;
+}
+function viewHandlePrev() {
+  const others = lists.filter(l => l.id !== curList);
+  let h = hubBar("Tidligere lister", "Handle");
+  if (!others.length) h += `<div class="msg">Ingen andre lister. Arkiverte lister vises ikke her.</div>`;
+  else h += `<div class="stack lists" style="margin-top:0">${others.map(l => `<button class="btn sm" style="justify-content:space-between;text-align:left" data-list="${l.id}"><span>${esc(l.title)}</span><span class="d">${l.checked}/${l.total}</span></button>`).join("")}</div>`;
+  return h + `</div>`;
+}
+
+/* ---------- Retter ---------- */
+function isSpicy(r) {
+  const t = ((r.name || "") + " " + (r.steps || "") + " " + (r.tips || "") + " " + (r.ing || []).map(i => i.name).join(" ")).toLowerCase();
+  return /gochujang|harissa|chipotle|peri.?peri|jerk|chilie?|sriracha|sambal|cayenne|diavola|arrabbiata|pad kra|kimchi|szechuan|sichuan|jalape|habanero|piri|nduja|spicy|sterk saus|sterk chili/.test(t);
+}
+const HAVE_GROUPS = [
+  ["Protein", ["kylling", "kjøttdeig", "egg", "eggehvite", "laks", "torsk", "reker", "bacon", "skinke", "pølser", "chorizo", "biff", "svinekjøtt"]],
+  ["Karbo", ["ris", "pasta", "nudler", "poteter", "tortilla", "brød", "cream of rice", "mais"]],
+  ["Grønt/frukt", ["løk", "paprika", "brokkoli", "gulrot", "hakkede tomater", "bønner"]],
+  ["Meieri", ["fløte", "ost", "rømme", "skyr/yoghurt", "melk"]],
+  ["Saus/annet", ["gochujang", "harissa", "chipotle", "peri peri-saus", "jerkkrydder", "chilisaus"]]
+];
+function ensureHave() {
+  if (!Array.isArray(HV.sel)) HV.sel = [];
+  if (HV.kind === undefined) HV.kind = HV.all ? "" : "middag";
+  if (HV.time == null) HV.time = 0;
+  if (!HV.vmode) HV.vmode = "";
+  if (!HV.sort) HV.sort = "match";
+  if (!HV.rtab) HV.rtab = "now";
+  if (!HV.grp) HV.grp = {};
+}
+function haveFiltered() {
+  ensureHave();
+  let res = haveMatchRaw();
+  if (HV.kind) res = res.filter(x => x.r.kind === HV.kind);
+  if (HV.time) res = res.filter(x => {
+    const r = showRecipe(x.r);
+    return (r.minutes || 999) <= HV.time;
+  });
+  if (HV.vmode === "hurtig") res = res.filter(x => x.r.variant === "hurtig" || hurtigOf(x.r) || (x.r.minutes || 999) <= 20);
+  if (HV.vmode === "bunnen") res = res.filter(x => x.r.variant !== "hurtig");
+  if (HV.smak) res = res.filter(x => isSpicy(x.r));
+  const sort = HV.sort;
+  res.sort((a, b) => {
+    if (sort === "protein") return (b.r.protein || 0) - (a.r.protein || 0) || a.miss.length - b.miss.length;
+    if (sort === "time") return (showRecipe(a.r).minutes || 999) - (showRecipe(b.r).minutes || 999) || a.miss.length - b.miss.length;
+    return a.miss.length - b.miss.length || b.hit / b.n - a.hit / a.n || (b.r.protein || 0) - (a.r.protein || 0);
+  });
+  return res;
+}
+function haveMatchRaw() {
+  const have = new Set(HV.sel), out = [];
+  const wantAll = !HV.kind;
+  for (const r of recipes) {
+    if (r.hidden || r.variant === "hurtig") continue;
+    if (!wantAll && r.kind !== HV.kind && !(HV.kind === "middag" && false)) {
+      /* kind filter applied later too; here include all kinds if we will filter after, so count on pick uses kind */
+    }
+    if (HV.kind && r.kind !== HV.kind) continue;
+    const need = needsOf(r); if (!need.size) continue;
+    const miss = [...need.keys()].filter(k => !have.has(k)), hit = need.size - miss.length;
+    if (!hit || miss.length > 2) continue;
+    out.push({r, miss, missIng: miss.map(k => need.get(k)), hit, n: need.size});
+  }
+  return out;
+}
+function showRecipe(r) { return HV.vmode === "hurtig" && hurtigOf(r) ? hurtigOf(r) : r; }
+function openHave() {
+  tab = "retter";
+  NAV.retter = "have";
+  NAV.haveRes = false;
+  if (M && M.t === "have") M = null;
+  if (!M || M.t !== "haveui") M = {t: "haveui", q: "", open: null, date: add(today(), 2)};
+  goHub("have");
+}
+function haveCount() { ensureHave(); return haveFiltered().length; }
+
+function viewRetter() {
+  const v = NAV.retter;
+  if (v === "have") return NAV.haveRes ? viewHaveResults() : viewHavePick();
+  if (v === "sok") return viewRetterBrowse("Søk og bla", "");
+  if (v === "favs") return viewRetterBrowse("Favoritter / Liker", "favsliker");
+  if (v === "nytt") return viewRetterBrowse("Prøv noe nytt", "prøv");
+  if (v === "raske") return viewRetterBrowse("Raske retter", "raske");
+  if (v === "protein") return viewRetterBrowse("Mest protein", "protein");
+  if (v === "smak") return viewRetterBrowse("Mye smak", "smak");
+  if (v === "ny") { /* editor is a modal; show hub behind it */ }
+  const n = recipes.filter(r => !r.hidden && r.variant !== "hurtig").length;
+  const nFav = recipes.filter(r => !r.hidden && (r.favorite || r.tag === "liker") && r.variant !== "hurtig").length;
+  const nNew = recipes.filter(r => !r.hidden && r.tag === "prøv" && r.variant !== "hurtig").length;
+  return `<div class="offpage"><h1>Retter</h1>
+    <p class="offsum">${n} retter i banken${nFav ? " · " + nFav + " favoritter/liker" : ""}</p>
+    <p class="sub">Finn noe ut fra det du har, eller bla i banken.</p>
+    <nav class="offhub">
+      ${hubTile("have", "🧊", "Hva har jeg?", HV.sel && HV.sel.length ? HV.sel.length + " varer valgt – finn retter du kan lage" : "Kryss av det du har, og få retter som passer")}
+      ${hubTile("sok", "🔎", "Søk og bla", "Kategori, tid, utstyr og søk")}
+      ${hubTile("favs", "⭐", "Favoritter / Liker", nFav ? nFav + " retter" : "Det du liker godt")}
+      ${hubTile("nytt", "🆕", "Prøv noe nytt", nNew ? nNew + " merket «prøv»" : "Retter du ikke har prøvd")}
+      ${hubTile("raske", "⚡", "Raske (<20 min)", "Middager og andre retter som går unna")}
+      ${hubTile("protein", "💪", "Mest protein", "Sortert etter gram protein per porsjon")}
+      ${hubTile("smak", "🌶️", "Mye smak", "Chili, gochujang, harissa og annen sterkere smak")}
+      ${hubTile("tilbud/middag", "💸", "Billig", "Går til Tilbud → Billig middag")}
+      ${hubTile("ny", "➕", "Ny rett", "Lag eller rediger en egen rett")}
+    </nav></div>`;
+}
+function viewRetterBrowse(title, mode) {
+  let f = Object.assign({}, RF);
+  let list;
+  if (mode === "favsliker") list = filterRecipes(Object.assign({}, f, {tag: ""})).filter(r => r.favorite || r.tag === "liker");
+  else if (mode === "prøv") list = filterRecipes(Object.assign({}, f, {tag: "prøv"}));
+  else if (mode === "raske") list = filterRecipes(Object.assign({}, f, {time: f.time || 20}));
+  else if (mode === "protein") list = filterRecipes(f).slice().sort((a, b) => (b.protein || 0) - (a.protein || 0) || a.name.localeCompare(b.name, "nb"));
+  else if (mode === "smak") list = filterRecipes(f).filter(isSpicy);
+  else list = filterRecipes(f);
+  return hubBar(title, "Retter") + (mode === "" || mode === "raske" || mode === "smak" || mode === "protein" || mode === "favsliker" ? filterBar(f, "r", mode === "") : filterBar(f, "r", false)) +
+    `<div class="cntb">${list.length} treff</div>${list.map(recCard).join("") || `<div class="msg">Ingen treff. Prøv et annet filter.</div>`}</div>`;
+}
+
+function viewHavePick() {
+  ensureHave();
+  if (!M || M.t !== "haveui") M = {t: "haveui", q: "", open: null, date: add(today(), 2)};
+  const m = M, cnt = haveKeys(), q = (m.q || "").toLowerCase().trim();
+  const grouped = {};
+  HAVE_GROUPS.forEach(([g, keys]) => { grouped[g] = keys.filter(k => cnt[k] || HV.sel.includes(k)); });
+  const known = new Set(HAVE_GROUPS.flatMap(g => g[1]));
+  const extra = [...new Set([...Object.keys(cnt), ...HV.sel])].filter(k => !known.has(k));
+  if (extra.length) grouped["Saus/annet"] = (grouped["Saus/annet"] || []).concat(extra);
+  if (q) {
+    const hit = Object.keys(cnt).filter(k => k.includes(q)).sort((a, b) => cnt[b] - cnt[a]).slice(0, 20);
+    Object.keys(grouped).forEach(g => { grouped[g] = grouped[g].filter(k => k.includes(q)); });
+    hit.forEach(k => { if (![].concat(...Object.values(grouped)).includes(k)) (grouped["Saus/annet"] = grouped["Saus/annet"] || []).push(k); });
+  }
+  const n = haveCount();
+  const chip = k => `<button type="button" class="chip ${HV.sel.includes(k) ? "on" : ""}" data-hv="${esc(k)}">${HV.sel.includes(k) ? "✓ " : ""}${esc(k)}</button>`;
+  let h = hubBar("Hva har jeg?", "Retter");
+  h += `<p class="sub">Kryss av det du har. Salt, olje og krydder teller vi med. Valget huskes til neste gang.</p>`;
+  if (HV.sel.length) h += `<div class="hpin"><div class="lab">Valgt (${HV.sel.length})</div><div class="chips hch">${HV.sel.map(chip).join("")}</div>
+    <button type="button" class="lnk" data-hclr>Nullstill</button></div>`;
+  h += `<input class="inp" id="h-q" type="search" placeholder="Søk, f.eks. laks – Enter legger til" value="${esc(m.q || "")}" enterkeyhint="done" autocomplete="off">`;
+  h += `<div class="havebody">`;
+  for (const [g, keys] of Object.entries(grouped)) {
+    if (q && !keys.length) continue;
+    const open = HV.grp[g] !== false;
+    h += `<div class="hgrp"><button type="button" class="hgt" data-hgrp="${esc(g)}" aria-expanded="${open}"><b>${esc(g)}</b><span>${keys.filter(k => HV.sel.includes(k)).length ? keys.filter(k => HV.sel.includes(k)).length + " valgt · " : ""}${open ? "▾" : "▸"}</span></button>`;
+    if (open) h += `<div class="chips hch">${keys.map(chip).join("") || `<span class="d">Ingen i denne gruppa</span>`}</div>`;
+    h += `</div>`;
+  }
+  if (q && !Object.values(grouped).some(a => a.length)) h += `<p class="sub">Ingen treff – trykk Enter for å legge til «${esc(m.q)}».</p>`;
+  h += `</div><div class="hsticky"><button type="button" class="btn go" data-haveshow ${!HV.sel.length ? "disabled" : ""}>${HV.sel.length ? "Vis " + n + " " + (n === 1 ? "rett" : "retter") : "Velg minst én vare"}</button></div></div>`;
+  return h;
+}
+function haveCard(x, m) {
+  const r0 = x.r, r = showRecipe(r0), op = m && m.open === r0.id;
+  return `<div class="hres"><div class="rn">${badges(r)}${esc(r.name)}</div>
+    <div class="rm">${r.minutes ? "⏱ " + r.minutes + " min · " : ""}${r.protein ? r.protein + " g protein · " : ""}${r.kcal ? "ca. " + r.kcal + " kcal" : ""} <span class="d">per porsjon</span></div>
+    ${x.miss.length ? `<div class="hmiss">🛒 Mangler: <b>${x.missIng.map(i => esc(i.name)).join(", ")}</b></div>` : `<div class="hok">✓ Du har alt (utenom salt, olje og krydder)</div>`}
+    <div class="grid2" style="margin:8px 0 0"><button class="btn sm" data-rec="${r.id}">📖 Oppskrift</button><button class="btn sm" data-cook="${r.id}">👨‍🍳 Kokemodus</button></div>
+    <div class="grid2" style="margin:8px 0 0"><button class="btn sm ${op ? "go" : ""}" data-hplan="${r0.id}">📅 Legg i plan</button>${x.miss.length ? `<button class="btn sm" data-hshop="${r0.id}">🛒 Manglende på lista</button>` : "<span></span>"}</div>
+    ${op ? `<div class="hplan"><button class="btn go" data-hpd="${today()}">I dag</button><button class="btn go" data-hpd="${add(today(), 1)}">I morgen</button>
+      <div class="hdate"><input class="inp" type="date" id="h-date" value="${m.date}" min="${today()}" aria-label="Velg dato"><button class="btn" data-hpd="pick">Legg til</button></div></div>` : ""}</div>`;
+}
+let FS = {open: false, ctx: ""};
+function filterBtn(n) {
+  return `<button type="button" class="chip filtbtn" data-fsopen>${n ? "⚙️ Filter (" + n + ")" : "⚙️ Filter"}</button>`;
+}
+function filterSheetShell(inner) {
+  return `<div class="fsheet" data-fsbg><div class="fsheetp" role="dialog" aria-label="Filter">
+    <div class="fshd">⚙️ Filter</div>${inner}
+    <div class="stack" style="margin-top:14px"><button type="button" class="btn go" data-fsdone>Vis resultater</button>
+    <button type="button" class="btn sm" data-fsreset>Nullstill</button></div></div></div>`;
+}
+function filterCountHave() {
+  ensureHave();
+  let n = 0;
+  if (HV.time) n++;
+  if (HV.vmode) n++;
+  if (HV.smak) n++;
+  if (HV.sort && HV.sort !== "match") n++;
+  return n;
+}
+function filterCountRF(f) {
+  let n = 0;
+  if (f.tag) n++;
+  if (f.time) n++;
+  if (f.eq) n++;
+  return n;
+}
+function filterBar(f, pfx, withHidden) {
+  const ch = (k, v, l) => `<button type="button" class="chip ${f[k] === v ? "on" : ""}" data-${pfx}f="${k}" data-v="${v}">${l}</button>`;
+  const n = filterCountRF(f);
+  return `<input type="search" class="srch" id="${pfx}-q" placeholder="🔍 Søk etter rett eller ingrediens" value="${esc(f.q)}" enterkeyhint="search">
+  <div class="filtrow"><div class="chiprow">${ch("kind", "", "Alle")}${KINDS.map(([k, l]) => ch("kind", k, l)).join("")}</div>${filterBtn(n)}</div>
+  ${FS.open && FS.ctx === pfx ? filterSheetRF(f, pfx, withHidden) : ""}`;
+}
+function filterSheetRF(f, pfx, withHidden) {
+  const ch = (k, v, l) => `<button type="button" class="chip ${f[k] === v ? "on" : ""}" data-${pfx}f="${k}" data-v="${v}">${l}</button>`;
+  return filterSheetShell(`
+    <div class="lab">Merke</div><div class="chips">${ch("tag", "", "Alle")}${ch("tag", "liker", "Liker")}${ch("tag", "prøv", "Prøv noe nytt")}${ch("tag", "fav", "★ Favoritter")}${withHidden ? ch("tag", "hidden", "Skjulte") : ""}</div>
+    <div class="lab">Tid</div><div class="chips">${ch("time", 0, "Alle tider")}${ch("time", 20, "≤ 20 min")}${ch("time", 30, "≤ 30 min")}</div>
+    <div class="lab">Utstyr</div><div class="chips">${ch("eq", "", "Alt utstyr")}${EQ.map(([k, l]) => ch("eq", k, l)).join("")}</div>`);
+}
+function haveSelSummary() {
+  const s = HV.sel || [];
+  if (!s.length) return `<button type="button" class="hsum" data-haveedit>Ingen varer valgt · <b>Endre</b></button>`;
+  const shown = s.slice(0, 2), more = s.length - shown.length;
+  const txt = shown.join(", ") + (more > 0 ? " + " + more : "");
+  return `<button type="button" class="hsum" data-haveedit><b>${esc(txt)}</b> · Endre</button>`;
+}
+function haveFilterSheet() {
+  const ch = (k, v, l) => `<button type="button" class="chip ${HV[k] === v ? "on" : ""}" data-hf="${k}" data-v="${v}">${l}</button>`;
+  return filterSheetShell(`
+    <div class="lab">Tid</div><div class="chips">${ch("time", 15, "≤ 15 min")}${ch("time", 30, "≤ 30 min")}${ch("time", 0, "Alle tider")}</div>
+    <div class="lab">Variant</div><div class="chips">${ch("vmode", "bunnen", "Fra bunnen")}${ch("vmode", "hurtig", "Hurtig")}${ch("vmode", "", "Begge")}</div>
+    <div class="lab">Smak</div><div class="chips"><button type="button" class="chip ${HV.smak ? "on" : ""}" data-hf="smak" data-v="1">🌶️ Mye smak</button></div>
+    <div class="lab">Sortering</div><div class="chips">${ch("sort", "match", "Best treff")}${ch("sort", "protein", "Mest protein")}${ch("sort", "time", "Raskest")}</div>`);
+}
+function viewHaveResults() {
+  ensureHave();
+  if (!M || M.t !== "haveui") M = {t: "haveui", q: "", open: null, date: add(today(), 2)};
+  const m = M, res = haveFiltered(), now = res.filter(x => !x.miss.length), near = res.filter(x => x.miss.length);
+  if (!HV.forceNow && now.length === 0 && near.length) HV.rtab = "near";
+  const onNear = HV.rtab === "near";
+  const show = onNear ? near : now;
+  const ch = (k, v, l) => `<button type="button" class="chip ${HV[k] === v ? "on" : ""}" data-hf="${k}" data-v="${v}">${l}</button>`;
+  let h = hubBar("Retter du kan lage", "Hva har jeg?");
+  h += haveSelSummary();
+  h += `<div class="seg" role="tablist">
+    <button type="button" class="segbtn ${!onNear ? "on" : ""}" data-hf="rtab" data-v="now">Kan lages nå (${now.length})</button>
+    <button type="button" class="segbtn ${onNear ? "on" : ""}" data-hf="rtab" data-v="near">Mangler 1–2 (${near.length})</button></div>`;
+  h += `<div class="filtrow"><div class="chiprow">${ch("kind", "middag", "Middag")}${ch("kind", "lunsj", "Lunsj")}${ch("kind", "frokost", "Frokost")}${ch("kind", "snack", "Snack")}${ch("kind", "", "Alle")}</div>${filterBtn(filterCountHave())}</div>`;
+  if (FS.open && FS.ctx === "have") h += haveFilterSheet();
+  if (!HV.sel.length) h += `<div class="msg">Ingen varer valgt. Gå tilbake og kryss av det du har.</div>`;
+  else if (!show.length) {
+    h += `<div class="msg">${onNear ? "Ingen retter som bare mangler 1–2 ting med disse filtrene." : "Ingen retter du kan lage ferdig nå med disse filtrene."}</div>`;
+    if (!onNear && near.length) h += `<p class="sub">Forslag som mangler 1–2:</p>` + near.map(x => haveCard(x, m)).join("");
+  } else h += show.map(x => haveCard(x, m)).join("");
+  return h + `</div>`;
+}
+
+/* ---------- Feedback ---------- */
+function viewFb() {
+  if (NAV.fb === "historikk") return viewFbHist();
+  return `<div class="offpage"><h1>Tilbakemelding</h1>
+    <p class="offsum">Notater om maten – assistenten kan lese dem når du ber om en gjennomgang</p>
+    <div class="card">${form("g")}</div>
+    <nav class="offhub" style="margin-top:16px">${hubTile("historikk", "🕑", "Tidligere tilbakemeldinger", fb.length ? fb.length + " lagret" : "Ingen ennå")}</nav></div>`;
+}
+function viewFbHist() {
+  return hubBar("Tidligere tilbakemeldinger", "Tilbakemelding") +
+    `<div class="card">${fb.length ? fb.map(fbItem).join("") : `<div class="msg" style="padding:12px">Ingen tilbakemeldinger ennå.</div>`}</div></div>`;
+}
+
+/* ---------- hooks ---------- */
+const _openAuto = openAuto;
+openAuto = async function (day) {
+  tab = "plan";
+  const same = NAV.plan === "auto" && M && M.t === "auto";
+  NAV.plan = "auto";
+  if (!same) { hubNav++; history.pushState({tab: "plan", view: "auto"}, "", "#plan/auto"); }
+  return _openAuto(day);
+};
+const _autoSave = autoSave;
+autoSave = async function () {
+  await _autoSave();
+  if (tab === "plan") {
+    NAV.plan = "uke";
+    history.replaceState({tab: "plan", view: "uke"}, "", "#plan/uke");
+    render();
+    scrollTo(0, 0);
+  }
+};
+const _genList = genList;
+genList = async function () {
+  await _genList();
+  NAV.handle = "liste";
+  history.replaceState({tab: "handle", view: "liste"}, "", "#handle/liste");
+  render();
+  const hh = $("#curlist"); if (hh) hh.scrollIntoView({block: "start"});
+};
+const _openEditOrig = openEdit;
+openEdit = function (id) {
+  if (id == null && tab === "retter") {
+    NAV.retter = "ny";
+    /* editor stays a modal, but hash reflects the tile */
+    if (location.hash !== "#retter/ny") { hubNav++; history.pushState({tab: "retter", view: "ny"}, "", "#retter/ny"); }
+  }
+  return _openEditOrig(id);
+};
+
+document.addEventListener("click", ev => {
+  const t = ev.target.closest && ev.target.closest("[data-hubgo],[data-hubback],[data-haveshow],[data-hgrp],[data-hf],[data-planday],[data-pljump],[data-shopweek],[data-fsopen],[data-fsdone],[data-fsreset],[data-fsbg],[data-haveedit]");
+  if (!t) return;
+  if (t.dataset.hubback != null) { ev.preventDefault(); ev.stopPropagation(); if (M && M.t === "auto") M = null; return hubBack(); }
+  if (t.dataset.hubgo != null) {
+    ev.preventDefault(); ev.stopPropagation();
+    if (t.dataset.planday) NAV.planDay = t.dataset.planday;
+    const g = t.dataset.hubgo;
+    if (g === "auto") return openAuto(null);
+    if (g === "ny" && tab === "retter") return goHub("ny");
+    goHub(g);
+    if (NAV.plan === "uke" && NAV.planDay) {
+      const el = document.getElementById("pd-" + NAV.planDay);
+      if (el) setTimeout(() => el.scrollIntoView({block: "start"}), 50);
+    }
+    return;
+  }
+  if (t.dataset.haveshow != null) {
+    ev.preventDefault(); ev.stopPropagation();
+    if (!HV.sel.length) return;
+    ensureHave();
+    const res = haveFiltered(), now = res.filter(x => !x.miss.length), near = res.filter(x => x.miss.length);
+    HV.forceNow = false;
+    HV.rtab = (!now.length && near.length) ? "near" : "now";
+    saveHave();
+    NAV.retter = "have"; NAV.haveRes = true; FS.open = false;
+    hubNav++; history.pushState({tab: "retter", view: "have", haveRes: true}, "", "#retter/have/resultat");
+    render(); scrollTo(0, 0); return;
+  }
+  if (t.dataset.haveedit != null) {
+    ev.preventDefault(); ev.stopPropagation();
+    FS.open = false; NAV.haveRes = false;
+    hubNav++; history.pushState({tab: "retter", view: "have"}, "", "#retter/have");
+    render(); scrollTo(0, 0); return;
+  }
+  if (t.dataset.fsopen != null) {
+    ev.preventDefault(); ev.stopPropagation();
+    FS.open = true;
+    FS.ctx = (tab === "retter" && NAV.retter === "have") ? "have" : (M && M.t === "pick" ? "p" : (tab === "retter" ? "r" : "have"));
+    render(); return;
+  }
+  if (t.dataset.fsdone != null || (t.dataset.fsbg != null && t === ev.target)) {
+    ev.preventDefault(); ev.stopPropagation();
+    FS.open = false; render(); scrollTo(0, 0); return;
+  }
+  if (t.dataset.fsreset != null) {
+    ev.preventDefault(); ev.stopPropagation();
+    if (FS.ctx === "have") { HV.time = 0; HV.vmode = ""; HV.smak = false; HV.sort = "match"; saveHave(); }
+    else if (FS.ctx === "p" && M && M.f) { M.f.tag = ""; M.f.time = 0; M.f.eq = ""; }
+    else { RF.tag = ""; RF.time = 0; RF.eq = ""; }
+    render(); return;
+  }
+  if (t.dataset.hgrp != null) {
+    ev.preventDefault(); ev.stopPropagation();
+    ensureHave();
+    const g = t.dataset.hgrp;
+    HV.grp[g] = HV.grp[g] === false ? true : false;
+    saveHave(); render(); return;
+  }
+  if (t.dataset.hf != null) {
+    ev.preventDefault(); ev.stopPropagation();
+    ensureHave();
+    const k = t.dataset.hf, v = t.dataset.v;
+    if (k === "smak") HV.smak = !HV.smak;
+    else if (k === "time") HV.time = +v;
+    else HV[k] = v;
+    if (k === "rtab") HV.forceNow = (v === "now");
+    saveHave(); render(); return;
+  }
+  if (t.dataset.pljump != null) {
+    ev.preventDefault();
+    const v = ($("#pl-date") || {}).value; if (!v) return;
+    sel = v; viewMon = monday(v); NAV.plan = "uke";
+    history.pushState({tab: "plan", view: "uke"}, "", "#plan/uke");
+    render(); load(); return;
+  }
+  if (t.dataset.shopweek != null) {
+    /* let a5 handle the date fill, then send to Ny liste */
+    setTimeout(() => { NAV.handle = "ny"; history.replaceState({tab: "handle", view: "ny"}, "", "#handle/ny"); render(); scrollTo(0, 0); }, 0);
+  }
+}, true);
+
+document.addEventListener("click", ev => {
+  const c = s => ev.target.closest(s); let e;
+  if (!M || M.t !== "haveui") {
+    /* have chips still use data-hv from a9, which requires M.t==="have". Re-handle here. */
+  }
+}, true);
+
+/* Re-bind have interactions for page mode (a9 only acts when M.t==="have") */
+document.addEventListener("click", ev => {
+  if (tab !== "retter" || NAV.retter !== "have") return;
+  const c = s => ev.target.closest(s); let e;
+  if ((e = c("[data-hv]"))) {
+    ev.stopPropagation();
+    const k = e.dataset.hv;
+    HV.sel = HV.sel.includes(k) ? HV.sel.filter(x => x !== k) : [...HV.sel, k];
+    saveHave(); return render();
+  }
+  if (c("[data-hclr]")) { ev.stopPropagation(); HV.sel = []; saveHave(); if (M && M.t === "haveui") M.q = ""; return render(); }
+  if ((e = c("[data-hplan]"))) { ev.stopPropagation(); if (!M || M.t !== "haveui") M = {t: "haveui", q: "", open: null, date: add(today(), 2)}; M.open = M.open === +e.dataset.hplan ? null : +e.dataset.hplan; return render(); }
+  if ((e = c("[data-hpd]"))) {
+    ev.stopPropagation();
+    const r = R(M && M.open); let d = e.dataset.hpd;
+    if (d === "pick") { d = ($("#h-date") || {}).value; if (!d) return; if (M) M.date = d; }
+    if (M) M.open = null; render();
+    return planAdd(d, r && (r.kind === "middag" || !SL[r.kind]) ? "middag" : r.kind, r.id);
+  }
+  if ((e = c("[data-hshop]"))) { ev.stopPropagation(); const x = haveFiltered().find(y => y.r.id === +e.dataset.hshop); if (x) haveShop(x.r, x); }
+}, true);
+document.addEventListener("input", ev => {
+  if (tab === "retter" && NAV.retter === "have" && !NAV.haveRes && ev.target.id === "h-q") {
+    if (!M || M.t !== "haveui") M = {t: "haveui", q: "", open: null, date: add(today(), 2)};
+    M.q = ev.target.value;
+    const p = ev.target.selectionStart; render(); const i = $("#h-q"); if (i) { i.focus(); i.setSelectionRange(p, p); }
+  }
+});
+document.addEventListener("keydown", ev => {
+  if (tab === "retter" && NAV.retter === "have" && ev.target.id === "h-q" && ev.key === "Enter") {
+    const k = normIng(ev.target.value) || ev.target.value.toLowerCase().trim();
+    if (k && !HV.sel.includes(k)) { HV.sel.push(k); saveHave(); }
+    if (M) M.q = ""; render(); const i = $("#h-q"); if (i) i.focus();
+  }
+});
+
+/* Historikk: last plan history when opening the view */
+const _render = render;
+render = function () {
+  if (tab === "plan" && NAV.plan === "historikk" && hist == null && !NAV._histBusy) {
+    NAV._histBusy = true;
+    loadHist().catch(() => { hist = []; }).finally(() => { NAV._histBusy = false; _render(); });
+  }
+  _render();
+};
+
+applyHubHash();
+render();
+load();
 </script>
 </body>
 </html>
