@@ -2,6 +2,15 @@
 
 Én statisk side (`index.html`) med Supabase som database. Fungerer som installerbar app (PWA).
 
+## v8.0 – hva er nytt
+- **Enklere navigasjon:** fem faner (I dag, Plan, Oppskrifter, Handle, Mer). Tilbud ligger under Handle, resten er samlet under Mer.
+- **Oppskrifter:** søkefelt øverst, kategorirutenett (Middag, Lunsj, Frokost, Mellommåltid, Dessert, Bakst, Ninja Creami) og snarveier.
+- **Laktosefritt-modus** (Mer): laktosefrie bytter i oppskriftene, «Velg laktosefri»-merker på handlelista og filteret «Bare laktosefri». Alle retter får «🥛 Laktosefri»-merke når de er det.
+- **🌍 Smaksreise** og **ukens smaksutfordring** for mer variert mat.
+- **Hjelpeside** («Slik bruker du appen») og et «Nytt i appen»-kort.
+- **44 nye retter:** varierte middager, desserter, bakst og proteinis til Ninja Creami. De fleste er laktosefrie.
+- Kategoriene utledes av navnet. Ninja Creami-oppskrifter har «(Ninja Creami)» i navnet, og desserter og bakst ligger som «snack» med gjenkjennelige navn.
+
 ## v7.0 – hva er nytt
 - **Nytt designsystem:** Plus Jakarta Sans, myke kort, flytende bunnmeny med ikoner, app-bar, animasjoner, lys/mørk/auto-tema.
 - **I dag-dashbord:** hilsen, ringer for protein og energi (planlagt og spist), hurtigknapper og måltidskort med matbilder.

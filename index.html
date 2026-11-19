@@ -630,6 +630,51 @@ kbd{font:inherit;font-size:.75rem;font-weight:700;border:1px solid var(--line2);
 .seg3 button{min-height:46px;border:0;border-radius:12px;background:none;color:var(--ink);font:inherit;font-weight:700;cursor:pointer}
 .seg3 button.on{background:var(--card);box-shadow:var(--sh1);color:var(--acc)}
 .newb{display:inline-block;font-size:.66rem;font-weight:800;letter-spacing:.06em;text-transform:uppercase;background:linear-gradient(135deg,#f59e0b,#ef4444);color:#fff;border-radius:999px;padding:2px 7px;margin-left:6px;vertical-align:2px}
+
+/* ================= v8.0 ================= */
+.tb{grid-template-columns:repeat(5,1fr)}
+.tab{font-size:.72rem}
+.tab span{line-height:1.1}
+@media(max-width:440px){.ring{flex-direction:column;text-align:center;gap:6px;padding:12px 8px}.ring .rs{font-size:.74rem}}
+.a-dessert{--a1:#ffe1ec;--a2:#ffb8cf}.a-bakst{--a1:#f6e3c8;--a2:#e9c597}.a-creami{--a1:#dff4ff;--a2:#b8e2ff}
+.mp.lf{color:#1d6fa5;background:#e3f1fb;border-color:transparent}
+.mp.sw{color:var(--amb);background:var(--ambbg);border-color:transparent}
+@media(prefers-color-scheme:dark){:root:not([data-theme=light]) .mp.lf{color:#8cc8f0;background:#16293a}}
+:root[data-theme=dark] .mp.lf{color:#8cc8f0;background:#16293a}
+.fakesearch{display:flex;align-items:center;gap:10px;width:100%;min-height:54px;padding:0 16px;margin:8px 0 14px;border:1.5px solid var(--line2);border-radius:18px;background:var(--card);color:var(--mut);font:inherit;font-size:1rem;cursor:text;box-shadow:var(--sh1);text-align:left}
+.fakesearch svg{width:20px;height:20px;flex:none}
+.catg{display:grid;grid-template-columns:repeat(2,minmax(0,1fr));gap:10px}
+@media(min-width:560px){.catg{grid-template-columns:repeat(4,minmax(0,1fr))}}
+.catt{position:relative;display:flex;flex-direction:column;align-items:flex-start;gap:2px;min-height:104px;padding:14px;border:1px solid var(--line);border-radius:22px;background:linear-gradient(140deg,var(--a1),var(--a2));color:#1b2a21;font:inherit;text-align:left;cursor:pointer;box-shadow:var(--sh1);overflow:hidden;transition:transform .12s}
+.catt:active{transform:scale(.97)}
+.catt .ce{font-size:2rem;line-height:1;margin-bottom:auto;filter:drop-shadow(0 2px 3px rgba(0,0,0,.15))}
+.catt b{font-size:1.02rem}.catt small{font-weight:700;opacity:.7;font-size:.78rem}
+@media(prefers-color-scheme:dark){:root:not([data-theme=light]) .catt{background:linear-gradient(140deg,color-mix(in srgb,var(--a1) 22%,var(--card)),color-mix(in srgb,var(--a2) 30%,var(--card)));color:var(--ink)}}
+:root[data-theme=dark] .catt{background:linear-gradient(140deg,color-mix(in srgb,var(--a1) 22%,var(--card)),color-mix(in srgb,var(--a2) 30%,var(--card)));color:var(--ink)}
+.duo{display:grid;grid-template-columns:1fr 1fr;gap:10px;margin:12px 0 4px}
+.bigact{display:flex;flex-direction:column;align-items:flex-start;gap:2px;padding:14px;border:1px solid var(--line);border-radius:22px;background:var(--card);box-shadow:var(--sh1);font:inherit;color:var(--ink);text-align:left;cursor:pointer;min-height:96px}
+.bigact span{font-size:1.7rem;line-height:1;margin-bottom:6px}.bigact b{font-size:1rem}.bigact small{color:var(--mut);font-weight:600;font-size:.8rem;line-height:1.25}
+.mgh{font-size:.76rem;font-weight:800;letter-spacing:.08em;text-transform:uppercase;color:var(--mut);margin:20px 6px 8px}
+.mgrp{background:var(--card);border:1px solid var(--line);border-radius:22px;box-shadow:var(--sh1);overflow:hidden}
+.mrow{display:flex;align-items:center;gap:14px;width:100%;min-height:66px;padding:10px 14px;border:0;border-top:1px solid var(--line);background:none;color:var(--ink);font:inherit;text-align:left;cursor:pointer}
+.mrow:first-child{border-top:0}
+.mrow:active{background:var(--card2)}
+.mi{width:40px;height:40px;border-radius:12px;display:grid;place-items:center;background:var(--accbg);font-size:1.25rem;flex:none}
+.mt{flex:1;min-width:0}.mt b{display:block;font-weight:700}.mt small{display:block;color:var(--mut);font-weight:500;font-size:.84rem;line-height:1.3}
+.chev{color:var(--mut);font-size:1.5rem}
+.sw{width:50px;height:30px;border-radius:999px;background:var(--line2);position:relative;flex:none;transition:background .2s}
+.sw i{position:absolute;top:3px;left:3px;width:24px;height:24px;border-radius:50%;background:#fff;box-shadow:0 1px 3px rgba(0,0,0,.3);transition:transform .2s}
+.sw.on{background:var(--acc)}.sw.on i{transform:translateX(20px)}
+.hlp{margin:6px 0 0;padding-left:20px;display:grid;gap:6px;line-height:1.45}
+.lftag{display:inline-block;margin:4px 6px 0 0;font-size:.8rem;font-weight:800;color:#1d6fa5;background:#e3f1fb;border-radius:8px;padding:2px 8px}
+.lfbox{background:#eaf4fb;border-color:#b9dbf2}
+@media(prefers-color-scheme:dark){:root:not([data-theme=light]) .lfbox{background:#13222e;border-color:#24425a}:root:not([data-theme=light]) .lftag{background:#16293a;color:#8cc8f0}}
+:root[data-theme=dark] .lfbox{background:#13222e;border-color:#24425a}:root[data-theme=dark] .lftag{background:#16293a;color:#8cc8f0}
+.chal{background:linear-gradient(160deg,var(--card),var(--accbg))}
+.chal .rc7{margin:6px 0 10px}
+.news{border:1.5px solid var(--acc)}
+.okb{display:inline-grid;place-items:center;width:22px;height:22px;border-radius:50%;background:var(--acc);color:var(--onacc);font-size:.8rem;vertical-align:3px;margin-left:4px}
+.sech .d{font-size:.85rem;font-weight:700}
 </style>
 </head>
 <body>
@@ -4132,14 +4177,14 @@ function artOf(r) {
   return {e: e || {frokost: "🥣", lunsj: "🥪", snack: "🍎", middag: "🍽️"}[r.kind] || "🍽️", c: ["kylling", "fisk", "storfe", "svin", "egg", "frokost", "snack"].includes(k) ? k : "annet"};
 }
 const artH = (r, s) => { const a = artOf(r); return `<span class="art ${s || "s"} a-${a.c}" aria-hidden="true"><span>${a.e}</span></span>`; };
-const pillsOf = r => [r.minutes ? `<span class="mp">⏱ ${r.minutes} min</span>` : "", r.protein ? `<span class="mp p">💪 ${r.protein} g</span>` : "", r.kcal ? `<span class="mp">🔥 ${r.kcal}</span>` : ""].join("");
+let pillsOf = r => [r.minutes ? `<span class="mp">⏱ ${r.minutes} min</span>` : "", r.protein ? `<span class="mp p">💪 ${r.protein} g</span>` : "", r.kcal ? `<span class="mp">🔥 ${r.kcal}</span>` : ""].join("");
 function newestIds() {
   if (V7._newN === recipes.length && V7._new) return V7._new;
   V7._newN = recipes.length;
   return (V7._new = new Set(recipes.filter(r => r.variant !== "hurtig").sort((a, b) => b.id - a.id).slice(0, 51).map(r => r.id)));
 }
 const isNewest = r => newestIds().has(r.id) && r.tag === "prøv" && !r.favorite;
-const rc7 = (r, attr) => `<button type="button" class="rc7 ${r.hidden ? "hid" : ""}" ${attr || `data-rec="${r.id}"`}>${artH(r, "s")}<span class="rb">
+let rc7 = (r, attr) => `<button type="button" class="rc7 ${r.hidden ? "hid" : ""}" ${attr || `data-rec="${r.id}"`}>${artH(r, "s")}<span class="rb">
   <span class="rk">${esc(KL[r.kind] || "")}${r.variant === "bunnen" || hurtigOf(r) ? " · ⚡ har hurtig" : r.variant === "hurtig" ? " · ⚡ hurtig" : ""}${r.tag === "liker" ? " · liker" : ""}${isNewest(r) ? '<span class="newb">Ny</span>' : ""}</span>
   <span class="rn">${esc(r.name)}${r.favorite ? '<span class="fv">★</span>' : ""}</span><span class="rt">${pillsOf(r)}</span></span></button>`;
 const ccard = r => `<button type="button" class="cc" data-rec="${r.id}">${artH(r, "")}<b>${esc(r.name)}</b>${r.minutes ? `<span class="mp">⏱ ${r.minutes}</span>` : ""}${r.protein ? `<span class="mp p">💪 ${r.protein} g</span>` : ""}</button>`;
@@ -4557,7 +4602,7 @@ document.addEventListener("click", ev => {
     if ((e = c("[data-v7supk]"))) { stop(); M.kind = V7.supKind = e.dataset.v7supk; M.tried = []; const r = supPick(M); M.rid = r && r.id; return render(); }
     if (c("[data-v7supre]")) { stop(); M.tried.push(M.rid); const r = supPick(M); M.rid = r && r.id; return render(); }
     if ((e = c("[data-v7suprec]"))) { stop(); M = {t: "recipe", id: +e.dataset.v7suprec, back: M}; return render(); }
-    if (c("[data-v7supadd]")) { stop(); const m = M, r = R(m.rid); M = null; render(); return planAdd(m.date, r.kind === "snack" ? "snack" : r.kind, r.id); }
+    if (c("[data-v7supadd]")) { stop(); const m = M, r = R(m.rid); M = null; render(); return planAdd(m.date, typeof slotFor === "function" ? slotFor(r) : r.kind, r.id); }
   }
   if (M && M.t === "recipe" && (e = c("[data-v7port]"))) { stop(); M.port = Math.min(12, Math.max(1, Math.round(+M.port) + +e.dataset.v7port)); return render(); }
   if ((e = c("[data-v7copy]"))) { stop(); const r = R(+e.dataset.v7copy), f = M && M.port && r.servings ? M.port / r.servings : 1;
@@ -4607,6 +4652,289 @@ render = function () {
 if ("serviceWorker" in navigator && location.protocol === "https:") addEventListener("load", () => navigator.serviceWorker.register("sw.js").catch(() => {}));
 initChrome();
 renderTimers();
+
+
+/* ================= v8.0 – enklere navigasjon, kategorier, laktosefritt, smaksreise ================= */
+V7.ver = "8.0";
+const V8 = {rcat: "", seen: LS.get("mat_seen_v8", false)};
+let DIET = LS.get("mat_diet_v8", {lf: false});
+const saveDiet = () => LS.set("mat_diet_v8", DIET);
+EQL.blender = "Stavmikser"; EQ.push(["blender", "Stavmikser"]);
+
+/* ---------- kategorier ---------- */
+const CAT8 = [["middag", "Middag", "🍽️"], ["lunsj", "Lunsj", "🥪"], ["frokost", "Frokost", "🥣"], ["snack", "Mellommåltid", "🍎"], ["dessert", "Dessert", "🍰"], ["bakst", "Bakst", "🥐"], ["creami", "Ninja Creami", "🍦"]];
+const CATL = Object.fromEntries(CAT8.map(c => [c[0], c[1]])), CATI = Object.fromEntries(CAT8.map(c => [c[0], c[2]]));
+const CATV = {middag: "middag", lunsj: "lunsj", frokost: "frokost", mellommaltid: "snack", dessert: "dessert", bakst: "bakst", creami: "creami"};
+const BAKST_RE = /bananbrød|boller\b|rundstykker|muffins|brownies?|cookies|focaccia|scones|gulrotkake|\bkake\b|\bbrød\b/i;
+const DESSERT_RE = /mousse|cheesecake|crumble|panna cotta|fondant|lava cake|tiramisu|riskrem|bakt banan|dessert|sorbet|pudding|skyr-bark|\bis\b/i;
+function catOf(r) {
+  if (!r) return "middag";
+  if (r._cat) return r._cat;
+  const n = r.name || "";
+  return (r._cat = /creami/i.test(n) ? "creami" : r.kind === "snack" && BAKST_RE.test(n) ? "bakst" : r.kind === "snack" && DESSERT_RE.test(n) ? "dessert" : r.kind);
+}
+const catLabel = r => CATL[catOf(r)] || KL[r.kind] || "";
+const slotFor = r => { const c = catOf(r); return c === "dessert" || c === "creami" ? "kvelds" : c === "bakst" ? "snack" : r.kind; };
+ART_E.unshift([/creami|proteinis/, "🍦"], [/sorbet/, "🍧"], [/muffins/, "🧁"], [/cookies/, "🍪"], [/brownie|fondant|lava/, "🍫"], [/kanelboller|boller/, "🥐"],
+  [/rundstykker|focaccia|bananbrød/, "🍞"], [/cheesecake|tiramisu|gulrotkake|kake/, "🍰"], [/mousse|panna cotta|pudding/, "🍮"], [/crumble|pai\b/, "🥧"], [/bakt banan/, "🍌"]);
+{ const _art = artOf; artOf = function (r) { const a = _art(r), c = catOf(r); if (["dessert", "bakst", "creami"].includes(c)) a.c = c; return a; }; }
+
+/* ---------- laktose ---------- */
+const LAC_FREE = /laktosefri|whey isolat|plantebasert|havredrikk|havremelk|kokosmelk|soyadrikk|mandeldrikk/i;
+const LAC_LOW = /parmesan|revet ost|ost \(skiver\)|^ost\b|gulost|cheddar|mozzarella|^smør|fetaost|whey isolat|proteinpulver/i;
+const LAC_HIGH = /melk|fløte|rømme|skyr|yoghurt|kvarg|cottage|kremost|riskrem|proteinpudding|proteindrikk|vaniljesaus|iskrem|potetsalat|tortellini med ost/i;
+const LAC_CHECK = /saus \(pose\)|bearnaise|butter chicken-saus|tikka masala-saus|posemix|carbonara \(saus|grandiosa|ferdigpizza|pizza|nuggets|fiskekaker|fiskeburger|kjøttboller \(ferdige|kjøttkaker \(ferdige|naanbrød|lompe|vafler/i;
+const LAC_SWAP = [[/^melk$/i, "Laktosefri melk"], [/rømme/i, "Laktosefri rømme"], [/fløte/i, "Laktosefri matfløte"], [/skyr/i, "Laktosefri skyr"], [/cottage/i, "Laktosefri cottage cheese"],
+  [/gresk yoghurt/i, "Laktosefri gresk yoghurt"], [/yoghurt/i, "Laktosefri yoghurt"], [/kremost/i, "Laktosefri kremost"], [/kvarg/i, "Laktosefri kvarg"], [/proteinpudding/i, "Laktosefri proteinpudding"],
+  [/proteindrikk/i, "Laktosefri proteindrikk"], [/riskrem/i, "Riskrem laget med laktosefri fløte"], [/vaniljesaus/i, "Laktosefri vaniljesaus"], [/tortellini/i, "Pasta uten ost + revet hard ost"], [/melk/i, "Laktosefri melk"]];
+function lacOf(name) {
+  const n = String(name || "");
+  if (LAC_FREE.test(n) || /^gjær$/i.test(n)) return "free";
+  if (LAC_HIGH.test(n) && !LAC_LOW.test(n)) return "high";
+  if (LAC_LOW.test(n)) return "low";
+  if (LAC_CHECK.test(n)) return "check";
+  return "free";
+}
+const lacSwap = name => { for (const [re, s] of LAC_SWAP) if (re.test(name)) return s; return "Laktosefri " + String(name).toLowerCase(); };
+function lacInfo(r) {
+  if (!r) return {st: "free", high: [], low: [], check: []};
+  if (r._lac) return r._lac;
+  const o = {high: [], low: [], check: []};
+  for (const i of r.ing || []) { const s = lacOf(i.name); if (s !== "free") o[s].push(i.name); }
+  o.st = o.check.length ? "check" : o.high.length ? "swap" : o.low.length ? "low" : "free";
+  return (r._lac = o);
+}
+const lacOk = r => ["free", "low"].includes(lacInfo(r).st);
+function lacPill(r) {
+  const s = lacInfo(r).st;
+  if (s === "free") return `<span class="mp lf" title="Ingen ingredienser med laktose">🥛 Laktosefri</span>`;
+  if (s === "low") return `<span class="mp lf" title="Bare hard ost/smør/whey isolat – svært lite laktose">🥛 Nesten laktosefri</span>`;
+  if (!DIET.lf) return "";
+  return s === "swap" ? `<span class="mp sw" title="Kan lages laktosefri med enkle bytter">🔄 Kan byttes</span>` : `<span class="mp sw" title="Inneholder ferdigvarer som kan ha melk – sjekk pakken">⚠️ Sjekk pakken</span>`;
+}
+{ const _p = pillsOf; pillsOf = r => _p(r) + lacPill(r); }
+
+/* rettkort med kategori */
+rc7 = (r, attr) => `<button type="button" class="rc7 ${r.hidden ? "hid" : ""}" ${attr || `data-rec="${r.id}"`}>${artH(r, "s")}<span class="rb">
+  <span class="rk">${CATI[catOf(r)] || ""} ${esc(catLabel(r))}${hurtigOf(r) ? " · ⚡ har hurtig" : r.variant === "hurtig" ? " · ⚡ hurtig" : ""}${r.tag === "liker" ? " · liker" : ""}${isNewest(r) ? '<span class="newb">Ny</span>' : ""}</span>
+  <span class="rn">${esc(catOf(r) === "creami" ? r.name.replace(/\s*\(Ninja Creami\)/i, "") : r.name)}${r.favorite ? '<span class="fv">★</span>' : ""}</span><span class="rt">${pillsOf(r)}</span></span></button>`;
+{ newestIds = function () { if (V7._newN === recipes.length && V7._new) return V7._new; V7._newN = recipes.length; return (V7._new = new Set(recipes.filter(r => r.variant !== "hurtig").sort((a, b) => b.id - a.id).slice(0, 44).map(r => r.id))); }; }
+
+/* ---------- smaksreise ---------- */
+const CUIS = [["asia", "Asia", "🥢", /teriyaki|gochujang|bulgogi|koreansk|bibimbap|kung pao|wok|nudl|ramen|pad thai|thai|satay|sushi|katsu|japansk|banh mi|sursøt|stekt ris|bang bang|sticky|lo mein|soya-honning|kimchi/i],
+  ["mex", "Mexico", "🌮", /taco|burrito|quesadilla|fajita|enchilada|chili con|chili sin|chipotle|meksikansk|huevos|mexi/i],
+  ["ita", "Italia", "🍝", /pasta|spaghetti|lasagne|carbonara|pesto|bolognese|arrabbiata|gnocchi|tortellini|orzo|risotto|pizza|focaccia|tiramisu|panna cotta|diavola|alfredo|parmesan-kylling/i],
+  ["ind", "India", "🍛", /tikka|masala|butter chicken|tandoori|dal\b|korma|karri|curry/i],
+  ["med", "Midtøsten og Middelhavet", "🫒", /shawarma|kebab|harissa|suvlaki|gresk|marokkansk|hummus|falafel|shakshuka|couscous|oliven|pita/i],
+  ["usa", "USA", "🍔", /burger|bbq|buffalo|mac and|pulled|cajun|nuggets|fish and chips|hot dog|cookies|brownie|cheesecake|jerk|peri peri/i],
+  ["nor", "Norsk og nordisk", "🐟", /fiskekake|plukkfisk|karbonade|kjøttkake|kjøttboller|lapskaus|fiskesuppe|fiskegrateng|torsk med|pølse|lompe|kanelboller|rundstykker|grøt|ertestuing|stroganoff|gulasj/i]];
+function cuisOf(r) { if (r._cu !== undefined) return r._cu; const n = r.name || ""; for (const c of CUIS) if (c[3].test(n)) return (r._cu = c[0]); return (r._cu = null); }
+function weekChallenge() {
+  const le = lastEaten(), t = today(), wk = isoWeek(t);
+  const recent = new Set(Object.entries(le).filter(([, d]) => diffDays(d, t) <= 30).map(([id]) => cuisOf(R(+id) || {}) || "x"));
+  const pool = recipes.filter(r => r.kind === "middag" && !r.hidden && r.variant !== "hurtig" && !le[r.id] && cuisOf(r) && !recent.has(cuisOf(r)));
+  const pool2 = pool.length ? pool : recipes.filter(r => r.kind === "middag" && !r.hidden && r.variant !== "hurtig" && !le[r.id]);
+  if (!pool2.length) return null;
+  const rnd = seeded(wk * 104729 + 17); return pool2[Math.floor(rnd() * pool2.length)];
+}
+
+/* ---------- navigasjon: 5 faner + Mer ---------- */
+TABS.push("mer");
+HUB_VIEWS.mer = [null, "hjelp"];
+HUB_VIEWS.retter.push("middag", "lunsj", "frokost", "mellommaltid", "dessert", "bakst", "creami", "laktosefri", "reise", "alle");
+function initNav8() {
+  const nav = $(".tb"); if (!nav || nav.dataset.v8) return; nav.dataset.v8 = "1";
+  const T = [["idag", "I dag"], ["plan", "Plan"], ["retter", "Oppskrifter"], ["handle", "Handle"], ["mer", "Mer"]];
+  ICO.mer = '<circle cx="5.5" cy="12" r="1.6"/><circle cx="12" cy="12" r="1.6"/><circle cx="18.5" cy="12" r="1.6"/>';
+  nav.innerHTML = T.map(([t, l]) => `<button class="tab" data-t="${t}">${svg(t)}<span>${l}</span></button>`).join("");
+}
+const navTab = () => tab === "tilbud" ? "handle" : tab === "fb" ? "mer" : tab;
+function viewMer() {
+  if (NAV.mer === "hjelp") return viewHjelp();
+  const row = (attr, ico, t, s, right) => `<button type="button" class="mrow" ${attr}><span class="mi">${ico}</span><span class="mt"><b>${t}</b>${s ? `<small>${s}</small>` : ""}</span>${right || '<span class="chev">›</span>'}</button>`;
+  const sw = on => `<span class="sw ${on ? "on" : ""}" aria-hidden="true"><i></i></span>`;
+  return `<div class="offpage"><h1>Mer</h1><p class="offsum">Alt som ikke trengs hver dag, samlet på ett sted.</p>
+  <div class="mgh">Kosthold</div><div class="mgrp">
+    ${row('data-v8lfmode role="switch" aria-checked="' + DIET.lf + '"', "🥛", "Laktosefritt-modus", "Viser laktosefrie bytter i oppskrifter og på handlelista", sw(DIET.lf))}
+    ${row('data-v7set', "🎯", "Dagsmål", `${GOAL.prot[0]}–${GOAL.prot[1]} g protein · ${GOAL.kcal[0]}–${GOAL.kcal[1]} kcal`)}
+    ${row('data-v7go="retter/reise"', "🌍", "Smaksreise", "Utforsk mat fra ulike land og spis mer variert")}</div>
+  <div class="mgh">Planlegging</div><div class="mgrp">
+    ${row('data-v7go="plan/stats"', "📊", "Statistikk", "Protein per dag, variasjon og favoritter")}
+    ${row('data-auto=""', "✨", "Auto-fyll uka", "Få middagsforslag for hele uka")}
+    ${row('data-v7go="plan/rester"', "🍲", "Rester og 2x", "Lag dobbelt og spis rester dagen etter")}
+    ${row('data-v7go="plan/historikk"', "🕑", "Historikk", "Hva du har spist den siste tiden")}</div>
+  <div class="mgh">Handle</div><div class="mgrp">
+    ${row('data-v8off=""', "🏷️", "Tilbud og priser", "Kundeaviser fra butikkene rundt deg")}
+    ${row('data-offhvor', "📍", "Hvor bør jeg handle?", "Billigste butikk for handlelista")}
+    ${row('data-v8off="favs"', "⭐", "Favorittvarer på tilbud", "Varer du kjøper ofte")}</div>
+  <div class="mgh">Appen</div><div class="mgrp">
+    ${row('data-v7go="fb"', "💬", "Notater og tilbakemelding", fb.length ? fb.length + " lagret" : "Skriv hva som fungerer og ikke")}
+    ${row('data-v7set', "🎨", "Utseende", "Lys, mørk eller automatisk")}
+    ${row('data-hubgo="hjelp"', "❓", "Slik bruker du appen", "Kort guide til alle delene")}
+    ${row('data-v7search', "🔎", "Søk", "Retter, ingredienser og snarveier")}</div>
+  <p class="hint" style="text-align:center;margin-top:18px">Mat ${V7.ver} · ${recipes.length} retter</p></div>`;
+}
+function viewHjelp() {
+  const s = (ico, t, items) => `<section class="card"><div class="lab">${ico} ${t}</div><ul class="hlp">${items.map(x => `<li>${x}</li>`).join("")}</ul></section>`;
+  return hubBar("Slik bruker du appen", "Mer") + `<p class="sub">Fem faner nederst. Alt annet finner du under Mer.</p>` +
+    s("🏠", "I dag", ["Se dagens måltider og trykk <b>Spist som planlagt</b> når du har spist.", "Ringene viser protein og energi: lys del er planlagt, hvit del er spist.", "<b>🎲 Overrask meg</b> gir et forslag hvis du ikke vet hva du vil ha."]) +
+    s("📅", "Plan", ["Trykk på en dag for å legge til eller bytte retter.", "<b>Auto-fyll</b> foreslår middager for hele uka.", "<b>2x</b> på en middag lager dobbelt og legger inn rester dagen etter."]) +
+    s("📖", "Oppskrifter", ["Velg kategori: middag, lunsj, frokost, mellommåltid, dessert, bakst eller Ninja Creami.", "<b>🧊 Hva har jeg?</b> finner retter ut fra det som er i kjøleskapet.", "I en oppskrift: velg porsjoner, kryss av ingredienser og trykk <b>⏱</b> for å starte en timer.", "<b>👨‍🍳 Kokemodus</b> viser ett steg om gangen i stor tekst."]) +
+    s("🛒", "Handle", ["Lag handleliste fra planen for 5, 7 eller 14 dager.", "Kryss av mens du handler. <b>📤 Del</b> sender lista til andre.", "<b>Tilbud</b> viser hva som er billig og hvor du bør handle."]) +
+    s("🥛", "Laktosefritt", ["Slå på <b>Laktosefritt-modus</b> under Mer.", "Oppskrifter viser da laktosefrie bytter, og handlelista sier hvilke varer du bør velge laktosefritt.", "<b>🥛 Laktosefri</b>-merket betyr at retten ikke har laktose. Hard ost, smør og whey isolat har svært lite laktose og tåles av de fleste."]) +
+    `</div>`;
+}
+
+/* ---------- Oppskrifter: ny hub ---------- */
+const _v7Retter = viewRetter;
+viewRetter = function () {
+  const v = NAV.retter;
+  if (v && CATV[v]) return viewRetterBrowse(CATI[CATV[v]] + " " + CATL[CATV[v]], "cat:" + CATV[v]);
+  if (v === "laktosefri") return viewRetterBrowse("🥛 Laktosefrie retter", "laktosefri");
+  if (v === "reise") return viewReise();
+  if (v === "alle") return viewRetterBrowse("Alle oppskrifter", "");
+  if (v) return _v7Retter();
+  const vis = recipes.filter(r => !r.hidden && r.variant !== "hurtig"), cnt = {};
+  vis.forEach(r => { const c = catOf(r); cnt[c] = (cnt[c] || 0) + 1; });
+  const rnd = seeded(isoWeek(today()) * 7919 + new Date().getFullYear());
+  const insp = vis.filter(r => r.kind === "middag").map(r => [rnd(), r]).sort((a, b) => a[0] - b[0]).slice(0, 8).map(x => x[1]);
+  const nLf = vis.filter(lacOk).length, nFav = vis.filter(r => r.favorite || r.tag === "liker").length;
+  const sc = (go, ico, l) => `<button type="button" class="chip" data-hubgo="${go}">${ico} ${l}</button>`;
+  return `<div class="offpage"><h1>Oppskrifter</h1><p class="offsum">${vis.length} retter i banken</p>
+    <button type="button" class="fakesearch" data-v7search>${svg("search")}<span>Søk etter rett eller ingrediens …</span></button>
+    <div class="catg">${CAT8.map(([k, l, i]) => `<button type="button" class="catt a-${["dessert", "bakst", "creami", "frokost", "snack"].includes(k) ? (k === "snack" ? "annet" : k) : k === "middag" ? "kylling" : k === "lunsj" ? "fisk" : "egg"}" data-hubgo="${Object.keys(CATV).find(x => CATV[x] === k)}"><span class="ce">${i}</span><b>${l}</b><small>${cnt[k] || 0} retter</small></button>`).join("")}
+      <button type="button" class="catt a-annet" data-hubgo="alle"><span class="ce">📚</span><b>Alle</b><small>${vis.length} retter</small></button></div>
+    <div class="duo"><button type="button" class="bigact" data-have><span>🧊</span><b>Hva har jeg?</b><small>Finn retter fra kjøleskapet</small></button><button type="button" class="bigact" data-v7sup=""><span>🎲</span><b>Overrask meg</b><small>Et tilfeldig forslag</small></button></div>
+    <div class="sech"><h2>Snarveier</h2></div>
+    <div class="chips">${sc("favs", "⭐", "Favoritter (" + nFav + ")")}${sc("raske", "⚡", "Raske")}${sc("protein", "💪", "Mest protein")}${sc("laktosefri", "🥛", "Laktosefri (" + nLf + ")")}${sc("smak", "🌶️", "Mye smak")}${sc("reise", "🌍", "Smaksreise")}${sc("nyeste", "🆕", "Nyeste")}${sc("nytt", "🔁", "Ikke prøvd")}</div>
+    <div class="sech"><h2>✨ Ukens inspirasjon</h2></div><div class="car">${insp.map(ccard).join("")}</div>
+    <div class="stack"><button class="btn sm" data-hubgo="ny">➕ Lag din egen oppskrift</button></div></div>`;
+};
+viewRetterBrowse = function (title, mode) {
+  const f = Object.assign({}, RF, {kind: ""}); let list = filterRecipes(f), cat = mode.startsWith("cat:") ? mode.slice(4) : "";
+  if (mode === "favsliker") list = filterRecipes(Object.assign({}, f, {tag: ""})).filter(r => r.favorite || r.tag === "liker");
+  else if (mode === "prøv") list = filterRecipes(Object.assign({}, f, {tag: "prøv"})).filter(r => !lastEaten()[r.id]);
+  else if (mode === "raske") list = filterRecipes(Object.assign({}, f, {time: f.time || 20}));
+  else if (mode === "protein") list = list.slice().sort((a, b) => (b.protein || 0) - (a.protein || 0) || a.name.localeCompare(b.name, "nb"));
+  else if (mode === "smak") list = list.filter(isSpicy);
+  else if (mode === "nyeste") list = list.slice().sort((a, b) => b.id - a.id).slice(0, 60);
+  else if (mode === "laktosefri") list = list.filter(lacOk);
+  if (cat) list = list.filter(r => catOf(r) === cat);
+  else if (V8.rcat) list = list.filter(r => catOf(r) === V8.rcat);
+  if (DIET.lfOnly && mode !== "laktosefri") list = list.filter(lacOk);
+  const chip = (attr, on, l) => `<button type="button" class="chip ${on ? "on" : ""}" ${attr}>${l}</button>`;
+  let h = hubBar(title, "Oppskrifter");
+  if (cat === "creami") h += `<div class="rbox prep" style="margin:0 0 12px"><div class="lab">🍦 Ninja Creami – slik lykkes du</div><div>Fyll til streken, frys flatt i <b>24 timer</b>, kjør «Lite Ice Cream». Smuldrete? Ha i 1–2 ss melk og kjør <b>Re-spin</b>. Puddingpulver gir kremete is uten fløte.</div></div>`;
+  if (cat === "bakst") h += `<div class="rbox" style="margin:0 0 12px"><div class="lab">🥐 Tips</div><div>Bakst fryses best samme dag. Plantemargarin og laktosefri melk gjør nesten all bakst laktosefri.</div></div>`;
+  h += `<input type="search" class="srch" id="r-q" placeholder="🔍 Søk i ${esc(cat ? CATL[cat].toLowerCase() : "oppskrifter")}" value="${esc(RF.q)}" enterkeyhint="search">`;
+  h += `<div class="filtrow"><div class="chiprow">${!cat ? chip('data-v8rcat=""', !V8.rcat, "Alle") + CAT8.map(([k, l, i]) => chip(`data-v8rcat="${k}"`, V8.rcat === k, i + " " + l)).join("") : ""}
+    ${mode !== "laktosefri" ? chip("data-v8lfonly", DIET.lfOnly, "🥛 Bare laktosefri") : ""}${chip('data-rf="time" data-v="' + (RF.time === 20 ? 0 : 20) + '"', RF.time === 20, "⚡ ≤ 20 min")}</div>${filterBtn(filterCountRF(RF))}</div>`;
+  if (FS.open && FS.ctx === "r") h += filterSheetRF(RF, "r", mode === "");
+  return h + `<div class="cntb">${list.length} ${list.length === 1 ? "rett" : "retter"}</div>${list.map(r => rc7(r)).join("") || `<div class="msg">Ingen treff. Prøv et annet filter.</div>`}</div>`;
+};
+function viewReise() {
+  const le = lastEaten(), t = today(), vis = recipes.filter(r => !r.hidden && r.variant !== "hurtig" && r.kind !== "snack");
+  let h = hubBar("🌍 Smaksreise", "Oppskrifter") + `<p class="sub">Variert mat gir bredere næring – og mindre lei. Prøv ett nytt kjøkken i uka. Grønn hake = spist siste 30 dager.</p>`;
+  const ch = weekChallenge();
+  if (ch) h += `<section class="card chal"><div class="lab">🎯 Ukens smaksutfordring</div>${rc7(ch)}</section>`;
+  for (const [k, l, i] of CUIS) {
+    const list = vis.filter(r => cuisOf(r) === k); if (!list.length) continue;
+    const done = list.some(r => le[r.id] && diffDays(le[r.id], t) <= 30);
+    h += `<div class="sech"><h2>${i} ${esc(l)} ${done ? '<span class="okb">✓</span>' : ""}</h2><span class="d">${list.length} retter</span></div><div class="car">${list.slice().sort((a, b) => (le[a.id] ? 1 : 0) - (le[b.id] ? 1 : 0) || b.id - a.id).map(ccard).join("")}</div>`;
+  }
+  return h + `</div>`;
+}
+
+/* ---------- oppskrift: laktosefri visning ---------- */
+const _v7Body = recipeBody;
+recipeBody = function (r, portions) {
+  const li = lacInfo(r);
+  if (!DIET.lf || li.st === "free" || li.st === "low") return _v7Body(r, portions);
+  const sw = V8.noSwap !== r.id;
+  const r2 = sw ? Object.assign({}, r, {id: r.id, ing: (r.ing || []).map(i => lacOf(i.name) === "high" ? Object.assign({}, i, {name: lacSwap(i.name) + " ↺"}) : i)}) : r;
+  const box = `<div class="rbox lfbox"><div class="lab">🥛 Laktosefri versjon</div><div>${li.high.length ? `Byttes: ${li.high.map(n => `<b>${esc(n)}</b> → ${esc(lacSwap(n))}`).join(", ")}.` : ""}${li.check.length ? ` Sjekk pakken på: ${li.check.map(esc).join(", ")}.` : ""}</div>
+    ${li.high.length ? `<button class="btn sm" style="margin-top:8px" data-v8swap="${r.id}">${sw ? "Vis original" : "Vis med laktosefrie bytter"}</button>` : ""}</div>`;
+  return box + _v7Body(r2, portions);
+};
+
+/* ---------- Handle: tilbud inn i Handle, laktosetag på varer ---------- */
+const _v6HandleHub = viewHandle;
+viewHandle = function () {
+  const h = _v6HandleHub();
+  if (NAV.handle) return h;
+  return h.replace('<nav class="offhub">', '<nav class="offhub">' + `<button type="button" class="offtile" data-v8off=""><span class="otico">🏷️</span><span class="ottxt"><b>Tilbud og priser</b><span>Kundeaviser, billigste butikk og favorittvarer</span></span></button>`);
+};
+function decorateShop() {
+  if (!DIET.lf || tab !== "handle" || NAV.handle !== "liste") return;
+  document.querySelectorAll(".it[data-id]").forEach(el => {
+    const it = items.find(i => i.id === +el.dataset.id); if (!it || el.querySelector(".lftag")) return;
+    if (lacOf(it.name) === "high") { const s = el.querySelector("span[style]"); if (s) s.insertAdjacentHTML("beforeend", `<span class="lftag">🥛 Velg: ${esc(lacSwap(it.name))}</span>`); }
+  });
+}
+
+/* ---------- I dag: utfordring og nyheter ---------- */
+const _v7Idag = viewIdag;
+viewIdag = function () {
+  let h = _v7Idag();
+  if (NAV.idag) return h;
+  let extra = "";
+  if (!V8.seen) extra += `<section class="card news"><div class="lab">✨ Nytt i appen</div><ul class="hlp"><li>Fem faner nederst – tilbud ligger under <b>Handle</b>, resten under <b>Mer</b>.</li><li>Nye kategorier: <b>dessert, bakst og Ninja Creami</b>.</li><li><b>Laktosefritt-modus</b> under Mer.</li><li><b>🌍 Smaksreise</b> for mer variert mat.</li></ul><div class="grid2"><button class="btn sm" data-v8dismiss>Skjønner</button><button class="btn sm go" data-v7go="mer/hjelp">Vis guide</button></div></section>`;
+  const ch = sel === today() ? weekChallenge() : null;
+  if (ch) extra += `<section class="card chal"><div class="lab">🌍 Ukens smaksutfordring</div><p class="sub" style="margin:2px 0 8px">Noe du ikke har spist før – fra et kjøkken du ikke har vært innom på en stund.</p>${rc7(ch)}<button class="btn sm" data-v7go="retter/reise">Utforsk smaksreisen</button></section>`;
+  return h.replace('<nav class="offhub">', extra + '<nav class="offhub">');
+};
+
+/* ---------- Overrask meg med kategorier ---------- */
+supPick = function (m) {
+  const le = lastEaten(), t = today(), ok = r => !r.hidden && r.variant !== "hurtig" && catOf(r) === m.kind && r.name !== "Rester fra middag" && (!DIET.lfOnly || lacOk(r));
+  let c = recipes.filter(r => ok(r) && !m.tried.includes(r.id));
+  if (!c.length) { m.tried = []; c = recipes.filter(ok); }
+  if (!c.length) return null;
+  const w = r => (r.favorite ? 3 : r.tag === "liker" ? 1.8 : 1) * (le[r.id] && diffDays(le[r.id], t) < 14 ? .25 : 1) * (isNewest(r) ? 1.4 : 1);
+  const ws = c.map(w), sum = ws.reduce((a, b) => a + b, 0); let k = Math.random() * sum;
+  for (let i = 0; i < c.length; i++) { k -= ws[i]; if (k <= 0) return c[i]; }
+  return c[0];
+};
+{ const _s = supHtml; supHtml = m => _s(m).replace(/<div class="chips" style="margin-top:0">[\s\S]*?<\/div>/, `<div class="chiprow" style="margin-top:0">${CAT8.map(([k, l, i]) => `<button class="chip ${m.kind === k ? "on" : ""}" data-v7supk="${k}">${i} ${l}</button>`).join("")}</div>`).replace('<div class="lab">' + esc(KL[(R(m.rid) || {}).kind] || ""), '<div class="lab">' + esc(catLabel(R(m.rid) || {}))); }
+
+/* ---------- velg rett (planlegging): laktosefilter ---------- */
+{ const _pk = pickHtml; pickHtml = m => { let h = _pk(m); if (m.f.lf) h = h.replace(/(<button type="button" class="rc7[^>]*data-padd="(\d+)"[\s\S]*?<\/button>)/g, (all, x, id) => lacOk(R(+id)) ? all : "");
+  return h.replace('når den finnes</button>', `når den finnes</button><button class="chip ${m.f.lf ? "on" : ""}" data-v8plf>🥛 Bare laktosefri</button>`); }; }
+
+/* ---------- render ---------- */
+const _v7Render = render;
+render = function () {
+  initNav8();
+  if (tab === "mer") {
+    document.querySelectorAll(".tab").forEach(t => t.classList.toggle("on", t.dataset.t === "mer"));
+    if (loaded) { $("#view").innerHTML = viewMer(); renderModal(); const k = "mer|" + (NAV.mer || ""); if (k !== V7.lastKey) { const v = $("#view"); v.classList.add("enter"); clearTimeout(V7._vt); V7._vt = setTimeout(() => v.classList.remove("enter"), 380); } V7.lastKey = k; }
+    else renderModal();
+    return;
+  }
+  _v7Render();
+  const nt = navTab(); document.querySelectorAll(".tab").forEach(t => t.classList.toggle("on", t.dataset.t === nt));
+  decorateShop();
+};
+{ const _v6go = go; go = function (t, view) { if (t === "mer") { tab = "mer"; NAV.mer = view || null; history.replaceState({tab: "mer"}, "", "#mer" + (view ? "/" + view : "")); render(); scrollTo(0, 0); return; } return _v6go(t, view); }; }
+
+/* ---------- hendelser ---------- */
+document.addEventListener("click", ev => {
+  const c = s => ev.target.closest(s); let e;
+  const stop = () => { ev.stopPropagation(); ev.preventDefault(); };
+  if (c("[data-v8lfmode]")) { stop(); DIET.lf = !DIET.lf; saveDiet(); showToast(DIET.lf ? "🥛 Laktosefritt-modus er på" : "Laktosefritt-modus er av"); return render(); }
+  if (c("[data-v8lfonly]")) { stop(); DIET.lfOnly = !DIET.lfOnly; saveDiet(); return render(); }
+  if ((e = c("[data-v8rcat]"))) { stop(); V8.rcat = e.dataset.v8rcat; return render(); }
+  if ((e = c("[data-v8swap]"))) { stop(); const id = +e.dataset.v8swap; V8.noSwap = V8.noSwap === id ? null : id; return render(); }
+  if ((e = c("[data-v8off]"))) { stop(); tab = "tilbud"; OF.q = ""; OF.cat = ""; const v = e.dataset.v8off; if (v) goOff(v); else { OF.view = null; OF.store = null; history.pushState({tab: "tilbud"}, "", "#tilbud"); render(); scrollTo(0, 0); } return; }
+  if (c("[data-v8dismiss]")) { stop(); V8.seen = true; LS.set("mat_seen_v8", true); return render(); }
+  if (c("[data-v8plf]") && M && M.t === "pick") { stop(); M.f.lf = !M.f.lf; return render(); }
+  if (M && M.t === "recipe" && c("[data-plan-open]")) { const r = R(M.id); if (r && !M.pl && slotFor(r) !== r.kind) { stop(); M.pl = {mon: monday(today()), date: today(), slot: slotFor(r)}; return render(); } }
+}, true);
+{ const _cmds = CMDS.length; CMDS.splice(0, 0, ["🥛", "Laktosefritt-modus", DIET.lf ? "På – trykk for å slå av" : "Av – trykk for å slå på", () => { DIET.lf = !DIET.lf; saveDiet(); render(); showToast(DIET.lf ? "🥛 Laktosefritt-modus er på" : "Laktosefritt-modus er av"); }],
+  ["🍰", "Desserter", "Oppskrifter → Dessert", () => { go("retter"); goHub("dessert"); }], ["🍦", "Ninja Creami", "Proteinis og sorbet", () => { go("retter"); goHub("creami"); }],
+  ["🥐", "Bakst", "Brød, boller og kaker", () => { go("retter"); goHub("bakst"); }], ["🌍", "Smaksreise", "Mat fra ulike land", () => { go("retter"); goHub("reise"); }], ["❓", "Hjelp", "Slik bruker du appen", () => { go("mer"); goHub("hjelp"); }]); }
+{ const c = CMDS.find(x => x[1] === "Tilbud"); if (c) c[3] = () => { tab = "tilbud"; OF.view = null; history.pushState({tab: "tilbud"}, "", "#tilbud"); render(); }; }
+initNav8();
 
 applyHubHash();
 render();
