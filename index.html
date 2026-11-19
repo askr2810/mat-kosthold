@@ -133,6 +133,7 @@ button{font:inherit;color:inherit}
 .sh{background:var(--bg);width:100%;max-width:640px;max-height:92vh;overflow:auto;border-radius:24px 24px 0 0;padding:16px 16px calc(24px + env(safe-area-inset-bottom))}
 .sh .top{display:flex;justify-content:space-between;align-items:flex-start;gap:10px;margin-bottom:10px}
 .sh .top .btn{width:auto;min-width:56px;min-height:56px;flex:none}
+
 /* v5: plan, retter, handleliste */
 .row{display:flex;gap:10px;align-items:center}
 .wkn{display:grid;grid-template-columns:60px 1fr 60px;gap:8px;align-items:center;margin:0 0 12px}
@@ -275,6 +276,45 @@ body.cooking{overflow:hidden}
 .stot{margin:6px 0 0;padding-left:1.2em}
 .stot .miss{color:var(--mut)}
 .offc.nested{margin:0 0 6px;padding:0;border:0;background:none}
+
+
+/* Tilbud v5.9 hub */
+.offpage{font-size:16px}
+.offsum{font-weight:700;font-size:1.02rem;margin:0 0 8px;color:var(--ink)}
+.offhub{display:flex;flex-direction:column;gap:10px;margin:14px 0}
+.offtile{display:flex;align-items:center;gap:14px;width:100%;min-height:72px;padding:14px 16px;border-radius:18px;border:2px solid var(--line);background:var(--card);color:var(--ink);text-align:left;cursor:pointer;font:inherit}
+.offtile:active{transform:scale(.98)}
+.otico{font-size:1.8rem;line-height:1;flex:none;width:2.2rem;text-align:center}
+.ottxt{display:flex;flex-direction:column;gap:2px;min-width:0}
+.ottxt b{font-size:1.12rem}
+.ottxt span{color:var(--mut);font-size:.95rem;font-weight:600}
+.offbar{display:flex;gap:8px;align-items:stretch;margin:0 0 8px}
+.offback,.offkurvbtn{width:auto;flex:none;min-height:52px;padding:0 16px}
+.offkurvbtn{margin-left:auto}
+.packsel{margin:0 0 14px}
+.packsel.sm{margin:8px 0 12px}
+.chn{display:inline-block;font-weight:800;font-size:.8rem;text-transform:uppercase;border-radius:8px;padding:2px 8px;letter-spacing:.02em}
+.chn-rema{background:#c41e3a;color:#fff}
+.chn-kiwi{background:#1a7a3a;color:#fff}
+.chn-extra{background:#d32f2f;color:#fff}
+.chn-europris{background:#f0c014;color:#1a1a1a}
+.chn-meny{background:#7a1020;color:#fff}
+.chn-spar{background:#2e7d32;color:#fff}
+.chn-joker{background:#e65100;color:#fff}
+.chn-bunnpris{background:#1565c0;color:#fff}
+.chn-mega{background:#004d40;color:#fff}
+.chn-prix{background:#6a1b9a;color:#fff}
+.chn-obs{background:#b71c1c;color:#fff}
+.chn-holdbart{background:#364e27;color:#fff}
+.offc{display:flex;flex-direction:column;gap:8px}
+.offtick{min-height:52px}
+.fyllb{display:inline-block;background:var(--ambbg);color:var(--amb);font-weight:800;font-size:.78rem;border-radius:8px;padding:2px 6px;text-transform:none;letter-spacing:0}
+.fyllbox{background:var(--card);border:2px solid var(--amb);border-radius:16px;padding:12px;margin:0 0 16px}
+.kurvl{display:flex;flex-direction:column;gap:8px;margin:0 0 10px}
+.krow{display:flex;align-items:center;gap:8px;background:var(--card);border:2px solid var(--line);border-radius:14px;padding:8px 10px;min-height:52px;justify-content:space-between}
+.krow .btn{width:auto;flex:none;min-height:48px}
+.storetot.hi{background:var(--accbg);border-radius:12px;padding:8px}
+.save{color:var(--acc);font-weight:800}
 </style>
 </head>
 <body>
@@ -290,8 +330,7 @@ body.cooking{overflow:hidden}
   <button class="tab" data-t="tilbud"><b>🏷️</b>Tilbud</button>
   <button class="tab" data-t="fb"><b>💬</b>Feedback</button>
 </nav>
-<script>
-const URL_ = "https://yhzgdipjpdmovegbkybx.supabase.co", KEY = "eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJpc3MiOiJzdXBhYmFzZSIsInJlZiI6InloemdkaXBqcGRtb3ZlZ2JreWJ4Iiwicm9sZSI6ImFub24iLCJpYXQiOjE3OTAzMzY5NzcsImV4cCI6MjEwNTkxMjk3N30.13nVIkVWVIb-fh7oPKA1tHdCeX8tKqIpVi_o80rXIo4";
+<script>const URL_ = "https://yhzgdipjpdmovegbkybx.supabase.co", KEY = "eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJpc3MiOiJzdXBhYmFzZSIsInJlZiI6InloemdkaXBqcGRtb3ZlZ2JreWJ4Iiwicm9sZSI6ImFub24iLCJpYXQiOjE3OTAzMzY5NzcsImV4cCI6MjEwNTkxMjk3N30.13nVIkVWVIb-fh7oPKA1tHdCeX8tKqIpVi_o80rXIo4";
 const H = {apikey: KEY, Authorization: "Bearer " + KEY, "Content-Type": "application/json"};
 const TABS = ["idag", "plan", "handle", "retter", "tilbud", "fb"];
 const DK = ["Man","Tir","Ons","Tor","Fre","Lør","Søn"];
@@ -648,7 +687,7 @@ function viewHandle() {
   const pv = shopF.preview && shopF.preview.key === f + t ? shopF.preview : null;
   if (!pv && !bad) updatePreview();
   const lf = s => esc(fmt(s, {weekday: "short", day: "numeric", month: "short"}));
-  let h = `<h1>Handleliste</h1><section class="card"><div class="lab">Lag ny liste fra planen</div>
+  let h = `<h1>Handleliste</h1><div class="stack" style="margin:0 0 14px"><button type="button" class="btn go" data-offhvor>📍 Hvor bør jeg handle?</button></div><section class="card"><div class="lab">Lag ny liste fra planen</div>
     <label class="lbl" style="margin-top:0" for="sh-from">Fra dato</label><input type="date" class="inp" id="sh-from" value="${esc(f)}">
     <div class="chips"><button class="chip ${f === today() ? "on" : ""}" data-shfrom="${today()}">Fra i dag</button><button class="chip ${f === add(today(), 1) ? "on" : ""}" data-shfrom="${add(today(), 1)}">Fra i morgen</button><button class="chip ${f === add(monday(today()), 7) ? "on" : ""}" data-shfrom="${add(monday(today()), 7)}">Fra neste mandag</button></div>
     <label class="lbl">Hvor mange dager?</label>
@@ -883,7 +922,13 @@ function render() {
   if (fid) { const n = document.getElementById(fid); if (n) { n.focus({preventScroll: true}); try { n.setSelectionRange(ss, ss); } catch (_) {} } }
   renderModal();
 }
-function go(t) { tab = t; history.replaceState(null, "", "#" + t); render(); scrollTo(0, 0); }
+function go(t) {
+  tab = t;
+  if (t === "tilbud" && typeof OF !== "undefined") { OF.view = null; OF.store = null; }
+  const hash = (t === "tilbud" && typeof tilbudHash === "function") ? "#tilbud" : "#" + t;
+  history.replaceState({tab: t}, "", hash);
+  render(); scrollTo(0, 0);
+}
 async function changeWeek(n) { viewMon = n === 0 ? monday(today()) : add(viewMon, 7 * n); render(); await refreshPlan(); render(); }
 function openPick(date, slot, swap) { M = {t: "pick", date, slot, swap: swap || null, f: {q: "", tag: "", kind: kindForSlot(slot), time: 0, eq: ""}}; render(); }
 async function moveEntry(p, date) {
@@ -1054,7 +1099,7 @@ document.addEventListener("change", ev => {
   rec.checked = on; render();
   write(() => rpc("shop_toggle", {p_item: id, p_checked: on}), "Kunne ikke lagre. Sjekk nettforbindelsen.").catch(() => { rec.checked = !on; render(); });
 });
-if (TABS.includes(location.hash.slice(1))) tab = location.hash.slice(1);
+{ const raw = location.hash.slice(1); if (raw === "tilbud" || raw.startsWith("tilbud/")) tab = "tilbud"; else if (TABS.includes(raw)) tab = raw; }
 addEventListener("focus", load);
 document.addEventListener("visibilitychange", () => { if (!document.hidden) load(); });
 render(); load();
@@ -1333,7 +1378,7 @@ const NORM = [
   [/kyllingpålegg/, "kyllingpålegg"], [/pølse/, "pølser"], [/nuggets/, "kyllingnuggets"], [/kebab \(|kyllingkebab/, "kebab"], [/suppe \(pose\)/, null],
   [/kjøttdeig|karbonadedeig/, "kjøttdeig"], [/^kylling/, "kylling"], [/laks/, "laks"], [/torsk/, "torsk"], [/reker/, "reker"],
   [/spaghetti|makaroni|^pasta$|lasagneplater/, "pasta"], [/nudler/, "nudler"], [/^ris$/, "ris"], [/potetbåter|pommes/, "potetbåter"], [/^poteter/, "poteter"],
-  [/revet ost|ost \(skiver\)|parmesan|^ost$/, "ost"], [/tortilla|lefse/, "tortilla"], [/fløte/, "fløte"], [/rømme/, "rømme"], [/hakkede tomater|^tomat/, "hakkede tomater"],
+  [/revet ost|ost \(skiver\)|parmesan|^ost$/, "ost"], [/vestlandslefse/, "vestlandslefser"], [/grandiosa/, "grandiosa"], [/pizzasaus|pizzabunn|pizzakrydder/, null], [/\bfrossenpizza\b|\bpizza\b/, "pizza"], [/tortilla|lefse/, "tortilla"], [/fløte/, "fløte"], [/rømme/, "rømme"], [/hakkede tomater|^tomat/, "hakkede tomater"],
   [/bacon/, "bacon"], [/skinke/, "skinke"], [/burgerbrød|pitabrød|rundstykke|^brød/, "brød"], [/skyr|kvarg|yoghurt/, "skyr/yoghurt"], [/^mais/, "mais"],
   [/cream of rice/, "cream of rice"], [/eggehvite/, "eggehvite"], [/^kakao/, "kakao"], [/chorizo|nduja/, "chorizo"], [/gochujang/, "gochujang"], [/^harissa/, "harissa"], [/chipotle/, "chipotle"], [/peri peri/, "peri peri-saus"], [/^jerk/, "jerkkrydder"], [/søt chilisaus|sterk chilisaus/, "chilisaus"], [/^egg$/, "egg"], [/^løk/, "løk"], [/paprika$/, "paprika"], [/kidneybønner|bønner/, "bønner"], [/storfe|biff|entrecôte/, "biff"], [/svine/, "svinekjøtt"],
 ];
@@ -1401,26 +1446,801 @@ document.addEventListener("click", ev => {
 }, true);
 document.addEventListener("input", ev => { if (M && M.t === "have" && ev.target.id === "h-q") { M.q = ev.target.value; const p = ev.target.selectionStart; render(); const i = $("#h-q"); if (i) { i.focus(); i.setSelectionRange(p, p); } } });
 document.addEventListener("keydown", ev => { if (M && M.t === "have" && ev.target.id === "h-q" && ev.key === "Enter") { const k = normIng(ev.target.value) || ev.target.value.toLowerCase().trim(); if (k && !HV.sel.includes(k)) { HV.sel.push(k); saveHave(); } M.q = ""; render(); const i = $("#h-q"); if (i) i.focus(); } });
-/* ---------- Tilbud ---------- */
-const CHAINS = {
-  rema:     {id:"rema",     name:"REMA 1000",  short:"Rema",     store:"REMA 1000 Rådhusplassen", place:"Rådhusplassen 35, Ås", km:0.8, walk:10, drive:2},
-  europris: {id:"europris", name:"Europris",   short:"Europris", store:"Europris Ås",             place:"Rådhusplassen 3, Ås",  km:1.0, walk:12, drive:3},
-  extra:    {id:"extra",    name:"Coop Extra", short:"Extra",    store:"Extra Raveien",           place:"Brekkeveien 1, Ås",   km:1.0, walk:12, drive:3},
-  kiwi:     {id:"kiwi",     name:"KIWI",       short:"Kiwi",     store:"KIWI Ås",                 place:"Brekkeveien 3a, Ås",  km:1.1, walk:13, drive:3}
+/* Auto-generated from offers/stores.json – do not put home addresses here. */
+const STORES_CFG = {
+  "note": "Avstander i Ås er omtrentlig fra bolig i Ås sentrum (gang+bil). Avstander i Lørenskog er bilkjøring fra Lørenskog sentrum/Metro Senter. Ingen hjemmeadresse er lagret her.",
+  "chains": {
+    "rema": {
+      "name": "REMA 1000",
+      "short": "Rema",
+      "dealer": "faa0Ym",
+      "color": "rema"
+    },
+    "kiwi": {
+      "name": "KIWI",
+      "short": "Kiwi",
+      "dealer": "257bxm",
+      "color": "kiwi"
+    },
+    "extra": {
+      "name": "Coop Extra",
+      "short": "Extra",
+      "dealer": "80742m",
+      "color": "extra"
+    },
+    "europris": {
+      "name": "Europris",
+      "short": "Europris",
+      "dealer": "e857Mm",
+      "color": "europris"
+    },
+    "meny": {
+      "name": "MENY",
+      "short": "Meny",
+      "dealer": "4333pm",
+      "color": "meny"
+    },
+    "spar": {
+      "name": "SPAR",
+      "short": "Spar",
+      "dealer": "c062vm",
+      "color": "spar"
+    },
+    "joker": {
+      "name": "Joker",
+      "short": "Joker",
+      "dealer": "b3e8Fm",
+      "color": "joker"
+    },
+    "bunnpris": {
+      "name": "Bunnpris",
+      "short": "Bunnpris",
+      "dealer": "5b11sm",
+      "color": "bunnpris"
+    },
+    "mega": {
+      "name": "Coop Mega",
+      "short": "Mega",
+      "dealer": "de79dm",
+      "color": "mega"
+    },
+    "prix": {
+      "name": "Coop Prix",
+      "short": "Prix",
+      "dealer": "f5d5lm",
+      "color": "prix"
+    },
+    "obs": {
+      "name": "Obs",
+      "short": "Obs",
+      "dealer": "51dawm",
+      "color": "obs"
+    },
+    "holdbart": {
+      "name": "Holdbart",
+      "short": "Holdbart",
+      "dealer": "pR2h9x",
+      "color": "holdbart",
+      "website": "https://www.holdbart.no/"
+    }
+  },
+  "packages": {
+    "aas": {
+      "name": "Ås-pakken",
+      "blurb": "Rema, Kiwi, Extra og Europris i Ås (standard)",
+      "chains": [
+        "rema",
+        "kiwi",
+        "extra",
+        "europris"
+      ],
+      "areas": [
+        "aas"
+      ]
+    },
+    "aasbil": {
+      "name": "Ås + omegn (bil)",
+      "blurb": "Ås pluss Vinterbro, Ski, Vestby og nærliggende storsentre (Obs, Meny, Mega, Holdbart m.m.)",
+      "chains": [
+        "rema",
+        "kiwi",
+        "extra",
+        "europris",
+        "meny",
+        "obs",
+        "prix",
+        "mega",
+        "holdbart"
+      ],
+      "areas": [
+        "aas",
+        "kolbotn",
+        "vestby",
+        "ski",
+        "omegn",
+        "vinterbro"
+      ]
+    },
+    "lorenskog": {
+      "name": "Lørenskog",
+      "blurb": "Alle dagligvarekjeder med butikk i Lørenskog-området, inkl. Obs Haugenstua og Holdbart Haugenstua (rett ved, kort biltur fra Metro). Avstand i minutt med bil fra Metro.",
+      "chains": [
+        "rema",
+        "kiwi",
+        "extra",
+        "europris",
+        "meny",
+        "joker",
+        "bunnpris",
+        "mega",
+        "obs",
+        "holdbart"
+      ],
+      "areas": [
+        "lorenskog"
+      ]
+    },
+    "alle": {
+      "name": "Alle butikker",
+      "blurb": "Alle kjedene vi henter kundeavis for",
+      "chains": [
+        "rema",
+        "kiwi",
+        "extra",
+        "europris",
+        "meny",
+        "spar",
+        "joker",
+        "bunnpris",
+        "mega",
+        "prix",
+        "obs",
+        "holdbart"
+      ],
+      "areas": null
+    }
+  },
+  "stores": [
+    {
+      "chain": "rema",
+      "name": "REMA 1000 Rådhusplassen",
+      "place": "Rådhusplassen 35, Ås",
+      "area": "aas",
+      "drive_km": 0.8,
+      "drive": 2,
+      "walk_km": 0.8,
+      "walk": 10,
+      "from": "Ås"
+    },
+    {
+      "chain": "rema",
+      "name": "REMA 1000 Ås",
+      "place": "Johan K. Skanckes vei 1, Ås",
+      "area": "aas",
+      "drive_km": 1.2,
+      "drive": 3,
+      "walk_km": 1.2,
+      "walk": 14,
+      "from": "Ås"
+    },
+    {
+      "chain": "rema",
+      "name": "REMA 1000 Vinterbro",
+      "place": "Sjøskogenveien 7, Vinterbro",
+      "area": "vinterbro",
+      "drive_km": 11.5,
+      "drive": 14,
+      "walk_km": null,
+      "walk": null,
+      "from": "Ås"
+    },
+    {
+      "chain": "rema",
+      "name": "REMA 1000 Ski Storsenter",
+      "place": "Jernbanesvingen 6, Ski",
+      "area": "ski",
+      "drive_km": 8.6,
+      "drive": 14,
+      "walk_km": null,
+      "walk": null,
+      "from": "Ås"
+    },
+    {
+      "chain": "rema",
+      "name": "REMA 1000 Ski",
+      "place": "Åsenveien 12A, Ski",
+      "area": "ski",
+      "drive_km": 8.7,
+      "drive": 14,
+      "walk_km": null,
+      "walk": null,
+      "from": "Ås"
+    },
+    {
+      "chain": "rema",
+      "name": "REMA 1000 Metro Senter",
+      "place": "Kulturhusgata 2, Lørenskog",
+      "area": "lorenskog",
+      "drive_km": 0.7,
+      "drive": 3,
+      "walk_km": null,
+      "walk": null,
+      "from": "Lørenskog/Metro"
+    },
+    {
+      "chain": "rema",
+      "name": "REMA 1000 Skårer",
+      "place": "Skårersletta 55, Lørenskog",
+      "area": "lorenskog",
+      "drive_km": 0.9,
+      "drive": 3,
+      "walk_km": null,
+      "walk": null,
+      "from": "Lørenskog/Metro"
+    },
+    {
+      "chain": "rema",
+      "name": "REMA 1000 Lørenskog Stasjonsby",
+      "place": "Haneborgveien 12, Lørenskog",
+      "area": "lorenskog",
+      "drive_km": 3.2,
+      "drive": 6,
+      "walk_km": null,
+      "walk": null,
+      "from": "Lørenskog/Metro"
+    },
+    {
+      "chain": "rema",
+      "name": "REMA 1000 Løkenhagen",
+      "place": "Bjarne Haugens gate 3, Finstadjordet",
+      "area": "lorenskog",
+      "drive_km": 1.5,
+      "drive": 4,
+      "walk_km": null,
+      "walk": null,
+      "from": "Lørenskog/Metro"
+    },
+    {
+      "chain": "kiwi",
+      "name": "KIWI 541 Ås",
+      "place": "Brekkeveien 3a, Ås",
+      "area": "aas",
+      "drive_km": 1.1,
+      "drive": 3,
+      "walk_km": 1.1,
+      "walk": 13,
+      "from": "Ås"
+    },
+    {
+      "chain": "kiwi",
+      "name": "KIWI 293 Ski Stasjon",
+      "place": "Nordbyveien 2, Ski",
+      "area": "ski",
+      "drive_km": 8.8,
+      "drive": 13,
+      "walk_km": null,
+      "walk": null,
+      "from": "Ås"
+    },
+    {
+      "chain": "kiwi",
+      "name": "KIWI 458 Nordbyveien",
+      "place": "Nordbyveien 76, Ski",
+      "area": "ski",
+      "drive_km": 9.5,
+      "drive": 13,
+      "walk_km": null,
+      "walk": null,
+      "from": "Ås"
+    },
+    {
+      "chain": "kiwi",
+      "name": "KIWI 301 Solheim",
+      "place": "Skårersletta 10, Lørenskog",
+      "area": "lorenskog",
+      "drive_km": 0.4,
+      "drive": 2,
+      "walk_km": null,
+      "walk": null,
+      "from": "Lørenskog/Metro"
+    },
+    {
+      "chain": "kiwi",
+      "name": "KIWI 963 Skårersletta",
+      "place": "Skårersletta 80, Lørenskog",
+      "area": "lorenskog",
+      "drive_km": 1.1,
+      "drive": 4,
+      "walk_km": null,
+      "walk": null,
+      "from": "Lørenskog/Metro"
+    },
+    {
+      "chain": "kiwi",
+      "name": "KIWI 285 Fjellhamar",
+      "place": "Fjellhamarveien 58, Fjellhamar",
+      "area": "lorenskog",
+      "drive_km": 3.3,
+      "drive": 6,
+      "walk_km": null,
+      "walk": null,
+      "from": "Lørenskog/Metro"
+    },
+    {
+      "chain": "kiwi",
+      "name": "KIWI 503 Nordbyhagen",
+      "place": "Nordbyringen 1, Lørenskog",
+      "area": "lorenskog",
+      "drive_km": 3.3,
+      "drive": 6,
+      "walk_km": null,
+      "walk": null,
+      "from": "Lørenskog/Metro"
+    },
+    {
+      "chain": "extra",
+      "name": "Extra Raveien",
+      "place": "Brekkeveien 1, Ås",
+      "area": "aas",
+      "drive_km": 1.0,
+      "drive": 3,
+      "walk_km": 1.0,
+      "walk": 12,
+      "from": "Ås"
+    },
+    {
+      "chain": "extra",
+      "name": "Extra Ås",
+      "place": "Idrettsveien 1, Ås",
+      "area": "aas",
+      "drive_km": 1.6,
+      "drive": 4,
+      "walk_km": 1.6,
+      "walk": 19,
+      "from": "Ås"
+    },
+    {
+      "chain": "extra",
+      "name": "Extra Solberg Øst",
+      "place": "Granheimtunet 3, Ås",
+      "area": "omegn",
+      "drive_km": 9.1,
+      "drive": 12,
+      "walk_km": null,
+      "walk": null,
+      "from": "Ås"
+    },
+    {
+      "chain": "extra",
+      "name": "Extra Nesset",
+      "place": "Nessetveien 69, Vinterbro",
+      "area": "vinterbro",
+      "drive_km": 10.4,
+      "drive": 12,
+      "walk_km": null,
+      "walk": null,
+      "from": "Ås"
+    },
+    {
+      "chain": "extra",
+      "name": "Extra Ski",
+      "place": "Kjeppestadveien 2, Ski",
+      "area": "ski",
+      "drive_km": 8.4,
+      "drive": 13,
+      "walk_km": null,
+      "walk": null,
+      "from": "Ås"
+    },
+    {
+      "chain": "extra",
+      "name": "Extra Triaden",
+      "place": "Gamleveien 88, Rasta",
+      "area": "lorenskog",
+      "drive_km": 1.3,
+      "drive": 4,
+      "walk_km": null,
+      "walk": null,
+      "from": "Lørenskog/Metro"
+    },
+    {
+      "chain": "extra",
+      "name": "Extra Finstadjordet",
+      "place": "Finstadlia 3, Finstadjordet",
+      "area": "lorenskog",
+      "drive_km": 2.4,
+      "drive": 6,
+      "walk_km": null,
+      "walk": null,
+      "from": "Lørenskog/Metro"
+    },
+    {
+      "chain": "europris",
+      "name": "Europris Ås",
+      "place": "Rådhusplassen 3, Ås",
+      "area": "aas",
+      "drive_km": 1.0,
+      "drive": 3,
+      "walk_km": 1.0,
+      "walk": 12,
+      "from": "Ås"
+    },
+    {
+      "chain": "europris",
+      "name": "Europris Vinterbro",
+      "place": "Sjøskogenveien 1 B, Vinterbro",
+      "area": "vinterbro",
+      "drive_km": 11.4,
+      "drive": 14,
+      "walk_km": null,
+      "walk": null,
+      "from": "Ås"
+    },
+    {
+      "chain": "europris",
+      "name": "Europris Ski",
+      "place": "Åsveien 15, Ski",
+      "area": "ski",
+      "drive_km": 8.1,
+      "drive": 13,
+      "walk_km": null,
+      "walk": null,
+      "from": "Ås"
+    },
+    {
+      "chain": "europris",
+      "name": "Europris Lørenskog",
+      "place": "Boecks gate 10, Lørenskog",
+      "area": "lorenskog",
+      "drive_km": 0.1,
+      "drive": 1,
+      "walk_km": null,
+      "walk": null,
+      "from": "Lørenskog/Metro"
+    },
+    {
+      "chain": "europris",
+      "name": "Europris Triaden",
+      "place": "Gamleveien 88, Lørenskog",
+      "area": "lorenskog",
+      "drive_km": 1.3,
+      "drive": 4,
+      "walk_km": null,
+      "walk": null,
+      "from": "Lørenskog/Metro"
+    },
+    {
+      "chain": "europris",
+      "name": "Europris Fjellhamar",
+      "place": "Haneborgveien 95, Fjellhamar",
+      "area": "lorenskog",
+      "drive_km": 3.4,
+      "drive": 7,
+      "walk_km": null,
+      "walk": null,
+      "from": "Lørenskog/Metro"
+    },
+    {
+      "chain": "obs",
+      "name": "Obs Vinterbro",
+      "place": "Sjøskogveien 7, Vinterbro",
+      "area": "vinterbro",
+      "drive_km": 11.5,
+      "drive": 14,
+      "walk_km": null,
+      "walk": null,
+      "from": "Ås"
+    },
+    {
+      "chain": "meny",
+      "name": "MENY Ski",
+      "place": "Eikeliv 1, Ski",
+      "area": "ski",
+      "drive_km": 8.1,
+      "drive": 13,
+      "walk_km": null,
+      "walk": null,
+      "from": "Ås"
+    },
+    {
+      "chain": "meny",
+      "name": "MENY Ski Storsenter",
+      "place": "Jernbanesvingen 6, Ski",
+      "area": "ski",
+      "drive_km": 8.5,
+      "drive": 14,
+      "walk_km": null,
+      "walk": null,
+      "from": "Ås"
+    },
+    {
+      "chain": "meny",
+      "name": "MENY Nordbyveien",
+      "place": "Nordbyveien 41A, Ski",
+      "area": "ski",
+      "drive_km": 9.8,
+      "drive": 13,
+      "walk_km": null,
+      "walk": null,
+      "from": "Ås"
+    },
+    {
+      "chain": "meny",
+      "name": "MENY Triaden",
+      "place": "Gamleveien 88, Lørenskog",
+      "area": "lorenskog",
+      "drive_km": 1.3,
+      "drive": 4,
+      "walk_km": null,
+      "walk": null,
+      "from": "Lørenskog/Metro"
+    },
+    {
+      "chain": "meny",
+      "name": "MENY Rasta",
+      "place": "Rastastubben 3, Rasta",
+      "area": "lorenskog",
+      "drive_km": 2.6,
+      "drive": 6,
+      "walk_km": null,
+      "walk": null,
+      "from": "Lørenskog/Metro"
+    },
+    {
+      "chain": "prix",
+      "name": "Coop Prix Hageveien",
+      "place": "Hageveien 2, Ski",
+      "area": "ski",
+      "drive_km": 9.2,
+      "drive": 14,
+      "walk_km": null,
+      "walk": null,
+      "from": "Ås"
+    },
+    {
+      "chain": "mega",
+      "name": "Coop Mega Kolbotn",
+      "place": "Kolbotnveien 35, Kolbotn",
+      "area": "kolbotn",
+      "drive_km": 21.9,
+      "drive": 24,
+      "walk_km": null,
+      "walk": null,
+      "from": "Ås"
+    },
+    {
+      "chain": "mega",
+      "name": "Coop Mega Metro",
+      "place": "Biblioteksgata 30, Lørenskog",
+      "area": "lorenskog",
+      "drive_km": 0.4,
+      "drive": 2,
+      "walk_km": null,
+      "walk": null,
+      "from": "Lørenskog/Metro"
+    },
+    {
+      "chain": "mega",
+      "name": "Coop Mega Fjellhamar",
+      "place": "Haneborgveien 103, Fjellhamar",
+      "area": "lorenskog",
+      "drive_km": 3.4,
+      "drive": 7,
+      "walk_km": null,
+      "walk": null,
+      "from": "Lørenskog/Metro"
+    },
+    {
+      "chain": "joker",
+      "name": "Joker Skårerveien",
+      "place": "Skårerveien 54A, LØRENSKOG",
+      "area": "lorenskog",
+      "drive_km": 1.4,
+      "drive": 4,
+      "walk_km": null,
+      "walk": null,
+      "from": "Lørenskog/Metro"
+    },
+    {
+      "chain": "joker",
+      "name": "Joker Vestparken",
+      "place": "Ola Hegerbergsgate 14, RASTA",
+      "area": "lorenskog",
+      "drive_km": 1.8,
+      "drive": 5,
+      "walk_km": null,
+      "walk": null,
+      "from": "Lørenskog/Metro"
+    },
+    {
+      "chain": "joker",
+      "name": "Joker Visperud",
+      "place": "Solheimveien 29, LØRENSKOG",
+      "area": "lorenskog",
+      "drive_km": 1.6,
+      "drive": 4,
+      "walk_km": null,
+      "walk": null,
+      "from": "Lørenskog/Metro"
+    },
+    {
+      "chain": "bunnpris",
+      "name": "Bunnpris Skårer",
+      "place": "Skårersletta 60, Lørenskog",
+      "area": "lorenskog",
+      "drive_km": 0.9,
+      "drive": 3,
+      "walk_km": null,
+      "walk": null,
+      "from": "Lørenskog/Metro"
+    },
+    {
+      "chain": "obs",
+      "name": "Obs Haugenstua",
+      "place": "Østre Aker vei 264, Oslo",
+      "area": "lorenskog",
+      "drive_km": 6.5,
+      "drive": 9,
+      "walk_km": null,
+      "walk": null,
+      "from": "Lørenskog/Metro"
+    },
+    {
+      "chain": "holdbart",
+      "name": "Holdbart Haugenstua",
+      "place": "Garver Ytteborgs vei 98, Oslo",
+      "area": "lorenskog",
+      "drive_km": 7.0,
+      "drive": 10,
+      "walk_km": null,
+      "walk": null,
+      "from": "Lørenskog/Metro"
+    },
+    {
+      "chain": "holdbart",
+      "name": "Holdbart Vinterbro",
+      "place": "Sjøskogenveien 7, Vinterbro",
+      "area": "vinterbro",
+      "drive_km": 11.6,
+      "drive": 15,
+      "walk_km": null,
+      "walk": null,
+      "from": "Ås"
+    },
+    {
+      "chain": "holdbart",
+      "name": "Holdbart Vestby",
+      "place": "Høgdaveien 3, Vestby",
+      "area": "vestby",
+      "drive_km": 8.2,
+      "drive": 10,
+      "walk_km": null,
+      "walk": null,
+      "from": "Ås"
+    }
+  ]
 };
-const CHORD = ["rema", "europris", "extra", "kiwi"];
+/* ---------- Tilbud ---------- */
+const CHAINS = Object.fromEntries(Object.entries((STORES_CFG && STORES_CFG.chains) || {}).map(([id, c]) => [id, {
+  id, name: c.name, short: c.short, color: c.color || id, store: c.name, place: "", km: null, walk: null, drive: null
+}]));
+const ALL_CHAINS = Object.keys(CHAINS);
+const CHORD = ALL_CHAINS.slice();
+const PK = "mat_off_pack_v1";
+let PACK = (() => {
+  try { return Object.assign({id: "aas", custom: ["rema", "kiwi", "extra", "europris"]}, JSON.parse(localStorage.getItem(PK) || "null") || {}); }
+  catch (_) { return {id: "aas", custom: ["rema", "kiwi", "extra", "europris"]}; }
+})();
+if (!PACK.id) PACK.id = "aas";
+if (!Array.isArray(PACK.custom)) PACK.custom = ["rema", "kiwi", "extra", "europris"];
+const savePack = () => { try { localStorage.setItem(PK, JSON.stringify({id: PACK.id, custom: PACK.custom})); } catch (_) {} };
+function packChains() {
+  if (PACK.id === "egendefinert") return (PACK.custom || []).filter(id => CHAINS[id]);
+  const def = (STORES_CFG.packages || {}).aas || {};
+  const p = (STORES_CFG.packages || {})[PACK.id] || def;
+  return (p.chains && p.chains.length ? p.chains : ALL_CHAINS).filter(id => CHAINS[id]);
+}
+function packOffers() {
+  const allow = new Set(packChains());
+  return (offers || []).filter(o => allow.has(o.chain));
+}
+function packAreas() {
+  if (PACK.id === "egendefinert" || PACK.id === "alle") return null;
+  const p = (STORES_CFG.packages || {})[PACK.id];
+  return (p && p.areas) || null;
+}
+function storesInPack() {
+  const allow = new Set(packChains()), areas = packAreas();
+  return ((STORES_CFG && STORES_CFG.stores) || []).filter(s => allow.has(s.chain) && (!areas || areas.includes(s.area)));
+}
+function primaryStore(chain) {
+  const rows = storesInPack().filter(s => s.chain === chain);
+  const all = rows.length ? rows : ((STORES_CFG && STORES_CFG.stores) || []).filter(s => s.chain === chain);
+  return all.slice().sort((a, b) => (a.drive_km ?? 99) - (b.drive_km ?? 99) || (a.walk ?? 99) - (b.walk ?? 99))[0] || null;
+}
+
 const CORE_KEYS = new Set(["kylling","kjøttdeig","egg","eggehvite","ris","pasta","nudler","laks","torsk","reker","mais","skyr/yoghurt","ost","fløte","rømme","løk","brokkoli","gulrot","poteter","tortilla","bacon","skinke","pølser","chorizo","melk","brød","hakkede tomater","cottage cheese","tunfisk","peanøttsmør","havregryn","biff","svinekjøtt","smågodt","ferdigpizza","ferdigmat","cream of rice"]);
+const OFF_CATS = [
+  ["kjott", "Kjøtt/kylling"],
+  ["fisk", "Fisk"],
+  ["meieri", "Meieri/egg"],
+  ["pasta", "Pasta/ris"],
+  ["ferdig", "Ferdigmat"],
+  ["snacks", "Snacks/smågodt"],
+  ["alt", "Alt"]
+];
 const OFK = "mat_off_tick_v1";
-let OF = {q:"", all:false, shop:false, favsOn:false, tick: (() => { try { return new Set(JSON.parse(localStorage.getItem(OFK)) || []); } catch (_) { return new Set(); } })(), rename: null, more: 15};
+let OF = {view: null, store: null, cat: "", q: "", more: 20, mtab: "sunn", rename: null,
+  tick: (() => { try { return new Set(JSON.parse(localStorage.getItem(OFK)) || []); } catch (_) { return new Set(); } })()};
+let offNav = 0;
 
 const kr = n => { if (n == null || !isFinite(+n)) return ""; const x = Math.round(+n * 100) / 100; const s = x % 1 === 0 ? String(x) : x.toFixed(2).replace(/0$/, "").replace(".", ","); return s + " kr"; };
-const ch = id => CHAINS[id] || {short: id, name: id, store: id, place:"", km:null, walk:null, drive:null};
+const ch = id => CHAINS[id] || {short: id, name: id, store: id, place:"", km:null, walk:null, drive:null, color:""};
 const saveTick = () => { try { localStorage.setItem(OFK, JSON.stringify([...OF.tick])); } catch (_) {} };
 const oid = o => String(o.offer_id || o.id);
 const offText = o => ((o.product || "") + " " + (o.description || "") + " " + (o.ing_key || "")).toLowerCase();
+function offerTitleTooShort(o) {
+  const p = String(o.product || "").trim();
+  const first = (p.split(/[\s,;:]+/)[0] || "").replace(/[^a-zA-ZæøåÆØÅ0-9]/g, "");
+  return first.length < 3;
+}
+function wordIn(text, w) {
+  const s = String(w || "").trim();
+  if (!s || s.length < 3) return false;
+  const rx = new RegExp("(?:^|[^a-zæøå])" + s.replace(/[.*+?^${}()|[\]\\]/g, "\\$&") + "(?:$|[^a-zæøå])", "i");
+  return rx.test(String(text || ""));
+}
+function isMilkOffer(o) {
+  const title = String(o.product || "").toLowerCase();
+  const t = offText(o);
+  if (/kokosmelk|sjokomelk|sjokolademelk|kulturmelk|kondensert|melkesjokolade|melkestenger|melkebeholder|melkeskum|melkepulver|evaporert|tørmelk|allergener|m\/melk/.test(t)) return false;
+  if (/kokos|sjoko|kultur|kondens|sjokolade|stenger|pulver|beholder/.test(title)) return false;
+  if (offerTitleTooShort(o) && !/\b(lettmelk|helmelk|skummetmelk|søtmelk)\b/.test(t) && !/\b(lett|hel|skummet|ekstra lett)\s+melk\b/.test(t)) return false;
+  if (/\b(lettmelk|helmelk|skummetmelk|søtmelk|lett-melk|hel-melk)\b/.test(t)) return true;
+  if (/\b(lett|hel|skummet|ekstra lett|økologisk|øko)\s+melk\b/.test(t)) return true;
+  if (wordIn(title, "melk")) return true;
+  return false;
+}
+const OFFER_FAMILIES = [new Set(["ferdigpizza", "grandiosa", "pizza", "frossenpizza"])];
+function itemKey(name) {
+  const n = String(name || "").toLowerCase().trim();
+  if (/vestlandslefse/.test(n)) return "vestlandslefser";
+  if (/grandiosa/.test(n)) return "grandiosa";
+  if (/\bpizza\b|frossenpizza/.test(n) && !/pizzasaus|pizzabunn|pizzakrydder/.test(n)) return "pizza";
+  return normIng(n) || n;
+}
+function familyOf(k) {
+  if (!k) return null;
+  for (const f of OFFER_FAMILIES) if (f.has(k)) return f;
+  return null;
+}
 function offerKey(o) {
+  const t = offText(o);
+  if (/vestlandslefse/i.test(t)) return "vestlandslefser";
+  if (/grandiosa/i.test(t) && !/pizzasaus|pizzabunn|pizzakrydder/.test(t)) return "grandiosa";
+  if (o.ing_key === "melk") return isMilkOffer(o) ? "melk" : (normIng(o.product || "") || null);
   if (o.ing_key) return o.ing_key;
   return normIng(o.product || "") || normIng((o.product || "") + " " + (o.description || "")) || null;
+}
+function offerMatchKind(o, name) {
+  const raw = String(name || "").toLowerCase().trim();
+  if (!raw) return null;
+  const nk = itemKey(name);
+  if (nk === "melk" || raw === "melk") return isMilkOffer(o) ? "exact" : null;
+  if (offerTitleTooShort(o) && !wordIn(offText(o), raw) && !wordIn(offText(o), nk)) return null;
+  const k = offerKey(o);
+  const title = o.product || "";
+  const t = offText(o);
+  if (k && nk && k === nk) return "exact";
+  if (wordIn(title, raw) || (nk && nk.length >= 3 && wordIn(title, nk))) return "exact";
+  const fam = familyOf(k), ifam = familyOf(nk);
+  if (fam && ifam && fam === ifam) return "similar";
+  if (k === "ferdigpizza" && (nk === "grandiosa" || nk === "pizza")) return "similar";
+  if (wordIn(t, raw) || (nk && nk.length >= 3 && wordIn(t, nk))) {
+    if (nk === "brød" && /lefse|tortilla/.test(t) && !/brød/.test(title)) return null;
+    return "exact";
+  }
+  return null;
 }
 function isReadyMeal(o) {
   const t = offText(o);
@@ -1442,11 +2262,9 @@ function offerMatchesFav(o, name) {
   if (fk === "pasta" && /pastasaus/.test(t) && !/pasta(?!saus)/.test(t)) return false;
   if (fk === "ris") return k === "ris" || /grøtris|(^|[^a-zæøå])ris([^a-zæøå]|$)/i.test(t) && !/risgrøt|pris/.test(t);
   if (fk === "egg" || fk === "eggehvite") return k === "egg" || k === "eggehvite" || (/(^|[^a-zæøå])eggehvite|((^|[^a-zæøå])egg([^a-zæøå]|$))/i.test(t) && !/mandel|marsipan/.test(t));
-  if (k && fk && (k === fk || (fk.length >= 4 && (k.startsWith(fk) || fk.startsWith(k))))) return true;
-  if (fk && fk.length >= 3) {
-    const rx = new RegExp("(?:^|[^a-zæøå])" + fk.replace(/[.*+?^${}()|[\]\\]/g, "\\$&") + "(?:$|[^a-zæøå])", "i");
-    return rx.test(t);
-  }
+  if (fk === "melk" || n === "melk") return isMilkOffer(o);
+  if (k && fk && k === fk) return true;
+  if (fk && fk.length >= 3) return wordIn(t, fk);
   return false;
 }
 const isFavOffer = o => (favs || []).some(f => offerMatchesFav(o, f.name));
@@ -1463,18 +2281,22 @@ function isUseful(o) {
   if (k && (CORE_KEYS.has(k) || RKEYS.has(k))) return true;
   return false;
 }
-function offerHitsItem(o, name) {
-  const k = offerKey(o), nk = normIng(name) || String(name || "").toLowerCase().trim();
-  if (k && nk && (k === nk || (nk.length >= 4 && (k.startsWith(nk) || nk.startsWith(k))))) return true;
-  return offerMatchesFav(o, name);
+function offerHitsItem(o, name) { return !!offerMatchKind(o, name); }
+function offersForItem(name) { return packOffers().filter(o => offerHitsItem(o, name) && o.price != null); }
+function offMatchLabel(x, withChain) {
+  const tag = x.kind === "similar" ? "lignende: " : "";
+  const chn = withChain ? " (" + ch(x.o.chain).short + ")" : "";
+  return tag + esc(x.o.product) + " — " + esc(kr(x.o.price)) + esc(chn);
 }
-function offersForItem(name) { return (offers || []).filter(o => offerHitsItem(o, name) && o.price != null); }
 function offerHint(name) {
   const hits = offersForItem(name);
   if (!hits.length) return "";
-  const best = hits.slice().sort((a, b) => a.price - b.price)[0];
-  const more = new Set(hits.map(o => o.chain)).size;
-  return `<span class="offtag">🏷️ ${esc(ch(best.chain).short)} ${esc(kr(best.price))}${more > 1 ? " +" : ""}</span>`;
+  const exact = hits.filter(o => offerMatchKind(o, name) === "exact");
+  const pool = exact.length ? exact : hits;
+  const best = pool.slice().sort((a, b) => a.price - b.price)[0];
+  const more = new Set(pool.map(o => o.chain)).size;
+  const lign = exact.length ? "" : "lignende: ";
+  return `<span class="offtag">🏷️ ${lign}${esc(ch(best.chain).short)} ${esc(kr(best.price))}${more > 1 ? " +" : ""}</span>`;
 }
 function fmtWhen(s) {
   if (!s) return "";
@@ -1483,11 +2305,25 @@ function fmtWhen(s) {
   return d.toLocaleString("nb-NO", {timeZone: "Europe/Oslo", day: "numeric", month: "short", hour: "2-digit", minute: "2-digit"});
 }
 function validTxt(o) {
-  const a = fmtWhen(o.valid_from), b = fmtWhen(o.valid_to);
-  if (a && b) return "Gyldig " + a + " – " + b + " (Europe/Oslo)";
+  const b = fmtWhen(o.valid_to);
   return b ? "Gyldig til " + b + " (Europe/Oslo)" : "";
 }
-function distTxt(c) { return c.km != null ? `${String(c.km).replace(".", ",")} km · ${c.walk} min gange · ${c.drive} min bil` : ""; }
+function distTxt(chainOrC) {
+  const id = typeof chainOrC === "string" ? chainOrC : (chainOrC && (chainOrC.id || chainOrC.chain));
+  const s = id ? primaryStore(id) : null;
+  if (s) {
+    const km = String(s.walk_km != null && s.area === "aas" ? s.walk_km : s.drive_km).replace(".", ",");
+    if (s.area === "aas" && s.walk) return `${String(s.walk_km).replace(".", ",")} km · ${s.walk} min gange · ${s.drive} min bil`;
+    const from = s.from === "Lørenskog/Metro" ? " fra Metro" : "";
+    return `${String(s.drive_km).replace(".", ",")} km · ${s.drive} min bil${from}`;
+  }
+  const c = typeof chainOrC === "object" ? chainOrC : ch(id);
+  return c && c.km != null ? `${String(c.km).replace(".", ",")} km · ${c.walk} min gange · ${c.drive} min bil` : "";
+}
+function storePlace(chain) {
+  const s = primaryStore(chain);
+  return s ? s.name : (ch(chain).store || ch(chain).name);
+}
 
 function wantedSlots() {
   const ticked = (offers || []).filter(o => OF.tick.has(oid(o)));
@@ -1504,30 +2340,37 @@ function wantedSlots() {
   }
   return [...map.values()];
 }
+function bestForSlot(slot, chain) {
+  const name = (slot && slot.label) || "";
+  const rows = packOffers().filter(o => o.chain === chain && o.price != null);
+  const exact = [], similar = [];
+  for (const o of rows) {
+    const kind = offerMatchKind(o, name);
+    if (kind === "exact") exact.push(o);
+    else if (kind === "similar") similar.push(o);
+  }
+  const pool = exact.length ? exact : similar;
+  if (!pool.length) return null;
+  const o = pool.slice().sort((a, b) => a.price - b.price)[0];
+  return {o, kind: exact.length ? "exact" : "similar"};
+}
 function chainPrice(slot, chain) {
-  // A tick means "I want this type of item" – compare the cheapest current offer
-  // of the same key at each store, not only the exact row that was ticked.
-  const rows = (offers || []).filter(o => {
-    if (o.chain !== chain || o.price == null) return false;
-    const k = offerKey(o) || offText(o).slice(0, 40);
-    return k === slot.key;
-  });
-  if (!rows.length) return null;
-  return rows.slice().sort((a, b) => a.price - b.price)[0];
+  const hit = bestForSlot(slot, chain);
+  return hit ? hit.o : null;
 }
 function storeBasket(chain) {
   const slots = wantedSlots();
   const got = [], miss = [];
   let sum = 0;
   for (const s of slots) {
-    const o = chainPrice(s, chain);
-    if (o) { got.push({slot: s, o}); sum += +o.price; }
+    const hit = bestForSlot(s, chain);
+    if (hit) { got.push({slot: s, o: hit.o, kind: hit.kind}); sum += +hit.o.price; }
     else miss.push(s);
   }
   return {chain, got, miss, sum, n: slots.length, c: ch(chain)};
 }
 function bestSingle() {
-  const rows = CHORD.map(storeBasket).filter(b => b.got.length);
+  const rows = packChains().map(storeBasket).filter(b => b.got.length);
   rows.sort((a, b) => b.got.length - a.got.length || a.sum - b.sum || a.c.km - b.c.km);
   return rows;
 }
@@ -1535,20 +2378,21 @@ function bestPair() {
   const slots = wantedSlots();
   if (slots.length < 2) return null;
   let best = null;
-  for (let i = 0; i < CHORD.length; i++) for (let j = i + 1; j < CHORD.length; j++) {
-    const a = CHORD[i], b = CHORD[j];
+  const chords = packChains();
+  for (let i = 0; i < chords.length; i++) for (let j = i + 1; j < chords.length; j++) {
+    const a = chords[i], b = chords[j];
     const got = [], miss = [];
     let sum = 0, split = {a: 0, b: 0};
     for (const s of slots) {
-      const oa = chainPrice(s, a), ob = chainPrice(s, b);
+      const oa = bestForSlot(s, a), ob = bestForSlot(s, b);
       if (oa && ob) {
-        const pick = oa.price <= ob.price ? oa : ob;
-        got.push({slot: s, o: pick}); sum += +pick.price;
-        if (pick === oa) split.a++; else split.b++;
+        const hit = oa.o.price <= ob.o.price ? oa : ob;
+        got.push({slot: s, o: hit.o, kind: hit.kind}); sum += +hit.o.price;
+        if (hit === oa) split.a++; else split.b++;
       } else if (oa || ob) {
-        const pick = oa || ob;
-        got.push({slot: s, o: pick}); sum += +pick.price;
-        if (pick === oa) split.a++; else split.b++;
+        const hit = oa || ob;
+        got.push({slot: s, o: hit.o, kind: hit.kind}); sum += +hit.o.price;
+        if (hit === oa) split.a++; else split.b++;
       } else miss.push(s);
     }
     if (!got.length) continue;
@@ -1559,7 +2403,7 @@ function bestPair() {
 }
 
 function bestOfferForKey(k) {
-  const rows = (offers || []).filter(o => offerKey(o) === k && o.unit_price != null && o.price != null);
+  const rows = packOffers().filter(o => offerKey(o) === k && o.unit_price != null && o.price != null);
   if (!rows.length) return null;
   return rows.slice().sort((a, b) => a.unit_price - b.unit_price || a.price - b.price)[0];
 }
@@ -1592,185 +2436,321 @@ function recipeOfferCost(r) {
   return {kr: krSum, used, miss, lines, protKey, protOn, n: need.size};
 }
 
+function isHoldbart(o) {
+  const k = offerKey(o), s = offText(o);
+  if (["ris", "pasta", "tunfisk", "mais", "hakkede tomater", "havregryn"].includes(k)) return true;
+  if (/grøtris|hermetikk|konserv|kjøttboller i|tomater i boks/.test(s)) return true;
+  if (/(frossen|fryst).{0,20}(kylling|fisk|grønnsak|bær|bønner)/.test(s) || /(kylling|filet).{0,20}(frossen|fryst)/.test(s)) return true;
+  return false;
+}
+function offerCat(o) {
+  const k = offerKey(o);
+  if (["kylling","kjøttdeig","bacon","skinke","pølser","chorizo","biff","svinekjøtt"].includes(k)) return "kjott";
+  if (["laks","torsk","reker","tunfisk"].includes(k)) return "fisk";
+  if (["egg","eggehvite","skyr/yoghurt","ost","fløte","rømme","melk","cottage cheese"].includes(k)) return "meieri";
+  if (["pasta","ris","nudler","cream of rice"].includes(k)) return "pasta";
+  if (k === "ferdigpizza" || k === "ferdigmat" || isReadyMeal(o)) return "ferdig";
+  if (k === "smågodt") return "snacks";
+  return "annet";
+}
+function saveAmt(o) {
+  if (o.pre_price != null && o.price != null && +o.pre_price > +o.price) return +o.pre_price - +o.price;
+  return 0;
+}
+function savePct(o) {
+  const s = saveAmt(o);
+  return s && o.pre_price ? s / +o.pre_price : 0;
+}
+function relScore(o) {
+  let s = 0;
+  if (isFavOffer(o)) s += 120;
+  if (isUseful(o)) s += 40;
+  if (isReadyMeal(o)) s += 15;
+  s += savePct(o) * 40;
+  s += Math.min(saveAmt(o), 40) * 0.25;
+  const k = offerKey(o);
+  if (["kylling","kjøttdeig","laks","egg","pasta","ris","skyr/yoghurt","mais","smågodt"].includes(k)) s += 12;
+  return s;
+}
+function rankOffers(rows) {
+  return rows.slice().sort((a, b) => relScore(b) - relScore(a) || saveAmt(b) - saveAmt(a) || (a.price || 999) - (b.price || 999));
+}
+function filterOffers(rows, {chain, cat, q, useful} = {}) {
+  let out = rows || [];
+  if (chain) out = out.filter(o => o.chain === chain);
+  if (useful) out = out.filter(isUseful);
+  if (cat && cat !== "alt") out = out.filter(o => offerCat(o) === cat);
+  const s = (q || "").trim().toLowerCase();
+  if (s) out = out.filter(o => offText(o).includes(s) || (ch(o.chain).name + " " + ch(o.chain).short).toLowerCase().includes(s));
+  return out;
+}
+function weekLabel() {
+  const labels = (offers || []).map(o => o.catalog_label).filter(l => /uke\s*\d+/i.test(l || ""));
+  if (labels.length) {
+    const c = {};
+    for (const l of labels) c[l] = (c[l] || 0) + 1;
+    return Object.entries(c).sort((a, b) => b[1] - a[1])[0][0];
+  }
+  return "Uke " + isoWeek(today());
+}
+function fetchedShort() {
+  const s = (offers && offers[0] && offers[0].fetched_at) || "";
+  if (!s) return "";
+  const d = new Date(s);
+  if (isNaN(d)) return "";
+  return d.toLocaleString("nb-NO", {timeZone: "Europe/Oslo", weekday: "short", hour: "2-digit", minute: "2-digit"}).replace(".", "");
+}
+
+/* ---------- navigasjon ---------- */
+function tilbudHash() {
+  if (!OF.view) return "#tilbud";
+  if (OF.view === "butikk" && OF.store) return "#tilbud/butikk/" + OF.store;
+  return "#tilbud/" + OF.view;
+}
+function applyOffHash() {
+  const raw = (location.hash || "").slice(1);
+  const parts = raw.split("/").filter(Boolean);
+  if (parts[0] === "tilbud") {
+    tab = "tilbud";
+    const v = parts[1] || null;
+    OF.view = ["beste", "butikk", "kurv", "middag", "favs", "hvor"].includes(v) ? v : null;
+    OF.store = OF.view === "butikk" && parts[2] && CHAINS[parts[2]] ? parts[2] : null;
+    return true;
+  }
+  if (TABS.includes(parts[0])) tab = parts[0];
+  return false;
+}
+function goOff(view, store) {
+  OF.view = view || null;
+  OF.store = view === "butikk" ? (store != null ? store : null) : null;
+  OF.more = 20;
+  OF.q = view === "kurv" || view === "beste" || view === "butikk" ? OF.q : "";
+  if (view !== "beste" && view !== "butikk") OF.q = view === "kurv" ? OF.q : "";
+  offNav++;
+  history.pushState({tab: "tilbud", off: OF.view, store: OF.store}, "", tilbudHash());
+  render();
+  scrollTo(0, 0);
+}
+function offBack() {
+  if (offNav > 0) { history.back(); return; }
+  OF.view = null;
+  OF.store = null;
+  history.replaceState({tab: "tilbud", off: null}, "", "#tilbud");
+  render();
+  scrollTo(0, 0);
+}
+function renderKeep() {
+  const y = scrollY;
+  render();
+  scrollTo(0, y);
+}
+function chipCh(id) { const c = ch(id); return `<span class="chn chn-${esc(c.color || id)}">${esc(c.short)}</span>`; }
+function catChips() {
+  return `<div class="chips offcats">${OFF_CATS.map(([id, lab]) =>
+    `<button type="button" class="chip ${OF.cat === id ? "on" : ""}" data-offcat="${esc(id)}">${esc(lab)}</button>`
+  ).join("")}</div>`;
+}
+
+function packBar(compact) {
+  const packs = Object.entries((STORES_CFG && STORES_CFG.packages) || {}).map(([id, p]) => ({id, ...p}));
+  packs.push({id: "egendefinert", name: "Egendefinert", blurb: "Kryss av kjedene du vil se"});
+  const cur = packs.find(p => p.id === PACK.id) || packs[0];
+  let h = `<div class="packsel${compact ? " sm" : ""}"><div class="lab">Butikkpakke</div><div class="chips">`;
+  h += packs.map(p => `<button type="button" class="chip ${PACK.id === p.id ? "on" : ""}" data-offpack="${esc(p.id)}">${esc(p.name)}</button>`).join("");
+  h += `</div>`;
+  if (!compact && cur && cur.blurb) h += `<p class="sub" style="margin:6px 0 0">${esc(cur.blurb)}</p>`;
+  if (PACK.id === "egendefinert") {
+    h += `<div class="chips">${ALL_CHAINS.map(id => `<button type="button" class="chip ${(PACK.custom || []).includes(id) ? "on" : ""}" data-offpchain="${esc(id)}">${esc(ch(id).short)}</button>`).join("")}</div>`;
+  }
+  return h + `</div>`;
+}
+function offBar(title) {
+  const n = OF.tick.size;
+  return `<div class="offbar"><button type="button" class="btn sm offback" data-offhome>← Tilbud</button>
+    ${n ? `<button type="button" class="btn sm offkurvbtn" data-offgo="kurv">🧺 ${n} i kurven</button>` : ""}</div>
+    <h1>${esc(title)}</h1>${packBar(true)}`;
+}
+
+function offerCard(o, opts = {}) {
+  const c = ch(o.chain), on = OF.tick.has(oid(o)), fav = isFavOffer(o);
+  const save = saveAmt(o);
+  const pre = o.pre_price != null ? ` <span class="pre">før ${esc(kr(o.pre_price))}</span>` : "";
+  const spar = save ? ` <span class="save">Spar ${esc(kr(save))}</span>` : "";
+  const qty = o.quantity_text ? `<span class="d">${esc(o.quantity_text)}</span>` : "";
+  return `<div class="offc ${on ? "on" : ""}">
+    <div class="offb">
+      <div class="offtop">${chipCh(o.chain)}${fav ? `<span class="starb">⭐</span>` : ""}${isHoldbart(o) && saveAmt(o) ? `<span class="fyllb">Fyll lageret</span>` : ""}<span class="rn">${esc(o.product)}</span></div>
+      <div class="offpr">${esc(kr(o.price))}${pre}${spar} ${qty}</div>
+      ${o.description && opts.desc !== false ? `<span class="d">${esc(o.description)}</span>` : ""}
+      ${opts.dist !== false ? `<span class="d">${esc(storePlace(o.chain))} · ${esc(distTxt(o.chain))}</span>` : ""}
+      <span class="d">${esc(validTxt(o))}</span>
+    </div>
+    <button type="button" class="btn ${on ? "" : "go"} offtick" data-offtick="${esc(oid(o))}">${on ? "I kurven ✓" : "+ Kurv"}</button>
+  </div>`;
+}
+function offerList(rows) {
+  if (!rows.length) return `<div class="msg">Ingen treff. Prøv en annen kategori eller «Alt».</div>`;
+  const vis = rows.slice(0, OF.more);
+  return vis.map(o => offerCard(o)).join("") +
+    (rows.length > vis.length ? `<button type="button" class="btn go" data-offmore>Vis flere (${rows.length - vis.length} igjen)</button>` : "");
+}
+
 function viewTilbud() {
   RKEYS = recipeKeys();
-  const all = offers || [];
-  const q = (OF.q || "").trim().toLowerCase();
-  let rows = all.slice();
-  if (!OF.all) rows = rows.filter(isUseful);
-  if (OF.shop) {
-    const names = (items || []).filter(i => !i.checked).map(i => i.name);
-    rows = rows.filter(o => names.some(n => offerHitsItem(o, n)));
-  }
-  if (q) rows = rows.filter(o => offText(o).includes(q) || (ch(o.chain).name + ch(o.chain).short).toLowerCase().includes(q));
-  const favRows = rows.filter(isFavOffer);
-  const rest = rows.filter(o => !isFavOffer(o));
-  const sortFn = (a, b) => (a.chain || "").localeCompare(b.chain || "") || (a.product || "").localeCompare(b.product || "", "nb");
-  favRows.sort(sortFn); rest.sort(sortFn);
-  const shown = OF.favsOn && favRows.length ? favRows : favRows.concat(rest);
-  const fetched = all[0] && all[0].fetched_at;
-  const nTick = OF.tick.size;
-
-  let h = `<h1>Tilbud</h1>
-    <p class="sub">Ukas kundeaviser for Rema, Kiwi, Extra og Europris i Ås. Prisene er fra avisen (Tjek/eTilbudsavis)${fetched ? ", hentet " + fmtWhen(fetched) + " (Europe/Oslo)" : ""}. Ordinære hyllepriser har vi ikke – varer uten tilbud vises som «ikke på tilbud her». Oppdiktede priser brukes aldri.</p>
-    <div class="offstores">${CHORD.map(id => { const c = ch(id); return `<div class="offst"><b>${esc(c.short)}</b><span>${esc(c.store)}</span><span class="d">${esc(distTxt(c))}</span></div>`; }).join("")}</div>
-    <p class="sub">Rema på Rådhusplassen er nærmest. Extra Ås (Idrettsveien) og REMA 1000 Ås (Johan K. Skanckes vei) ligger også i sentrum. Europris og Rema på Vinterbro er ca. 11 km / 14 min med bil.</p>`;
-
-  h += favBlock();
-  h += cheapDinnerBlock();
-
-  h += `<section class="card" style="margin-top:14px">
-    <label class="lbl" style="margin-top:0" for="off-q">Søk i tilbudene</label>
-    <input type="search" class="inp" id="off-q" value="${esc(OF.q)}" placeholder="F.eks. kylling, pizza, smågodt" enterkeyhint="search">
-    <div class="chips">
-      <button class="chip ${!OF.all ? "on" : ""}" data-offall="0">Bare relevant</button>
-      <button class="chip ${OF.all ? "on" : ""}" data-offall="1">Vis alle</button>
-      <button class="chip ${OF.shop ? "on" : ""}" data-offshop>Fra handlelista</button>
-      <button class="chip ${OF.favsOn ? "on" : ""}" data-offfavs>Bare ⭐ favoritter</button>
-    </div>
-    <div class="stack" style="margin-top:8px">
-      <button class="btn go" data-offfromshop ${!(items && items.length) ? "disabled" : ""}>Hent fra handlelista</button>
-    </div>
-    <p class="sub" style="margin:8px 0 0">${shown.length} treff${ !OF.all ? " (skjuler irelevante, f.eks. mye av Europris)" : ""}. Kryss av det du vil ha – «Billigst» oppdateres rett under.</p>
-  </section>`;
-  h += billigstBlock();
-
-  if (!all.length) h += `<div class="msg">Ingen tilbud lastet ennå. Kjør <code>python3 offers/fetch_offers.py</code> og last siden på nytt.</div>`;
-
-  if (favRows.length && !OF.favsOn) {
-    const fv = favRows.slice(0, OF.favMore || 12);
-    h += `<h2 style="margin:18px 0 8px">⭐ Mine favoritter på tilbud</h2>` + fv.map(offerCard).join("")
-      + (favRows.length > fv.length ? `<button class="btn go" data-offfavmore>Vis flere favoritter (${favRows.length - fv.length} igjen)</button>` : "");
-  }
-  const restTitle = OF.favsOn ? "⭐ Favoritter" : OF.all ? "Alle tilbud" : (favRows.length ? "Andre relevante tilbud" : "Tilbud");
-  if (shown.length) {
-    const list = OF.favsOn ? favRows : (favRows.length ? rest : shown);
-    const cap = OF.favsOn ? list.length : OF.more;
-    const vis = list.slice(0, cap);
-    if (list.length) h += `<h2 style="margin:18px 0 8px">${restTitle}</h2>` + vis.map(offerCard).join("")
-      + (list.length > vis.length ? `<button class="btn go" data-offmore>Vis flere (${list.length - vis.length} igjen)</button>` : "");
-  } else if (all.length) h += `<div class="msg">Ingen treff. Prøv «Vis alle» eller et annet søk.</div>`;
-
-  return h;
+  if (!OF.view) return viewOffHub();
+  if (OF.view === "beste") return viewOffBeste();
+  if (OF.view === "butikk") return OF.store ? viewOffStore(OF.store) : viewOffStores();
+  if (OF.view === "kurv") return viewOffKurv();
+  if (OF.view === "middag") return viewOffMiddag();
+  if (OF.view === "favs") return viewOffFavs();
+  if (OF.view === "hvor") return viewOffHvor();
+  return viewOffHub();
 }
 
-function favBlock() {
-  const list = favs || [];
-  let h = `<section class="card" id="minefav">
-    <h2 style="margin:0 0 8px">⭐ Mine favorittvarer</h2>
-    <p class="sub" style="margin:0 0 10px">Tilbud som matcher lista vises øverst med stjerne. Du kan legge til, endre og fjerne. Lista lagres i skyen.</p>`;
-  if (!list.length) h += `<div class="msg">Ingen favoritter ennå.</div>`;
-  for (const f of list) {
-    if (OF.rename === f.id) {
-      h += `<div class="favrow ren"><input type="text" class="inp" id="fav-ren" maxlength="60" value="${esc(f.name)}" enterkeyhint="done"><button class="btn go" style="width:auto;flex:none" data-favsave="${f.id}">Lagre</button><button class="btn sm" style="width:auto;flex:none" data-favcanc>Avbryt</button></div>`;
-    } else {
-      const n = (offers || []).filter(o => offerMatchesFav(o, f.name)).length;
-      h += `<div class="favrow"><div class="favmeta"><span class="favn">⭐ ${esc(f.name)}</span><span class="d">${n ? n + " på tilbud" : "ikke på tilbud nå"}</span></div><div class="favbtns"><button class="btn sm" data-favren="${f.id}">Endre</button><button class="btn sm" data-favdel="${f.id}">Fjern</button></div></div>`;
-    }
-  }
-  h += `<div class="favrow add"><input type="text" class="inp" id="fav-new" maxlength="60" placeholder="Legg til f.eks. bacon" enterkeyhint="done"><button class="btn go" style="width:auto;flex:none" data-favadd>＋ Legg til</button></div></section>`;
-  return h;
-}
-
-function offerCard(o) {
-  const c = ch(o.chain), on = OF.tick.has(oid(o)), fav = isFavOffer(o);
-  const pre = o.pre_price != null ? ` <span class="pre">før ${esc(kr(o.pre_price))}</span>` : "";
-  const qty = o.quantity_text ? `<span class="d">${esc(o.quantity_text)}</span>` : "";
-  const up = o.unit_price != null && o.unit ? `<span class="d">${esc(kr(o.unit_price))} / ${esc(o.unit)}</span>` : "";
-  return `<div class="offc ${on ? "on" : ""} ${fav ? "fav" : ""}">
-    <label class="offlab"><input type="checkbox" data-offtick="${esc(oid(o))}" ${on ? "checked" : ""}>
-    <span class="offb">
-      <span class="offtop">${fav ? `<span class="starb">⭐</span>` : ""}<span class="chn">${esc(c.short)}</span><span class="rn">${esc(o.product)}</span></span>
-      <span class="offpr">${esc(kr(o.price))}${pre} ${qty} ${up}</span>
-      ${o.description ? `<span class="d">${esc(o.description)}</span>` : ""}
-      <span class="d">${esc(c.store)} · ${esc(distTxt(c))}</span>
-      <span class="d">${esc(validTxt(o))}</span>
-    </span></label>
-    <div class="offacts"><button type="button" class="btn sm" data-offshopadd="${esc(oid(o))}">Legg i handleliste</button></div>
+function viewOffHub() {
+  const allN = (offers || []).length, n = packOffers().length, basket = OF.tick.size;
+  const upd = fetchedShort();
+  const week = weekLabel();
+  const favN = packOffers().filter(isFavOffer).length;
+  const shopN = (items || []).filter(i => !i.checked).length;
+  const curName = ((STORES_CFG.packages || {})[PACK.id] || {}).name || (PACK.id === "egendefinert" ? "Egendefinert" : "Ås-pakken");
+  return `<div class="offpage"><h1>Tilbud</h1>
+    <p class="offsum">${esc(week)} · ${n} tilbud i ${esc(curName)}${allN !== n ? " (av " + allN + " totalt)" : ""}${upd ? " · oppdatert " + upd : ""}${basket ? " · " + basket + " i kurven" : ""}</p>
+    <p class="sub">Priser fra kundeavisene (Tjek/eTilbudsavis). Ikke hyllepriser. Oppdiktede priser brukes aldri.</p>
+    ${packBar(false)}
+    ${!allN ? `<div class="msg">Ingen tilbud lastet ennå.</div>` : ""}
+    <nav class="offhub">
+      <button type="button" class="offtile" data-offgo="beste"><span class="otico">🔥</span><span class="ottxt"><b>Beste tilbud</b><span>Beste kupp tvers av butikkene i pakken</span></span></button>
+      <button type="button" class="offtile" data-offgo="butikk"><span class="otico">🏪</span><span class="ottxt"><b>Velg butikk</b><span>${esc(packChains().map(id => ch(id).short).join(", ") || "Ingen kjeder valgt")}</span></span></button>
+      <button type="button" class="offtile" data-offgo="kurv"><span class="otico">🧺</span><span class="ottxt"><b>Handlekurv / Sammenlign</b><span>${basket ? basket + " " + (basket === 1 ? "vare" : "varer") + " i kurven – se hvor det er billigst" : "Velg varer og sammenlign butikkene"}</span></span></button>
+      <button type="button" class="offtile" data-offgo="hvor"><span class="otico">📍</span><span class="ottxt"><b>Hvor bør jeg handle?</b><span>${shopN ? "Anbefaling ut fra handlelista (" + shopN + " varer)" : "Bruker den aktive handlelista"}</span></span></button>
+      <button type="button" class="offtile" data-offgo="middag"><span class="otico">🍽️</span><span class="ottxt"><b>Billig middag</b><span>Sunnere forslag og ferdigmat-kupp</span></span></button>
+      <button type="button" class="offtile" data-offgo="favs"><span class="otico">⭐</span><span class="ottxt"><b>Favoritter</b><span>${favN ? favN + " av dine varer er på tilbud i pakken" : "Rediger lista og se hva som er på tilbud"}</span></span></button>
+    </nav>
   </div>`;
 }
 
-function billigstBlock() {
+function viewOffBeste() {
+  const list = rankOffers(filterOffers(packOffers(), {cat: OF.cat, q: OF.q, useful: !OF.cat}));
+  const stock = rankOffers(packOffers().filter(o => isHoldbart(o) && (saveAmt(o) > 0 || isUseful(o)))).slice(0, 8);
+  return `<div class="offpage">${offBar("Beste tilbud")}
+    <p class="sub">Beste kupp tvers av butikkene i pakken. Rangert etter det som passer deg, og etter rabatt når førpris står i avisen.</p>
+    <label class="lbl" for="off-q">Søk</label>
+    <input type="search" class="inp" id="off-q" value="${esc(OF.q)}" placeholder="F.eks. kylling, pizza, smågodt" enterkeyhint="search">
+    ${catChips()}
+    ${!OF.q && !OF.cat && stock.length ? `<div class="fyllbox"><h2 style="margin:0 0 8px">📦 Fyll lageret</h2><p class="sub" style="margin:0 0 8px">Holdbare varer på tilbud (ris, pasta, hermetikk, frossen kylling, tunfisk m.m.) – greit å ta med litt ekstra, særlig på Obs eller andre storsentre.</p>${stock.map(o => offerCard(o, {desc: false})).join("")}</div>` : ""}
+    <p class="sub">${list.length} treff</p>
+    ${offerList(list)}
+  </div>`;
+}
+
+function viewOffStores() {
+  const ids = packChains();
+  const extras = storesInPack().filter(s => {
+    const p = primaryStore(s.chain);
+    return p && s.name !== p.name;
+  });
+  let note = "";
+  if (PACK.id === "aas") note = "Rema på Rådhusplassen er nærmest. Extra Ås (Idrettsveien) og REMA 1000 Ås (Johan K. Skanckes vei) ligger også i sentrum.";
+  if (PACK.id === "lorenskog") note = "Avstander er kjøretid fra Lørenskog sentrum / Metro Senter. Obs Haugenstua og Holdbart Haugenstua ligger like ved (Oslo, ca. 7 km / 9–10 min).";
+  if (PACK.id === "aasbil") note = "Inkluderer Vinterbro (Obs, Holdbart, Rema, Europris), Ski (Meny, Kiwi m.m.), Holdbart Vestby og Coop Mega Kolbotn (lengst unna, ca. 22 km / 24 min).";
+  return `<div class="offpage">${offBar("Velg butikk")}
+    <p class="sub">Åpne avisen for én kjede i pakken. Tilbudene er kjedens kundeavis (oftest nasjonal).</p>
+    <div class="offhub">
+      ${ids.map(id => { const s = primaryStore(id), c = ch(id); return `<button type="button" class="offtile store ${esc(id)}" data-offstore="${esc(id)}">
+        ${chipCh(id)}<span class="ottxt"><b>${esc(s ? s.name : c.name)}</b><span>${s ? esc(s.place) + " · " : ""}${esc(distTxt(id))}</span></span></button>`; }).join("")}
+    </div>
+    ${extras.length ? `<p class="sub">Flere i pakken: ${esc(extras.map(s => s.name).join(" · "))}</p>` : ""}
+    ${note ? `<p class="sub">${esc(note)}</p>` : ""}
+  </div>`;
+}
+
+function viewOffStore(id) {
+  const c = ch(id);
+  const list = rankOffers(filterOffers(packOffers(), {chain: id, cat: OF.cat, q: OF.q, useful: !OF.cat}));
+  const s = primaryStore(id);
+  return `<div class="offpage">${offBar(c.short)}
+    <p class="sub">${esc(s ? s.name + ", " + s.place : c.store)} · ${esc(distTxt(id))}</p>
+    <label class="lbl" for="off-q">Søk i ${esc(c.short)}</label>
+    <input type="search" class="inp" id="off-q" value="${esc(OF.q)}" placeholder="Søk i denne butikken" enterkeyhint="search">
+    ${catChips()}
+    <p class="sub">${list.length} treff</p>
+    ${offerList(list)}
+  </div>`;
+}
+
+function viewOffKurv() {
+  const q = (OF.q || "").trim().toLowerCase();
   const slots = wantedSlots();
-  if (!slots.length) return `<section class="card" id="billigst" style="margin-top:16px"><h2 style="margin:0 0 8px">Billigst</h2><p class="sub" style="margin:0">Kryss av varene du vil ha, så summerer vi tilbudspris per butikk. Varer som ikke står i avisen i en butikk merkes «ikke på tilbud her» – vi har ikke ordinære priser.</p></section>`;
+  const ticked = (offers || []).filter(o => OF.tick.has(oid(o)));
+  let find = [];
+  if (q.length >= 2) find = rankOffers(filterOffers(packOffers(), {q, useful: false})).slice(0, 12);
+  const favQuick = (favs || []).map(f => ({f, n: packOffers().filter(o => offerMatchesFav(o, f.name) && o.price != null).length})).filter(x => x.n);
+  const shopQuick = (items || []).filter(i => !i.checked);
   const singles = bestSingle();
-  const pair = bestPair();
   const best = singles[0];
-  let h = `<section class="card" id="billigst" style="margin-top:16px"><h2 style="margin:0 0 8px">Billigst for ${slots.length} ${slots.length === 1 ? "vare" : "varer"}</h2>`;
-  if (best) {
-    const miss = best.miss.length ? best.miss.map(s => s.label).join(", ") : "";
-    h += `<div class="bestbox"><div class="lab">Billigste enkeltbutikk</div><div class="rn">${esc(best.c.store)}</div>
-      <div class="offpr">${esc(kr(best.sum))} på tilbud (${best.got.length} av ${best.n})</div>
-      <div class="d">${esc(distTxt(best.c))}</div>
-      ${miss ? `<div class="warn" style="margin:8px 0 0">Ikke på tilbud her: ${esc(miss)}</div>` : ""}</div>`;
+  const pair = bestPair();
+
+  let h = `<div class="offpage">${offBar("Handlekurv / Sammenlign")}
+    <p class="sub">Velg varer og se hva det koster hvis du tar alt i én butikk, eller deler mellom to. Summerer bare avispriser. Mangler = «ikke på tilbud her».</p>
+    <label class="lbl" for="off-q">Søk og legg i kurven</label>
+    <input type="search" class="inp" id="off-q" value="${esc(OF.q)}" placeholder="Søk etter vare" enterkeyhint="search">`;
+  if (favQuick.length) {
+    h += `<div class="lab">Hurtigvalg fra favoritter</div><div class="chips">${favQuick.map(x =>
+      `<button type="button" class="chip" data-offqfav="${esc(x.f.name)}">⭐ ${esc(x.f.name)} (${x.n})</button>`).join("")}</div>`;
   }
-  for (const b of singles) {
-    h += `<div class="storetot"><b>${esc(b.c.short)}</b><span>${esc(kr(b.sum))} · ${b.got.length}/${b.n} på tilbud</span><span class="d">${esc(distTxt(b.c))}</span>
-      <ul class="stot">${b.got.map(x => `<li>${esc(x.o.product)} — ${esc(kr(x.o.price))}</li>`).join("")}
-      ${b.miss.map(s => `<li class="miss">${esc(s.label)} — ikke på tilbud her</li>`).join("")}</ul></div>`;
+  if (shopQuick.length) {
+    h += `<div class="stack" style="margin:8px 0"><button type="button" class="btn sm" data-offfromshop>＋ Fra handlelista (${shopQuick.length})</button></div>`;
   }
+  if (find.length) h += `<div class="lab">Treff</div>` + find.map(o => offerCard(o, {desc: false})).join("");
+  else if (q.length >= 2) h += `<div class="msg">Ingen tilbud matcher «${esc(q)}».</div>`;
+
+  h += `<h2 style="margin:18px 0 8px">I kurven (${slots.length} ${slots.length === 1 ? "varetype" : "varetyper"})</h2>`;
+  if (!ticked.length) h += `<div class="msg">Kurven er tom. Søk over, bruk favoritter, eller hent fra handlelista.</div>`;
+  else {
+    h += `<div class="kurvl">${ticked.map(o => `<div class="krow"><span>${chipCh(o.chain)} <b>${esc(o.product)}</b> · ${esc(kr(o.price))}</span><button type="button" class="btn sm" data-offtick="${esc(oid(o))}" aria-label="Fjern">Fjern</button></div>`).join("")}</div>
+      <button type="button" class="btn sm" data-offclear>Tøm kurven</button>`;
+  }
+
+  h += `<h2 style="margin:22px 0 8px">Alt på én butikk</h2>`;
+  if (!slots.length) h += `<p class="sub">Legg varer i kurven for å sammenligne.</p>`;
+  else {
+    if (best) {
+      const miss = best.miss.length ? best.miss.map(s => s.label).join(", ") : "";
+      h += `<div class="bestbox"><div class="lab">Billigste enkeltbutikk</div><div class="rn">${esc(best.c.store)}</div>
+        <div class="offpr">${esc(kr(best.sum))} på tilbud (${best.got.length} av ${best.n})</div>
+        <div class="d">${esc(distTxt(best.c))}</div>
+        ${miss ? `<div class="warn" style="margin:8px 0 0">Ikke på tilbud her: ${esc(miss)}</div>` : ""}</div>`;
+    }
+    for (const b of singles) {
+      h += `<div class="storetot ${best && b.chain === best.chain ? "hi" : ""}"><b>${esc(b.c.short)}</b><span>${esc(kr(b.sum))} · ${b.got.length}/${b.n} på tilbud</span><span class="d">${esc(distTxt(b.c))}</span>
+        <ul class="stot">${b.got.map(x => `<li>${offMatchLabel(x)}</li>`).join("")}
+        ${b.miss.map(s => `<li class="miss">${esc(s.label)} — ikke på tilbud her</li>`).join("")}</ul></div>`;
+    }
+    if (!singles.length) h += `<div class="msg">Ingen av butikkene har disse varene på tilbud.</div>`;
+  }
+
+  h += `<h2 style="margin:22px 0 8px">Del opp</h2>`;
   if (pair && pair.got.length) {
     const same = best && pair.got.length === best.got.length;
     const save = same && best ? best.sum - pair.sum : null;
     const coversMore = best && pair.got.length > best.got.length;
+    const extra = (pair.ca.km || 0) + (pair.cb.km || 0) - (best && best.c.km ? best.c.km : 0);
     h += `<div class="bestbox two"><div class="lab">Beste to butikker</div>
       <div class="rn">${esc(pair.ca.store)} + ${esc(pair.cb.store)}</div>
       <div class="offpr">${esc(kr(pair.sum))} på tilbud (${pair.got.length} av ${slots.length})</div>
       <div class="d">${esc(pair.ca.short)}: ${esc(distTxt(pair.ca))}<br>${esc(pair.cb.short)}: ${esc(distTxt(pair.cb))}</div>
+      ${extra > 0.05 && best ? `<div class="d">Ekstra distanse mot bare ${esc(best.c.short)}: ca. ${String(Math.round(extra * 10) / 10).replace(".", ",")} km (sum av de to, minus den ene).</div>` : ""}
       ${save != null && save > 0.05 ? `<div class="hok">Spar ${esc(kr(save))} mot bare ${esc(best.c.short)}</div>` : ""}
       ${coversMore ? `<div class="hok">Dekker flere tilbudsvarer enn én butikk alene.</div>` : ""}
       ${save != null && save <= 0.05 && !coversMore ? `<p class="sub" style="margin:8px 0 0">To butikker er ikke billigere enn ${esc(best.c.short)} alene for varene som er på tilbud der.</p>` : ""}
-      <ul class="stot">${pair.got.map(x => `<li>${esc(x.o.product)} — ${esc(kr(x.o.price))} (${esc(ch(x.o.chain).short)})</li>`).join("")}
+      <div class="lab" style="margin-top:10px">Hva du kjøper hvor</div>
+      <ul class="stot">${pair.got.map(x => `<li>${offMatchLabel(x, true)}</li>`).join("")}
       ${pair.miss.map(s => `<li class="miss">${esc(s.label)} — ikke på tilbud i noen av de to</li>`).join("")}</ul>
     </div>`;
-  }
-  h += `<p class="sub" style="margin:10px 0 0">Summerer bare priser fra avisen. Mangler = «ikke på tilbud her», ikke anslått hyllepris.</p></section>`;
+  } else h += `<p class="sub">Legg minst to varetyper i kurven for å se en fordeling mellom butikker.</p>`;
+  h += `<p class="sub">Summerer bare priser fra avisen. Vi har ikke ordinære hyllepriser.</p></div>`;
   return h;
-}
-
-function cheapDinnerBlock() {
-  const dinners = cheapHealthy();
-  const ready = (offers || []).filter(isReadyMeal).filter(o => o.price != null).slice().sort((a, b) => a.price - b.price);
-  let h = `<section class="card" id="billigmiddag"><h2 style="margin:0 0 8px">Billig middag nå</h2>
-    <h3 class="offh">Sunnere og billig</h3>
-    <p class="sub" style="margin:0 0 8px">Middager fra rettbanken der hovedproteinet er på tilbud denne uka. Pris per porsjon er beregnet bare fra kjente tilbudspriser og merket «ca.». Ingredienser uten tilbud er ikke tatt med i summen.</p>`;
-  if (!dinners.length) h += `<div class="msg">Ingen middager der hovedproteinet har kjennbar tilbudspris denne uka.</div>`;
-  for (const x of dinners.slice(0, 6)) {
-    const r = x.r, c = x.c;
-    const cov = c.lines.map(l => l.name + " " + kr(l.kr)).join(", ");
-    const miss = c.miss.length ? " Ikke i summen (ingen kjennbar tilbudspris): " + c.miss.join(", ") + "." : "";
-    h += `<div class="hres cheap"><div class="rn">${esc(r.name)}</div>
-      <div class="rm">${r.protein != null ? r.protein + " g protein" : ""} ${r.kcal != null ? "· " + r.kcal + " kcal" : ""} ${r.minutes ? "· " + r.minutes + " min" : ""}</div>
-      <div class="offpr">ca. ${esc(kr(c.kr))} / porsjon <span class="d">(${c.used} av ${c.n} ingredienser på tilbud)</span></div>
-      <div class="d">${esc(cov)}.${esc(miss)}</div>
-      <div class="hplan"><button class="btn sm" data-rec="${r.id}">Oppskrift</button><button class="btn sm ${OF.open===r.id ? "go" : ""}" data-offplan="${r.id}">Legg i plan</button></div>
-      ${OF.open===r.id ? `<div class="hplan" style="margin-top:8px"><button class="btn go" data-offpd="${today()}">I dag</button><button class="btn go" data-offpd="${add(today(), 1)}">I morgen</button>
-        <div class="hdate"><input class="inp" type="date" id="off-date" value="${today()}" min="${today()}" aria-label="Velg dato"><button class="btn" data-offpd="pick">Legg til</button></div></div>` : ""}
-    </div>`;
-  }
-  h += `<h3 class="offh">Ferdigmat-kupp</h3>
-    <p class="sub" style="margin:0 0 8px">Grandiosa, frossenpizza, ferdigretter og lignende når de står i avisen. Pris per måltid = prisen i avisen for pakken (ikke oppdiktet). Protein er ikke oppgitt i avisen – sjekk pakken, eller boost med egg, kylling eller skyr ved siden av.</p>`;
-  if (!ready.length) h += `<div class="msg">Ingen ferdigmat på tilbud i de lastede avisene.</div>`;
-  for (const o of ready) {
-    const rec = readyRecipeHint(o);
-    const c = ch(o.chain);
-    const on = OF.tick.has(oid(o));
-    h += `<div class="hres cheap ready">
-      <label class="offlab"><input type="checkbox" data-offtick="${esc(oid(o))}" ${on ? "checked" : ""}>
-        <span class="offb"><span class="offtop">${isFavOffer(o) ? `<span class="starb">⭐</span>` : ""}<span class="chn">${esc(c.short)}</span><span class="rn">${esc(o.product)}</span></span>
-        <span class="offpr">${esc(kr(o.price))} / måltid <span class="d">(${esc(o.quantity_text || "1 pakke, prisen i avisen")})</span></span>
-        <span class="d">Protein: ikke oppgitt i avisen.${esc(rec)}</span>
-      </span></label>
-    </div>`;
-  }
-  return h + `</section>`;
-}
-
-function readyRecipeHint(o) {
-  const t = offText(o);
-  const hit = recipes.find(r => !r.hidden && /grandiosa/i.test(r.name) && /grandiosa/.test(t));
-  if (hit && hit.protein != null) return ` I rettbanken: «${hit.name}» har ${hit.protein} g protein og ${hit.kcal != null ? hit.kcal + " kcal" : "ukjent kcal"} per porsjon (oppskriften, ikke avisen).`;
-  return "";
 }
 
 function cheapHealthy() {
@@ -1785,32 +2765,186 @@ function cheapHealthy() {
   out.sort((a, b) => a.c.kr - b.c.kr || (b.r.protein || 0) - (a.r.protein || 0));
   return out;
 }
+function readyRecipeHint(o) {
+  const t = offText(o);
+  const hit = recipes.find(r => !r.hidden && /grandiosa/i.test(r.name) && /grandiosa/.test(t));
+  if (hit && hit.protein != null) return ` I rettbanken: «${hit.name}» har ${hit.protein} g protein og ${hit.kcal != null ? hit.kcal + " kcal" : "ukjent kcal"} per porsjon (oppskriften, ikke avisen).`;
+  return "";
+}
 
-function recipesOnOfferBlock() {
-  const rows = cheapHealthy();
-  if (!rows.length) return "";
-  return `<section class="card" style="margin-top:14px"><h2 style="margin:0 0 8px">Retter som passer ukas tilbud</h2>
-    <p class="sub" style="margin:0 0 8px">Middager der hovedproteinet er på tilbud. Samme utvalg som «Sunnere og billig» over.</p>
-    <div class="stack">${rows.slice(0, 8).map(x => `<button class="btn sm" style="justify-content:space-between" data-rec="${x.r.id}"><span>${esc(x.r.name)}</span><span class="d">ca. ${esc(kr(x.c.kr))} · ${x.r.protein != null ? x.r.protein + " g" : ""}</span></button>`).join("")}</div>
-  </section>`;
+
+function slotsFromShop() {
+  const names = (items || []).filter(i => !i.checked).map(i => i.name);
+  const map = new Map();
+  for (const name of names) {
+    const hits = offersForItem(name);
+    const k = (hits[0] && (offerKey(hits[0]) || offText(hits[0]).slice(0, 40))) || normIng(name) || name.toLowerCase();
+    if (!map.has(k)) map.set(k, {key: k, label: name, offers: [], hasOffer: false});
+    const slot = map.get(k);
+    if (hits.length) { slot.hasOffer = true; slot.offers = slot.offers.concat(hits); }
+  }
+  return {names, slots: [...map.values()]};
+}
+function viewOffHvor() {
+  const L = (typeof lists !== "undefined" ? lists : []).find(l => l.id === curList);
+  const {names, slots} = slotsFromShop();
+  const onOffer = slots.filter(s => s.hasOffer), none = slots.filter(s => !s.hasOffer);
+  const singles = (() => {
+    const rows = packChains().map(c => {
+      const got = [], miss = [];
+      let sum = 0;
+      for (const s of onOffer) {
+        const hit = bestForSlot(s, c);
+        if (hit) { got.push({slot: s, o: hit.o, kind: hit.kind}); sum += +hit.o.price; }
+        else miss.push(s);
+      }
+      return {chain: c, got, miss, sum, n: onOffer.length, c: ch(c)};
+    }).filter(b => b.got.length);
+    rows.sort((a, b) => b.got.length - a.got.length || a.sum - b.sum || (primaryStore(a.chain)?.drive_km || 99) - (primaryStore(b.chain)?.drive_km || 99));
+    return rows;
+  })();
+  const best = singles[0];
+  // pair among pack chains
+  let pair = null;
+  const chords = packChains();
+  if (onOffer.length >= 2) {
+    for (let i = 0; i < chords.length; i++) for (let j = i + 1; j < chords.length; j++) {
+      const a = chords[i], b = chords[j], got = [], miss = [];
+      let sum = 0;
+      for (const s of onOffer) {
+        const oa = bestForSlot(s, a), ob = bestForSlot(s, b);
+        const hit = oa && ob ? (oa.o.price <= ob.o.price ? oa : ob) : (oa || ob);
+        if (hit) { got.push({slot: s, o: hit.o, kind: hit.kind}); sum += +hit.o.price; }
+        else miss.push(s);
+      }
+      if (!got.length) continue;
+      const row = {a, b, got, miss, sum, ca: ch(a), cb: ch(b)};
+      if (!pair || row.got.length > pair.got.length || (row.got.length === pair.got.length && row.sum < pair.sum)) pair = row;
+    }
+  }
+  let h = `<div class="offpage">${offBar("Hvor bør jeg handle?")}
+    <p class="sub">${L ? "Aktiv handleliste: " + esc(L.title) + ". " : ""}${names.length ? names.length + " ukryssede varer." : "Ingen varer i handlelista ennå."} Matcher mot tilbud i valgt butikkpakke. Varer uten tilbud merkes ærlig – vi har ikke hyllepriser.</p>`;
+  if (!names.length) {
+    h += `<div class="msg">Lag eller åpne en handleliste i 🛒 Handle først. Der finner du også knappen «Hvor bør jeg handle?».</div></div>`;
+    return h;
+  }
+  h += `<div class="stack"><button type="button" class="btn go" data-offfromshop ${!onOffer.length ? "disabled" : ""}>＋ Legg tilbudsvarer i handlekurven (${onOffer.length})</button></div>`;
+  if (onOffer.length) {
+    h += `<h2 style="margin:18px 0 8px">På tilbud i pakken (${onOffer.length})</h2>
+      <ul class="stot">${onOffer.map(s => `<li>${esc(s.label)}</li>`).join("")}</ul>`;
+  }
+  if (none.length) {
+    h += `<h2 style="margin:18px 0 8px">Ikke på tilbud i avisen (${none.length})</h2>
+      <p class="sub">Disse står ikke i kundeavisene vi har lastet (i denne pakken). Vi gjetter ikke ordinær pris.</p>
+      <ul class="stot">${none.map(s => `<li class="miss">${esc(s.label)} — ikke på tilbud her</li>`).join("")}</ul>`;
+  }
+  h += `<h2 style="margin:22px 0 8px">Alt på én butikk</h2>`;
+  if (!onOffer.length) h += `<div class="msg">Ingen av varene på lista er på tilbud i denne pakken.</div>`;
+  else if (best) {
+    const miss = best.miss.length ? best.miss.map(s => s.label).join(", ") : "";
+    h += `<div class="bestbox"><div class="lab">Beste enkeltbutikk for lista</div><div class="rn">${esc(storePlace(best.chain))}</div>
+      <div class="offpr">${esc(kr(best.sum))} på tilbud (${best.got.length} av ${best.n})</div>
+      <div class="d">${esc(distTxt(best.chain))}</div>
+      ${miss ? `<div class="warn" style="margin:8px 0 0">Ikke på tilbud her: ${esc(miss)}</div>` : ""}
+      ${none.length ? `<div class="d">Pluss ${none.length} varer som ikke står i noen avis i pakken.</div>` : ""}</div>`;
+    for (const b of singles) {
+      h += `<div class="storetot ${b.chain === best.chain ? "hi" : ""}"><b>${esc(b.c.short)}</b><span>${esc(kr(b.sum))} · ${b.got.length}/${b.n} på tilbud</span><span class="d">${esc(distTxt(b.chain))}</span>
+        <ul class="stot">${b.got.map(x => `<li>${offMatchLabel(x)}</li>`).join("")}
+        ${b.miss.map(s => `<li class="miss">${esc(s.label)} — ikke på tilbud her</li>`).join("")}</ul></div>`;
+    }
+  }
+  h += `<h2 style="margin:22px 0 8px">Del opp</h2>`;
+  if (pair && pair.got.length) {
+    const same = best && pair.got.length === best.got.length;
+    const save = same && best ? best.sum - pair.sum : null;
+    const coversMore = best && pair.got.length > best.got.length;
+    h += `<div class="bestbox two"><div class="lab">Beste to butikker</div>
+      <div class="rn">${esc(storePlace(pair.a))} + ${esc(storePlace(pair.b))}</div>
+      <div class="offpr">${esc(kr(pair.sum))} på tilbud (${pair.got.length} av ${onOffer.length})</div>
+      <div class="d">${esc(pair.ca.short)}: ${esc(distTxt(pair.a))}<br>${esc(pair.cb.short)}: ${esc(distTxt(pair.b))}</div>
+      ${save != null && save > 0.05 ? `<div class="hok">Spar ${esc(kr(save))} mot bare ${esc(best.c.short)}</div>` : ""}
+      ${coversMore ? `<div class="hok">Dekker flere tilbudsvarer enn én butikk alene.</div>` : ""}
+      <ul class="stot">${pair.got.map(x => `<li>${offMatchLabel(x, true)}</li>`).join("")}
+      ${pair.miss.map(s => `<li class="miss">${esc(s.label)} — ikke på tilbud i noen av de to</li>`).join("")}</ul>
+    </div>`;
+  } else h += `<p class="sub">Trenger minst to tilbudsvarer på lista for å foreslå en fordeling.</p>`;
+  return h + `</div>`;
+}
+
+function viewOffMiddag() {
+  const tabSunn = OF.mtab !== "ferdig";
+  let h = `<div class="offpage">${offBar("Billig middag")}
+    <div class="chips"><button type="button" class="chip ${tabSunn ? "on" : ""}" data-offmtab="sunn">Sunnere og billig</button>
+    <button type="button" class="chip ${!tabSunn ? "on" : ""}" data-offmtab="ferdig">Ferdigmat-kupp</button></div>`;
+  if (tabSunn) {
+    const dinners = cheapHealthy();
+    h += `<p class="sub">Middager fra rettbanken der hovedproteinet er på tilbud. «ca.»-pris per porsjon bare fra kjente tilbudspriser. Resten er utelatt.</p>`;
+    if (!dinners.length) h += `<div class="msg">Ingen middager der hovedproteinet har kjennbar tilbudspris denne uka.</div>`;
+    for (const x of dinners.slice(0, 8)) {
+      const r = x.r, c = x.c;
+      const cov = c.lines.map(l => l.name + " " + kr(l.kr)).join(", ");
+      const miss = c.miss.length ? " Ikke i summen: " + c.miss.join(", ") + "." : "";
+      h += `<div class="hres cheap"><div class="rn">${esc(r.name)}</div>
+        <div class="rm">${r.protein != null ? r.protein + " g protein" : ""} ${r.kcal != null ? "· " + r.kcal + " kcal" : ""} ${r.minutes ? "· " + r.minutes + " min" : ""}</div>
+        <div class="offpr">ca. ${esc(kr(c.kr))} / porsjon <span class="d">(${c.used} av ${c.n} ingredienser på tilbud)</span></div>
+        <div class="d">${esc(cov)}.${esc(miss)}</div>
+        <div class="hplan"><button type="button" class="btn sm" data-rec="${r.id}">Oppskrift</button>
+          <button type="button" class="btn sm ${OF.open === r.id ? "go" : ""}" data-offplan="${r.id}">Legg i plan</button></div>
+        ${OF.open === r.id ? `<div class="hplan" style="margin-top:8px"><button type="button" class="btn go" data-offpd="${today()}">I dag</button><button type="button" class="btn go" data-offpd="${add(today(), 1)}">I morgen</button>
+          <div class="hdate"><input class="inp" type="date" id="off-date" value="${today()}" min="${today()}" aria-label="Velg dato"><button type="button" class="btn" data-offpd="pick">Legg til</button></div></div>` : ""}
+      </div>`;
+    }
+  } else {
+    const ready = packOffers().filter(isReadyMeal).filter(o => o.price != null).slice().sort((a, b) => a.price - b.price);
+    h += `<p class="sub">Grandiosa, frossenpizza, ferdigretter og lignende når de står i avisen. Pris per måltid = pakkeprisen i avisen. Protein er ikke oppgitt i avisen – boost gjerne med egg, kylling eller skyr.</p>`;
+    if (!ready.length) h += `<div class="msg">Ingen ferdigmat på tilbud i de lastede avisene.</div>`;
+    for (const o of ready) {
+      const rec = readyRecipeHint(o);
+      h += `<div class="hres cheap ready">${offerCard(o, {desc: true})}
+        <div class="d">Pris per måltid: ${esc(kr(o.price))} (${esc(o.quantity_text || "1 pakke, prisen i avisen")}). Protein: ikke oppgitt i avisen.${esc(rec)}</div>
+      </div>`;
+    }
+  }
+  return h + `</div>`;
+}
+
+function viewOffFavs() {
+  const list = favs || [];
+  let h = `<div class="offpage">${offBar("Favoritter")}`;
+  h += favEditor();
+  const rows = rankOffers(packOffers().filter(isFavOffer));
+  h += `<h2 style="margin:18px 0 8px">På tilbud nå (${rows.length})</h2>`;
+  if (!rows.length) h += `<div class="msg">Ingen av favorittene dine står i ukas aviser.</div>`;
+  else h += offerList(rows);
+  return h + `</div>`;
+}
+
+function favEditor() {
+  const list = favs || [];
+  let h = `<section class="card" id="minefav">
+    <h2 style="margin:0 0 8px">⭐ Mine favorittvarer</h2>
+    <p class="sub" style="margin:0 0 10px">Lista lagres i skyen og brukes til å fremheve tilbud (⭐). Du kan legge til, endre og fjerne.</p>`;
+  if (!list.length) h += `<div class="msg">Ingen favoritter ennå.</div>`;
+  for (const f of list) {
+    if (OF.rename === f.id) {
+      h += `<div class="favrow ren"><input type="text" class="inp" id="fav-ren" maxlength="60" value="${esc(f.name)}" enterkeyhint="done"><button type="button" class="btn go" style="width:auto;flex:none" data-favsave="${f.id}">Lagre</button><button type="button" class="btn sm" style="width:auto;flex:none" data-favcanc>Avbryt</button></div>`;
+    } else {
+      const n = (offers || []).filter(o => offerMatchesFav(o, f.name)).length;
+      h += `<div class="favrow"><div class="favmeta"><span class="favn">⭐ ${esc(f.name)}</span><span class="d">${n ? n + " på tilbud" : "ikke på tilbud nå"}</span></div><div class="favbtns"><button type="button" class="btn sm" data-favren="${f.id}">Endre</button><button type="button" class="btn sm" data-favdel="${f.id}">Fjern</button></div></div>`;
+    }
+  }
+  h += `<div class="favrow add"><input type="text" class="inp" id="fav-new" maxlength="60" placeholder="Legg til f.eks. bacon" enterkeyhint="done"><button type="button" class="btn go" style="width:auto;flex:none" data-favadd>＋ Legg til</button></div></section>`;
+  return h;
 }
 
 async function favAdd() {
   const i = $("#fav-new"), v = i ? i.value.trim() : ""; if (!v) return;
-  try {
-    await write(() => rpc("fav_add", {p_name: v}));
-    favs = await rpc("fav_list");
-    showToast("✓ Lagt til: " + v);
-  } catch (_) {}
+  try { await write(() => rpc("fav_add", {p_name: v})); favs = await rpc("fav_list"); showToast("✓ Lagt til: " + v); } catch (_) {}
   render();
 }
 async function favSave(id) {
   const i = $("#fav-ren"), v = i ? i.value.trim() : ""; if (!v) return;
-  try {
-    await write(() => rpc("fav_rename", {p_id: id, p_name: v}));
-    favs = await rpc("fav_list"); OF.rename = null;
-    showToast("✓ Oppdatert");
-  } catch (_) {}
+  try { await write(() => rpc("fav_rename", {p_id: id, p_name: v})); favs = await rpc("fav_list"); OF.rename = null; showToast("✓ Oppdatert"); } catch (_) {}
   render();
 }
 async function favDel(id) {
@@ -1824,50 +2958,68 @@ async function favDel(id) {
   } catch (_) {}
   render();
 }
+function toggleTick(id) {
+  if (OF.tick.has(id)) OF.tick.delete(id);
+  else OF.tick.add(id);
+  saveTick();
+  renderKeep();
+}
 function tickFromShop() {
   const names = (items || []).filter(i => !i.checked).map(i => i.name);
   if (!names.length) { showToast("Ingen varer i handlelista"); return; }
   let n = 0;
   for (const name of names) {
     const hits = offersForItem(name);
+    const exact = hits.filter(o => offerMatchKind(o, name) === "exact");
+    const pool = exact.length ? exact : hits;
     const by = {};
-    for (const o of hits) {
-      if (by[o.chain] == null || o.price < by[o.chain].price) by[o.chain] = o;
-    }
-    for (const o of Object.values(by)) { if (!OF.tick.has(oid(o))) { OF.tick.add(oid(o)); n++; } }
+    for (const o of pool) if (by[o.chain] == null || o.price < by[o.chain].price) by[o.chain] = o;
+    const best = Object.values(by).sort((a, b) => a.price - b.price)[0];
+    if (best && !OF.tick.has(oid(best))) { OF.tick.add(oid(best)); n++; }
   }
   saveTick();
-  showToast(n ? "✓ Krysset av " + n + " tilbud fra lista" : "Ingen av varene er på tilbud i avisen");
+  showToast(n ? "✓ La til " + n + " varer fra lista" : "Ingen av varene er på tilbud i avisen");
   render();
-  const el = $("#billigst"); if (el) el.scrollIntoView({block: "start"});
 }
-async function offerToShop(id) {
-  const o = (offers || []).find(x => oid(x) === String(id));
-  if (!o) return;
-  if (!curList) { showToast("Lag eller åpne en handleliste først"); return; }
-  const name = (o.product || "").slice(0, 80);
-  try {
-    await write(() => rpc("shop_add_item", {p_list: curList, p_name: name, p_category: o.category || "Annet"}));
-    items = await rpc("shop_items", {p_list: curList}); lists = await rpc("shop_lists");
-    showToast("✓ Lagt i handlelista: " + name);
-  } catch (_) {}
-  render();
+function addFavToBasket(name) {
+  const hits = (offers || []).filter(o => offerMatchesFav(o, name) && o.price != null);
+  if (!hits.length) { showToast("Ikke på tilbud nå"); return; }
+  const best = hits.slice().sort((a, b) => a.price - b.price)[0];
+  const k = offerKey(best) || offText(best).slice(0, 40);
+  for (const o of offers || []) {
+    if (OF.tick.has(oid(o)) && (offerKey(o) || offText(o).slice(0, 40)) === k) OF.tick.delete(oid(o));
+  }
+  OF.tick.add(oid(best));
+  saveTick();
+  showToast("✓ " + best.product + " hos " + ch(best.chain).short + " · " + kr(best.price));
+  renderKeep();
 }
 
 document.addEventListener("click", e => {
-  const t = e.target.closest ? (e.target.closest("[data-offall],[data-offshop],[data-offfavs],[data-offfromshop],[data-offshopadd],[data-favadd],[data-favsave],[data-favcanc],[data-favren],[data-favdel],[data-offplan],[data-offpd],[data-offtick]") || e.target) : e.target;
-  if (t.dataset && t.dataset.offall != null) { OF.all = t.dataset.offall === "1"; render(); return; }
-  if (t.dataset && "offshop" in t.dataset && !t.dataset.offshopadd && t.dataset.offfromshop == null) { OF.shop = !OF.shop; render(); return; }
-  if (t.dataset && "offfavs" in t.dataset) { OF.favsOn = !OF.favsOn; render(); return; }
-  if (t.dataset && "offfromshop" in t.dataset) { tickFromShop(); return; }
-  if (t.dataset && t.dataset.offshopadd) { e.preventDefault(); offerToShop(t.dataset.offshopadd); return; }
-  if (t.dataset && "favadd" in t.dataset) { favAdd(); return; }
-  if (t.dataset && t.dataset.favsave) { favSave(+t.dataset.favsave); return; }
-  if (t.dataset && "favcanc" in t.dataset) { OF.rename = null; render(); return; }
-  if (t.dataset && t.dataset.favren) { OF.rename = +t.dataset.favren; render(); const i = $("#fav-ren"); if (i) i.focus(); return; }
-  if (t.dataset && t.dataset.favdel) { favDel(+t.dataset.favdel); return; }
-  if (t.dataset && t.dataset.offplan) { OF.open = OF.open === +t.dataset.offplan ? null : +t.dataset.offplan; render(); return; }
-  if (t.dataset && t.dataset.offpd) {
+  const t = e.target.closest ? (e.target.closest("[data-offhvor],[data-offhome],[data-offgo],[data-offstore],[data-offcat],[data-offtick],[data-offmore],[data-offfromshop],[data-offclear],[data-offqfav],[data-offmtab],[data-offplan],[data-offpd],[data-offpack],[data-offpchain],[data-favadd],[data-favsave],[data-favcanc],[data-favren],[data-favdel]") || null) : null;
+  if (!t) return;
+  if (t.dataset.offhvor != null) { e.preventDefault(); tab = "tilbud"; OF.q = ""; OF.cat = ""; goOff("hvor"); return; }
+  if (t.dataset.offhome != null) { e.preventDefault(); offBack(); return; }
+  if (t.dataset.offpack) {
+    PACK.id = t.dataset.offpack; savePack(); render(); scrollTo(0, 0); return;
+  }
+  if (t.dataset.offpchain) {
+    const id = t.dataset.offpchain, cur = new Set(PACK.custom || []);
+    if (cur.has(id)) cur.delete(id); else cur.add(id);
+    PACK.custom = ALL_CHAINS.filter(x => cur.has(x));
+    PACK.id = "egendefinert"; savePack(); render(); return;
+  }
+  if (t.dataset.offgo != null) { e.preventDefault(); OF.q = ""; OF.cat = ""; goOff(t.dataset.offgo); return; }
+  if (t.dataset.offstore) { e.preventDefault(); OF.q = ""; OF.cat = ""; goOff("butikk", t.dataset.offstore); return; }
+  if (t.dataset.offcat != null) { OF.cat = t.dataset.offcat === "alt" ? "alt" : t.dataset.offcat; OF.more = 20; render(); scrollTo(0, 0); return; }
+  if (t.dataset.offtick) { e.preventDefault(); toggleTick(t.dataset.offtick); return; }
+  if (t.dataset.offmore != null) { OF.more += 20; renderKeep(); return; }
+  if (t.dataset.offfromshop != null) { tickFromShop(); return; }
+  if (t.dataset.offclear != null) { OF.tick = new Set(); saveTick(); render(); return; }
+  if (t.dataset.offqfav) { addFavToBasket(t.dataset.offqfav); return; }
+  if (t.dataset.offmtab) { OF.mtab = t.dataset.offmtab; render(); scrollTo(0, 0); return; }
+  if (t.dataset.offplan) { OF.open = OF.open === +t.dataset.offplan ? null : +t.dataset.offplan; renderKeep(); return; }
+  if (t.dataset.offpd) {
     const r = R(OF.open); if (!r) return;
     let d = t.dataset.offpd;
     if (d === "pick") { d = ($("#off-date") || {}).value; if (!d) return; }
@@ -1875,25 +3027,26 @@ document.addEventListener("click", e => {
     planAdd(d, r.kind === "middag" || !SL[r.kind] ? "middag" : r.kind, r.id);
     return;
   }
-});
-document.addEventListener("change", e => {
-  const t = e.target;
-  if (t && t.id === "off-q") return;
-  if (t && t.dataset && t.dataset.offtick) {
-    const id = t.dataset.offtick;
-    if (t.checked) OF.tick.add(id); else OF.tick.delete(id);
-    saveTick(); render();
-    return;
-  }
+  if ("favadd" in t.dataset) { favAdd(); return; }
+  if (t.dataset.favsave) { favSave(+t.dataset.favsave); return; }
+  if ("favcanc" in t.dataset) { OF.rename = null; render(); return; }
+  if (t.dataset.favren) { OF.rename = +t.dataset.favren; render(); const i = $("#fav-ren"); if (i) i.focus(); return; }
+  if (t.dataset.favdel) { favDel(+t.dataset.favdel); return; }
 });
 document.addEventListener("input", e => {
-  if (e.target && e.target.id === "off-q") { OF.q = e.target.value; /* live filter */ clearTimeout(OF._t); OF._t = setTimeout(() => render(), 200); }
+  if (e.target && e.target.id === "off-q") { OF.q = e.target.value; OF.more = 20; clearTimeout(OF._t); OF._t = setTimeout(() => renderKeep(), 200); }
 });
 document.addEventListener("keydown", e => {
   if (e.key !== "Enter") return;
   if (e.target && e.target.id === "fav-new") { e.preventDefault(); favAdd(); }
   if (e.target && e.target.id === "fav-ren") { e.preventDefault(); const b = document.querySelector("[data-favsave]"); if (b) favSave(+b.dataset.favsave); }
 });
+addEventListener("popstate", () => {
+  offNav = Math.max(0, offNav - 1);
+  applyOffHash();
+  if (loaded) { render(); scrollTo(0, 0); }
+});
+applyOffHash();
 </script>
 </body>
 </html>
