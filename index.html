@@ -4936,6 +4936,19 @@ document.addEventListener("click", ev => {
 { const c = CMDS.find(x => x[1] === "Tilbud"); if (c) c[3] = () => { tab = "tilbud"; OF.view = null; history.pushState({tab: "tilbud"}, "", "#tilbud"); render(); }; }
 initNav8();
 
+
+/* ---------- ny versjon tilgjengelig ---------- */
+{ const loadedMod = Date.parse(document.lastModified) || 0; let asked = false, last = 0;
+  async function checkUpdate() {
+    if (asked || location.protocol !== "https:" || Date.now() - last < 60e3) return; last = Date.now();
+    try {
+      const r = await fetch(location.pathname, {method: "HEAD", cache: "no-store"}), lm = Date.parse(r.headers.get("last-modified") || "");
+      if (lm && loadedMod && lm > loadedMod + 1000) { asked = true; showToast("✨ Ny versjon av appen er klar", () => location.reload()); const b = document.querySelector("[data-toastundo]"); if (b) b.textContent = "⟳ Oppdater"; clearTimeout(toastTimer); }
+    } catch (_) {}
+  }
+  document.addEventListener("visibilitychange", () => { if (!document.hidden) checkUpdate(); });
+  addEventListener("focus", checkUpdate); setTimeout(checkUpdate, 5000);
+}
 applyHubHash();
 render();
 load();
