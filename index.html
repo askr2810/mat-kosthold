@@ -3,8 +3,17 @@
 <head>
 <meta charset="utf-8">
 <meta name="viewport" content="width=device-width,initial-scale=1,viewport-fit=cover">
-<meta name="theme-color" content="#17703f">
+<meta name="theme-color" content="#f4f3ee">
 <title>Mat – plan og handleliste</title>
+<meta name="description" content="Ukeplan, oppskrifter, handleliste og tilbud – proteinrik hverdagsmat.">
+<meta name="apple-mobile-web-app-capable" content="yes">
+<meta name="apple-mobile-web-app-status-bar-style" content="default">
+<meta name="apple-mobile-web-app-title" content="Mat">
+<link rel="manifest" href="manifest.webmanifest">
+<link rel="icon" href="icon.svg" type="image/svg+xml">
+<link rel="apple-touch-icon" href="icon-192.png">
+<link rel="preconnect" href="https://fonts.googleapis.com"><link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link href="https://fonts.googleapis.com/css2?family=Plus+Jakarta+Sans:wght@400;500;600;700;800&display=swap" rel="stylesheet">
 <style>
 :root{--bg:#f3f5f2;--card:#fff;--ink:#0f1512;--mut:#47515a;--line:#cfd6d1;--acc:#17703f;--onacc:#fff;--accbg:#dcf2e5;--amb:#9a5200;--ambbg:#fdebd0;--red:#b3261e;--redbg:#fde3e1;--skip:#4b5563;--skipbg:#e5e8eb;--star:#e59a00;--tb:68px}
 @media(prefers-color-scheme:dark){:root{--bg:#0b0f0d;--card:#161c19;--ink:#f4f7f5;--mut:#aab5af;--line:#2f3a35;--acc:#4cc986;--onacc:#05170d;--accbg:#173a28;--amb:#f2b04a;--ambbg:#3a2a10;--red:#ff8d84;--redbg:#3d1b18;--skip:#b9c2bd;--skipbg:#262e2a;--star:#ffb81f}}
@@ -351,6 +360,321 @@ html{scroll-padding-bottom:calc(var(--tb) + env(safe-area-inset-bottom) + 88px)}
 .fsheetp{width:100%;max-width:640px;max-height:78vh;overflow:auto;background:var(--card);color:var(--ink);border-radius:20px 20px 0 0;padding:16px 16px calc(20px + env(safe-area-inset-bottom));box-shadow:0 -8px 28px rgba(0,0,0,.18);font-size:16px}
 .fshd{font-weight:800;font-size:1.15rem;margin:0 0 12px}
 @media (prefers-color-scheme:dark){.fsheet{background:rgba(0,0,0,.55)}}
+
+/* ================= v7.0 – designsystem ================= */
+:root{--bg:#f4f3ee;--card:#ffffff;--card2:#faf9f5;--ink:#132019;--mut:#56625b;--line:#e2e4dd;--line2:#d3d7cf;
+  --acc:#17703f;--acc2:#1f9150;--onacc:#fff;--accbg:#e2f3e8;--amb:#9a5200;--ambbg:#fcefd9;--red:#b3261e;--redbg:#fde6e3;
+  --skip:#4b5563;--skipbg:#eceef0;--star:#e59a00;
+  --sh1:0 1px 2px rgba(19,32,25,.05),0 2px 10px rgba(19,32,25,.05);--sh2:0 2px 6px rgba(19,32,25,.06),0 12px 32px rgba(19,32,25,.10);
+  --r:22px;--glass:rgba(255,255,255,.82);--tb:64px;--hdr:58px;
+  --font:"Plus Jakarta Sans",system-ui,-apple-system,"Segoe UI",Roboto,sans-serif}
+@media(prefers-color-scheme:dark){:root{--bg:#0c110e;--card:#151c18;--card2:#111713;--ink:#eef3f0;--mut:#a3afa8;--line:#25302a;--line2:#33403a;
+  --acc:#4cc986;--acc2:#3bb575;--onacc:#05170d;--accbg:#163526;--amb:#f2b04a;--ambbg:#35270f;--red:#ff8d84;--redbg:#3a1a17;--skip:#b9c2bd;--skipbg:#232b27;--star:#ffb81f;
+  --sh1:0 1px 2px rgba(0,0,0,.4);--sh2:0 8px 30px rgba(0,0,0,.5);--glass:rgba(21,28,24,.82)}}
+:root[data-theme=light]{color-scheme:light;--bg:#f4f3ee;--card:#ffffff;--card2:#faf9f5;--ink:#132019;--mut:#56625b;--line:#e2e4dd;--line2:#d3d7cf;
+  --acc:#17703f;--acc2:#1f9150;--onacc:#fff;--accbg:#e2f3e8;--amb:#9a5200;--ambbg:#fcefd9;--red:#b3261e;--redbg:#fde6e3;--skip:#4b5563;--skipbg:#eceef0;--star:#e59a00;
+  --sh1:0 1px 2px rgba(19,32,25,.05),0 2px 10px rgba(19,32,25,.05);--sh2:0 2px 6px rgba(19,32,25,.06),0 12px 32px rgba(19,32,25,.10);--glass:rgba(255,255,255,.82)}
+:root[data-theme=dark]{color-scheme:dark;--bg:#0c110e;--card:#151c18;--card2:#111713;--ink:#eef3f0;--mut:#a3afa8;--line:#25302a;--line2:#33403a;
+  --acc:#4cc986;--acc2:#3bb575;--onacc:#05170d;--accbg:#163526;--amb:#f2b04a;--ambbg:#35270f;--red:#ff8d84;--redbg:#3a1a17;--skip:#b9c2bd;--skipbg:#232b27;--star:#ffb81f;
+  --sh1:0 1px 2px rgba(0,0,0,.4);--sh2:0 8px 30px rgba(0,0,0,.5);--glass:rgba(21,28,24,.82)}
+html{font-size:17px}
+body{font-family:var(--font);letter-spacing:-.005em;padding-bottom:calc(var(--tb) + env(safe-area-inset-bottom) + 110px);-webkit-font-smoothing:antialiased}
+h1{font-size:1.75rem;font-weight:800;letter-spacing:-.025em;margin:6px 0 4px}
+h2{font-size:1.25rem;font-weight:800;letter-spacing:-.015em}
+main{padding:10px 16px 0}
+.offpage{font-size:16px}
+.sub,.offsum{color:var(--mut);font-weight:500}
+.offsum{font-weight:600}
+.lab{font-size:.78rem;letter-spacing:.07em;font-weight:800}
+
+/* kort og knapper */
+.card,.pday,.hres,.offc,.hgrp,.aprev,.aopts,.ingr,.offst,.krow,.fyllbox{border:1px solid var(--line);box-shadow:var(--sh1);border-radius:var(--r)}
+.card{padding:18px}
+.btn{border:1.5px solid var(--line2);border-radius:16px;box-shadow:var(--sh1);transition:transform .12s,box-shadow .15s,background .15s;font-weight:700}
+.btn:hover{box-shadow:var(--sh2)}
+.btn.go{background:linear-gradient(135deg,var(--acc),var(--acc2));border-color:transparent;box-shadow:0 6px 18px -6px color-mix(in srgb,var(--acc) 70%,transparent)}
+.btn.sm{min-height:50px}
+.chip{border:1.5px solid var(--line2);border-radius:999px;font-weight:700;transition:background .15s,border-color .15s}
+.chip.on{background:var(--acc);border-color:var(--acc);color:var(--onacc)}
+.srch,.inp,.sheet input[type=text],.sh.add input[type=text],.sh.add input[type=time],.fbf textarea{border:1.5px solid var(--line2);border-radius:16px;background:var(--card)}
+.srch:focus,.inp:focus,input:focus,textarea:focus{outline:3px solid color-mix(in srgb,var(--acc) 35%,transparent);outline-offset:1px;border-color:var(--acc)}
+.pill{border:1.5px solid var(--line);border-radius:16px;box-shadow:var(--sh1)}
+.pill.on{background:linear-gradient(160deg,var(--acc),var(--acc2));border-color:transparent}
+.gday{border:1px solid var(--line);box-shadow:var(--sh1);border-radius:18px}
+.pe{border:1.5px solid var(--line);background:var(--card2);border-radius:16px}
+.pe.ok{border-color:color-mix(in srgb,var(--acc) 55%,var(--line))}
+.badge{border-radius:999px;padding:2px 9px;font-size:.78rem}
+.sum{border-radius:16px}
+.logged{border-width:1.5px;border-radius:18px}
+.warn{border-radius:14px}
+.it{border:1.5px solid var(--line);box-shadow:var(--sh1);border-radius:16px;transition:opacity .2s,transform .15s}
+.it:active{transform:scale(.99)}
+.it input{width:28px;height:28px}
+.gh{border-bottom:1px solid var(--line2);font-size:1rem}
+.prog{height:12px;background:var(--line)}.prog i{background:linear-gradient(90deg,var(--acc),var(--acc2));border-radius:9px}
+.offtile{border:1px solid var(--line);box-shadow:var(--sh1);border-radius:20px;min-height:74px;padding:12px 14px;transition:transform .12s,box-shadow .15s}
+.offtile:hover{box-shadow:var(--sh2)}
+.otico{width:48px;height:48px;border-radius:15px;display:grid;place-items:center;font-size:1.5rem;background:var(--accbg);flex:none}
+.offtile:nth-child(6n+2) .otico{background:var(--ambbg)}
+.offtile:nth-child(6n+3) .otico{background:#e5edfb}
+.offtile:nth-child(6n+4) .otico{background:#fbe7ec}
+.offtile:nth-child(6n+5) .otico{background:#efe8fb}
+.offtile:nth-child(6n) .otico{background:#e3f4f4}
+@media(prefers-color-scheme:dark){:root:not([data-theme=light]) .offtile:nth-child(n) .otico{background:color-mix(in srgb,var(--acc) 16%,var(--card))}}
+:root[data-theme=dark] .offtile:nth-child(n) .otico{background:color-mix(in srgb,var(--acc) 16%,var(--card))}
+.offtile::after{content:"›";margin-left:auto;font-size:1.6rem;color:var(--mut);font-weight:400}
+.ottxt span{font-weight:500}
+.offhub{gap:10px}
+@media(min-width:620px){.offhub{display:grid;grid-template-columns:1fr 1fr}}
+.offback{border-radius:999px;min-height:46px}
+
+/* app-bar */
+#appbar{position:sticky;top:0;z-index:25;display:flex;align-items:center;gap:10px;height:calc(var(--hdr) + env(safe-area-inset-top));padding:env(safe-area-inset-top) max(14px,calc((100% - 680px)/2 + 16px)) 0;
+  background:color-mix(in srgb,var(--bg) 82%,transparent);backdrop-filter:saturate(1.6) blur(14px);-webkit-backdrop-filter:saturate(1.6) blur(14px);border-bottom:1px solid transparent;transition:border-color .2s}
+#appbar.sc{border-bottom-color:var(--line)}
+#appbar .brand{display:flex;align-items:center;gap:9px;text-align:left;line-height:1.1;font-weight:800;font-size:1.08rem;letter-spacing:-.02em;background:none;border:0;color:var(--ink);cursor:pointer;padding:0}
+#appbar .brand i{width:32px;height:32px;border-radius:10px;display:grid;place-items:center;background:linear-gradient(140deg,var(--acc),#3dbb73);color:#fff;font-style:normal;font-size:1rem;box-shadow:0 4px 12px -4px var(--acc)}
+#appbar .brand small{font-weight:600;color:var(--mut);font-size:.8rem}
+#appbar .sp{flex:1}
+.ib{width:44px;height:44px;border-radius:14px;border:1px solid var(--line);background:var(--card);color:var(--ink);display:grid;place-items:center;cursor:pointer;box-shadow:var(--sh1);padding:0}
+.ib svg{width:21px;height:21px}
+.ib{flex:none}#cmdq::-webkit-search-cancel-button{display:none}#cmdk .bar>svg{width:22px;height:22px;margin-left:8px;color:var(--mut);flex:none}
+main{max-width:680px}
+
+/* bunnmeny */
+.tb{left:10px;right:10px;bottom:calc(10px + env(safe-area-inset-bottom));padding:6px;border:1px solid var(--line);border-radius:26px;background:var(--glass);
+  backdrop-filter:saturate(1.8) blur(18px);-webkit-backdrop-filter:saturate(1.8) blur(18px);box-shadow:var(--sh2);max-width:660px;margin:0 auto;gap:2px}
+.tab{min-height:56px;border:0!important;border-radius:20px;font-size:.68rem;font-weight:700;gap:3px;color:var(--mut);transition:background .2s,color .2s}
+.tab svg{width:23px;height:23px;transition:transform .2s}
+.tab.on{background:var(--accbg);color:var(--acc)}
+.tab.on svg{transform:translateY(-1px) scale(1.06)}
+.tab b{display:none}
+
+/* overgang */
+@keyframes v7in{from{opacity:0;transform:translateY(8px)}to{opacity:1;transform:none}}
+@keyframes v7up{from{transform:translateY(40px);opacity:.4}to{transform:none;opacity:1}}
+@keyframes v7fade{from{opacity:0}to{opacity:1}}
+@keyframes v7pop{0%{transform:scale(.9);opacity:0}100%{transform:scale(1);opacity:1}}
+#view.enter>*{animation:v7in .28s cubic-bezier(.2,.7,.2,1) both}
+#modal.enter .ov{animation:v7fade .2s both}#modal.enter .sh{animation:v7up .3s cubic-bezier(.2,.8,.2,1) both}
+.ov{background:rgba(8,14,10,.5);backdrop-filter:blur(3px);-webkit-backdrop-filter:blur(3px)}
+.sh{border-radius:28px 28px 0 0;box-shadow:0 -10px 40px rgba(0,0,0,.18);padding-top:10px}
+.sh::before{content:"";display:block;width:42px;height:5px;border-radius:3px;background:var(--line2);margin:0 auto 10px}
+.sh .top .btn{border-radius:999px;min-width:48px;min-height:48px}
+#toast .ts{border-radius:20px;background:color-mix(in srgb,var(--ink) 92%,transparent);backdrop-filter:blur(10px);animation:v7pop .22s both}
+@media(prefers-reduced-motion:reduce){*{animation:none!important;transition:none!important}}
+
+/* skjelett */
+.skel{display:grid;gap:12px;padding-top:6px}
+.skel i{display:block;border-radius:20px;background:linear-gradient(90deg,var(--line) 0%,var(--card) 50%,var(--line) 100%);background-size:200% 100%;animation:v7sk 1.2s linear infinite}
+@keyframes v7sk{from{background-position:200% 0}to{background-position:-200% 0}}
+
+/* matkunst */
+.art{flex:none;display:grid;place-items:center;border-radius:18px;position:relative;overflow:hidden;background:var(--a1);isolation:isolate}
+.art::before{content:"";position:absolute;inset:0;background:radial-gradient(circle at 28% 22%,rgba(255,255,255,.65),transparent 55%),linear-gradient(140deg,var(--a1),var(--a2));z-index:-1}
+.art span{filter:drop-shadow(0 3px 4px rgba(0,0,0,.18));line-height:1}
+.art.s{width:62px;height:62px;font-size:2rem;border-radius:16px}
+.art.m{width:78px;height:78px;font-size:2.5rem}
+.art.l{width:100%;height:170px;font-size:5rem;border-radius:24px}
+.art.xs{width:40px;height:40px;font-size:1.35rem;border-radius:12px}
+.a-kylling{--a1:#ffe2b8;--a2:#ffc58a}.a-fisk{--a1:#d5ebff;--a2:#a9d3ff}.a-storfe{--a1:#ffd9cf;--a2:#f7b29e}.a-svin{--a1:#ffe0ea;--a2:#f9bcd0}
+.a-egg{--a1:#fff3bf;--a2:#ffe27a}.a-frokost{--a1:#fdeccf;--a2:#f6d6a3}.a-snack{--a1:#e9e3ff;--a2:#cfc3ff}.a-annet{--a1:#dcf3e2;--a2:#b4e4c3}
+@media(prefers-color-scheme:dark){:root:not([data-theme=light]) .art::before{background:radial-gradient(circle at 28% 22%,rgba(255,255,255,.14),transparent 55%),linear-gradient(140deg,var(--a1),var(--a2));opacity:.38}:root:not([data-theme=light]) .art{background:var(--card2)}}
+:root[data-theme=dark] .art::before{background:radial-gradient(circle at 28% 22%,rgba(255,255,255,.14),transparent 55%),linear-gradient(140deg,var(--a1),var(--a2));opacity:.38}
+:root[data-theme=dark] .art{background:var(--card2)}
+
+/* rettkort */
+.rc7{display:flex;align-items:center;gap:14px;width:100%;text-align:left;padding:10px 12px 10px 10px;margin:0 0 10px;border:1px solid var(--line);border-radius:22px;background:var(--card);box-shadow:var(--sh1);cursor:pointer;color:var(--ink);font:inherit;transition:transform .12s,box-shadow .15s}
+.rc7:hover{box-shadow:var(--sh2)}.rc7:active{transform:scale(.985)}
+.rc7.hid{opacity:.55}
+.rc7 .rb{flex:1;min-width:0}
+.rc7 .rn{font-weight:800;font-size:1.02rem;line-height:1.25;overflow-wrap:anywhere}
+.rc7 .rt{display:flex;flex-wrap:wrap;gap:5px;margin-top:6px}
+.mp{display:inline-flex;align-items:center;gap:4px;font-size:.78rem;font-weight:700;color:var(--mut);background:var(--card2);border:1px solid var(--line);border-radius:999px;padding:2px 8px;white-space:nowrap}
+.mp.p{color:var(--acc);background:var(--accbg);border-color:transparent}
+.rc7 .rk{font-size:.74rem;font-weight:800;text-transform:uppercase;letter-spacing:.06em;color:var(--mut);margin-bottom:2px}
+.rc7 .fv{color:var(--star);font-size:1.1rem;margin-left:4px}
+.cntb{font-weight:800;color:var(--mut);font-size:.9rem;text-transform:uppercase;letter-spacing:.06em}
+
+/* karusell */
+.car{display:flex;gap:12px;overflow-x:auto;scroll-snap-type:x mandatory;margin:4px -16px 6px;padding:4px 16px 12px;scrollbar-width:none}
+.car::-webkit-scrollbar{display:none}
+.cc{flex:none;width:168px;scroll-snap-align:start;border:1px solid var(--line);border-radius:22px;background:var(--card);box-shadow:var(--sh1);padding:8px;text-align:left;cursor:pointer;color:var(--ink);font:inherit}
+.cc .art{width:100%;height:104px;font-size:3.2rem;border-radius:16px}
+.cc b{display:block;font-size:.92rem;line-height:1.25;margin:8px 4px 4px;overflow:hidden;display:-webkit-box;-webkit-line-clamp:2;-webkit-box-orient:vertical;min-height:2.5em}
+.cc .mp{margin:0 2px}
+.sech{display:flex;align-items:baseline;justify-content:space-between;margin:18px 0 6px}
+.sech h2{margin:0;font-size:1.12rem}
+.sech button{background:none;border:0;color:var(--acc);font:inherit;font-weight:800;cursor:pointer;min-height:40px}
+
+/* I dag – hero */
+.hero{position:relative;overflow:hidden;border-radius:28px;padding:20px;margin:4px 0 14px;color:#fff;background:linear-gradient(140deg,#135f36 0%,#1d8a4b 55%,#2fae67 100%);box-shadow:0 14px 34px -14px rgba(23,112,63,.6)}
+.hero::after{content:"";position:absolute;right:-60px;top:-60px;width:220px;height:220px;border-radius:50%;background:radial-gradient(circle,rgba(255,255,255,.18),transparent 70%)}
+.hero .hg{font-size:.92rem;font-weight:700;opacity:.88}
+.hero h1{color:#fff;margin:2px 0 2px;font-size:1.6rem}
+.hero .hd{opacity:.85;font-weight:600;font-size:.92rem}
+.rings{display:grid;grid-template-columns:1fr 1fr;gap:12px;margin-top:16px;position:relative;z-index:1}
+.ring{display:flex;align-items:center;gap:12px;background:rgba(255,255,255,.13);border:1px solid rgba(255,255,255,.18);border-radius:20px;padding:10px 12px}
+.ring .rg{position:relative;width:58px;height:58px;flex:none}.ring svg{width:58px;height:58px;transform:rotate(-90deg)}.ring .rg i{position:absolute;inset:0;display:grid;place-items:center;font-style:normal;font-weight:800;font-size:.8rem}
+.ring .rv{font-weight:800;font-size:1.15rem;line-height:1.1}
+.ring .rl{font-size:.74rem;font-weight:700;opacity:.85;text-transform:uppercase;letter-spacing:.05em}
+.ring .rs{font-size:.78rem;opacity:.85;font-weight:600}
+.qa{display:grid;grid-template-columns:repeat(4,1fr);gap:8px;margin:0 0 16px}
+.qa button{display:flex;flex-direction:column;align-items:center;gap:6px;padding:12px 4px;border:1px solid var(--line);border-radius:20px;background:var(--card);box-shadow:var(--sh1);font:inherit;font-size:.74rem;font-weight:700;color:var(--ink);cursor:pointer;line-height:1.15;text-align:center}
+.qa button span{font-size:1.5rem;line-height:1}
+.mcard{padding:0;overflow:hidden}
+.mcard .mh{display:flex;gap:14px;align-items:center;padding:16px 16px 4px}
+.mcard .mh h2{margin:2px 0 0;font-size:1.15rem;line-height:1.25}
+.mcard .mb{padding:4px 16px 16px}
+.mcard.done{opacity:.97}
+.mcard .stamp{display:inline-flex;align-items:center;gap:4px;font-size:.74rem;font-weight:800;padding:2px 8px;border-radius:999px;background:var(--accbg);color:var(--acc);margin-left:6px;vertical-align:2px}
+.tl{position:relative;margin:6px 0 0;padding-left:18px}
+.tl::before{content:"";position:absolute;left:6px;top:6px;bottom:6px;width:2px;background:var(--line)}
+.tl .le{border-top:0;position:relative}
+.tl .le::before{content:"";position:absolute;left:-17px;top:50%;width:12px;height:12px;margin-top:-6px;border-radius:50%;background:var(--card);border:3px solid var(--acc)}
+.tl .le.skip::before{border-color:var(--skip)}
+
+/* uke-glimt */
+.wkg{display:grid;grid-template-columns:minmax(0,1fr);gap:8px;margin:10px 0 16px}
+.wkg .gd{display:flex;align-items:center;gap:12px;width:100%;padding:8px 12px 8px 8px;border:1px solid var(--line);border-radius:20px;background:var(--card);box-shadow:var(--sh1);cursor:pointer;text-align:left;font:inherit;color:var(--ink)}
+.wkg .gd.today{border-color:var(--acc);box-shadow:0 0 0 3px color-mix(in srgb,var(--acc) 22%,transparent)}
+.wkg .gd .dn{width:44px;text-align:center;flex:none}.wkg .gd .dn b{display:block;font-size:.8rem;text-transform:uppercase;letter-spacing:.05em;color:var(--mut)}.wkg .gd .dn span{font-size:1.25rem;font-weight:800}
+.wkg .gd .gm{flex:1;min-width:0}.wkg .gd .gm b{display:block;font-weight:700;line-height:1.25;overflow:hidden;text-overflow:ellipsis;white-space:nowrap}.wkg .gd .gm small{color:var(--mut);font-weight:600}
+.wkg .gd .empty{width:40px;height:40px;border-radius:12px;border:2px dashed var(--line2);display:grid;place-items:center;color:var(--mut);flex:none}
+.dotst{width:10px;height:10px;border-radius:50%;flex:none;background:var(--line2)}.dotst.ok{background:var(--acc)}.dotst.alt{background:var(--amb)}.dotst.skip{background:var(--skip)}
+
+/* oppskrift-modal */
+.rhero{margin:0 0 12px}
+.rstats{display:grid;grid-template-columns:repeat(3,1fr);gap:8px;margin:12px 0}
+.rstat{background:var(--card);border:1px solid var(--line);border-radius:18px;padding:10px;text-align:center}
+.rstat b{display:block;font-size:1.2rem;font-weight:800}.rstat span{font-size:.76rem;font-weight:700;color:var(--mut);text-transform:uppercase;letter-spacing:.05em}
+.portb{display:flex;align-items:center;justify-content:space-between;gap:10px;background:var(--card);border:1px solid var(--line);border-radius:18px;padding:6px 6px 6px 14px;margin:10px 0}
+.portb b{font-size:1rem}.portb .pc{display:flex;align-items:center;gap:8px}.portb .pc span{min-width:2.2em;text-align:center;font-weight:800;font-size:1.15rem}
+.portb .ib{width:44px;height:44px;font-size:1.3rem;font-weight:800}
+.ilist7{list-style:none;margin:6px 0 0;padding:0;display:grid;gap:6px}
+.ilist7 li{display:flex;align-items:center;gap:12px;padding:10px 12px;border:1px solid var(--line);border-radius:14px;background:var(--card);cursor:pointer;font-size:1rem;line-height:1.3;transition:opacity .2s}
+.ilist7 li .ck{width:24px;height:24px;border-radius:8px;border:2px solid var(--line2);flex:none;display:grid;place-items:center;font-size:.9rem;color:var(--onacc)}
+.ilist7 li.on{opacity:.5}.ilist7 li.on .ck{background:var(--acc);border-color:var(--acc)}.ilist7 li.on .nm{text-decoration:line-through}
+.ilist7 li .nm{flex:1;min-width:0}.ilist7 li .q{font-weight:700;color:var(--mut);white-space:nowrap}
+.ilist7 li .h{font-size:.74rem;font-weight:700;color:var(--amb);display:block}
+.rsteps7{list-style:none;counter-reset:s;margin:6px 0 0;padding:0}
+.rsteps7 li{counter-increment:s;position:relative;padding:12px 0 12px 46px;border-bottom:1px solid var(--line);font-size:1.02rem;line-height:1.5}
+.rsteps7 li::before{content:counter(s);position:absolute;left:0;top:10px;width:32px;height:32px;border-radius:11px;background:var(--accbg);color:var(--acc);font-weight:800;display:grid;place-items:center}
+.tchip{display:inline-flex;align-items:center;gap:5px;margin:6px 6px 0 0;padding:6px 12px;min-height:38px;border-radius:999px;border:1.5px solid var(--acc);background:var(--card);color:var(--acc);font:inherit;font-weight:800;font-size:.88rem;cursor:pointer}
+.tchip:active{transform:scale(.96)}
+.tchip.run{background:var(--acc);color:var(--onacc)}
+
+/* timere */
+#timers{position:fixed;left:50%;transform:translateX(-50%);bottom:calc(var(--tb) + env(safe-area-inset-bottom) + 26px);z-index:46;display:flex;flex-direction:column;gap:6px;width:min(420px,calc(100% - 28px))}
+#timers .tm{display:flex;align-items:center;gap:10px;padding:8px 8px 8px 14px;border-radius:18px;background:color-mix(in srgb,var(--ink) 93%,transparent);color:var(--bg);box-shadow:var(--sh2);backdrop-filter:blur(10px);animation:v7pop .2s both}
+#timers .tm b{font-variant-numeric:tabular-nums;font-size:1.25rem;min-width:4.2ch}
+#timers .tm span{flex:1;min-width:0;font-size:.85rem;font-weight:600;opacity:.85;overflow:hidden;text-overflow:ellipsis;white-space:nowrap}
+#timers .tm button{border:0;border-radius:12px;background:rgba(255,255,255,.14);color:inherit;min-width:42px;min-height:42px;font:inherit;font-weight:800;cursor:pointer}
+#timers .tm.done{background:var(--red);color:#fff;animation:v7pulse 1s infinite}
+@keyframes v7pulse{50%{transform:scale(1.03)}}
+body.cooking #timers{bottom:calc(96px + env(safe-area-inset-bottom));z-index:210}
+
+/* kokemodus */
+#cook{background:var(--bg)}
+.ckdots{display:flex;gap:5px;margin:6px 0 16px}.ckdots i{flex:1;height:6px;border-radius:3px;background:var(--line)}.ckdots i.on{background:var(--acc)}
+.cktxt{font-size:26px;letter-spacing:-.01em}
+.ckart{display:flex;gap:14px;align-items:center;margin:4px 0 10px}
+.cknav .btn{border-radius:20px}
+.cknext{margin-top:22px;padding:14px 16px;border-radius:18px;border:1.5px dashed var(--line2);color:var(--mut);font-size:1.05rem;line-height:1.45}.cknext .lab{margin-bottom:4px}
+
+/* statistikk */
+.kpis{display:grid;grid-template-columns:repeat(2,minmax(0,1fr));gap:10px;margin:8px 0 14px}
+.kpi{background:var(--card);border:1px solid var(--line);border-radius:20px;padding:14px;box-shadow:var(--sh1)}
+.kpi b{display:block;font-size:1.65rem;font-weight:800;letter-spacing:-.02em;line-height:1.1}
+.kpi span{font-size:.8rem;font-weight:700;color:var(--mut)}
+.kpi small{display:block;color:var(--mut);font-size:.78rem;margin-top:2px}
+.chart{position:relative}
+.chart svg{width:100%;height:auto;display:block;overflow:visible}
+.chart .tt{position:absolute;pointer-events:none;background:var(--ink);color:var(--bg);font-size:.8rem;font-weight:700;padding:6px 9px;border-radius:10px;transform:translate(-50%,-110%);white-space:nowrap;opacity:0;transition:opacity .12s}
+.hbar{display:grid;grid-template-columns:minmax(0,1fr) 2fr auto;gap:10px;align-items:center;margin:8px 0;font-size:.92rem}
+.hbar .t{height:12px;border-radius:0 4px 4px 0;background:var(--acc)}
+.hbar .w{background:var(--card2);border-radius:4px;overflow:hidden}
+.hbar b{font-variant-numeric:tabular-nums}
+.top5{counter-reset:t;list-style:none;padding:0;margin:0}
+.top5 li{counter-increment:t;display:flex;align-items:center;gap:12px;padding:8px 0;border-top:1px solid var(--line)}
+.top5 li:first-child{border-top:0}
+.top5 li .nm{flex:1;font-weight:700;min-width:0}
+.top5 li .c{font-weight:800;color:var(--mut);font-variant-numeric:tabular-nums}
+details.tbl summary{cursor:pointer;color:var(--acc);font-weight:800;min-height:40px;display:flex;align-items:center}
+details.tbl table{width:100%;border-collapse:collapse;font-size:.9rem}
+details.tbl td,details.tbl th{padding:6px 4px;border-bottom:1px solid var(--line);text-align:left}
+
+/* søk */
+#cmdk{position:fixed;inset:0;z-index:150;background:rgba(8,14,10,.45);backdrop-filter:blur(4px);display:flex;justify-content:center;align-items:flex-start;padding:calc(env(safe-area-inset-top) + 12px) 12px 12px;animation:v7fade .15s both}
+#cmdk .box{width:100%;max-width:620px;max-height:82vh;display:flex;flex-direction:column;background:var(--bg);border-radius:24px;box-shadow:var(--sh2);overflow:hidden;animation:v7pop .2s both}
+#cmdk .bar{display:flex;gap:8px;align-items:center;padding:10px;border-bottom:1px solid var(--line)}
+#cmdk input{flex:1;min-height:50px;border:0;background:transparent;color:var(--ink);font:inherit;font-size:1.1rem;padding:0 8px;outline:none}
+#cmdk .res{overflow:auto;padding:8px 10px 14px}
+#cmdk .grp{font-size:.74rem;font-weight:800;color:var(--mut);text-transform:uppercase;letter-spacing:.07em;margin:10px 6px 6px}
+#cmdk .cmd{display:flex;align-items:center;gap:12px;width:100%;padding:10px;border:0;border-radius:14px;background:none;color:var(--ink);font:inherit;text-align:left;cursor:pointer}
+#cmdk .cmd:hover,#cmdk .cmd.sel{background:var(--card)}
+#cmdk .cmd .ico{width:40px;height:40px;border-radius:12px;display:grid;place-items:center;background:var(--accbg);font-size:1.2rem;flex:none}
+#cmdk .cmd b{display:block;font-weight:700}#cmdk .cmd small{color:var(--mut);font-weight:600}
+kbd{font:inherit;font-size:.75rem;font-weight:700;border:1px solid var(--line2);border-bottom-width:2px;border-radius:6px;padding:1px 6px;color:var(--mut)}
+
+/* overrask meg */
+.sup{text-align:center}
+.sup .art.l{margin:4px 0 14px}
+.sup h2{font-size:1.4rem;margin:4px 0}
+.sup .rt{justify-content:center;display:flex;gap:6px;flex-wrap:wrap;margin:8px 0 4px}
+@keyframes v7spin{0%{transform:rotate(-8deg) scale(.9)}50%{transform:rotate(6deg) scale(1.05)}100%{transform:none}}
+.sup .art.l span{animation:v7spin .45s cubic-bezier(.2,.8,.2,1) both}
+
+/* innstillinger */
+.seg3{display:grid;grid-template-columns:repeat(3,1fr);gap:6px;background:var(--card2);border:1px solid var(--line);border-radius:16px;padding:4px}
+.seg3 button{min-height:46px;border:0;border-radius:12px;background:none;color:var(--ink);font:inherit;font-weight:700;cursor:pointer}
+.seg3 button.on{background:var(--card);box-shadow:var(--sh1);color:var(--acc)}
+.newb{display:inline-block;font-size:.66rem;font-weight:800;letter-spacing:.06em;text-transform:uppercase;background:linear-gradient(135deg,#f59e0b,#ef4444);color:#fff;border-radius:999px;padding:2px 7px;margin-left:6px;vertical-align:2px}
+
+/* ================= v8.0 ================= */
+.tb{grid-template-columns:repeat(5,1fr)}
+.tab{font-size:.72rem}
+.tab span{line-height:1.1}
+@media(max-width:440px){.ring{flex-direction:column;text-align:center;gap:6px;padding:12px 8px}.ring .rs{font-size:.74rem}}
+.a-dessert{--a1:#ffe1ec;--a2:#ffb8cf}.a-bakst{--a1:#f6e3c8;--a2:#e9c597}.a-creami{--a1:#dff4ff;--a2:#b8e2ff}
+.mp.lf{color:#1d6fa5;background:#e3f1fb;border-color:transparent}
+.mp.sw{color:var(--amb);background:var(--ambbg);border-color:transparent}
+@media(prefers-color-scheme:dark){:root:not([data-theme=light]) .mp.lf{color:#8cc8f0;background:#16293a}}
+:root[data-theme=dark] .mp.lf{color:#8cc8f0;background:#16293a}
+.fakesearch{display:flex;align-items:center;gap:10px;width:100%;min-height:54px;padding:0 16px;margin:8px 0 14px;border:1.5px solid var(--line2);border-radius:18px;background:var(--card);color:var(--mut);font:inherit;font-size:1rem;cursor:text;box-shadow:var(--sh1);text-align:left}
+.fakesearch svg{width:20px;height:20px;flex:none}
+.catg{display:grid;grid-template-columns:repeat(2,minmax(0,1fr));gap:10px}
+@media(min-width:560px){.catg{grid-template-columns:repeat(4,minmax(0,1fr))}}
+.catt{position:relative;display:flex;flex-direction:column;align-items:flex-start;gap:2px;min-height:104px;padding:14px;border:1px solid var(--line);border-radius:22px;background:linear-gradient(140deg,var(--a1),var(--a2));color:#1b2a21;font:inherit;text-align:left;cursor:pointer;box-shadow:var(--sh1);overflow:hidden;transition:transform .12s}
+.catt:active{transform:scale(.97)}
+.catt .ce{font-size:2rem;line-height:1;margin-bottom:auto;filter:drop-shadow(0 2px 3px rgba(0,0,0,.15))}
+.catt b{font-size:1.02rem}.catt small{font-weight:700;opacity:.7;font-size:.78rem}
+@media(prefers-color-scheme:dark){:root:not([data-theme=light]) .catt{background:linear-gradient(140deg,color-mix(in srgb,var(--a1) 22%,var(--card)),color-mix(in srgb,var(--a2) 30%,var(--card)));color:var(--ink)}}
+:root[data-theme=dark] .catt{background:linear-gradient(140deg,color-mix(in srgb,var(--a1) 22%,var(--card)),color-mix(in srgb,var(--a2) 30%,var(--card)));color:var(--ink)}
+.duo{display:grid;grid-template-columns:1fr 1fr;gap:10px;margin:12px 0 4px}
+.bigact{display:flex;flex-direction:column;align-items:flex-start;gap:2px;padding:14px;border:1px solid var(--line);border-radius:22px;background:var(--card);box-shadow:var(--sh1);font:inherit;color:var(--ink);text-align:left;cursor:pointer;min-height:96px}
+.bigact span{font-size:1.7rem;line-height:1;margin-bottom:6px}.bigact b{font-size:1rem}.bigact small{color:var(--mut);font-weight:600;font-size:.8rem;line-height:1.25}
+.mgh{font-size:.76rem;font-weight:800;letter-spacing:.08em;text-transform:uppercase;color:var(--mut);margin:20px 6px 8px}
+.mgrp{background:var(--card);border:1px solid var(--line);border-radius:22px;box-shadow:var(--sh1);overflow:hidden}
+.mrow{display:flex;align-items:center;gap:14px;width:100%;min-height:66px;padding:10px 14px;border:0;border-top:1px solid var(--line);background:none;color:var(--ink);font:inherit;text-align:left;cursor:pointer}
+.mrow:first-child{border-top:0}
+.mrow:active{background:var(--card2)}
+.mi{width:40px;height:40px;border-radius:12px;display:grid;place-items:center;background:var(--accbg);font-size:1.25rem;flex:none}
+.mt{flex:1;min-width:0}.mt b{display:block;font-weight:700}.mt small{display:block;color:var(--mut);font-weight:500;font-size:.84rem;line-height:1.3}
+.chev{color:var(--mut);font-size:1.5rem}
+.sw{width:50px;height:30px;border-radius:999px;background:var(--line2);position:relative;flex:none;transition:background .2s}
+.sw i{position:absolute;top:3px;left:3px;width:24px;height:24px;border-radius:50%;background:#fff;box-shadow:0 1px 3px rgba(0,0,0,.3);transition:transform .2s}
+.sw.on{background:var(--acc)}.sw.on i{transform:translateX(20px)}
+.hlp{margin:6px 0 0;padding-left:20px;display:grid;gap:6px;line-height:1.45}
+.lftag{display:inline-block;margin:4px 6px 0 0;font-size:.8rem;font-weight:800;color:#1d6fa5;background:#e3f1fb;border-radius:8px;padding:2px 8px}
+.lfbox{background:#eaf4fb;border-color:#b9dbf2}
+@media(prefers-color-scheme:dark){:root:not([data-theme=light]) .lfbox{background:#13222e;border-color:#24425a}:root:not([data-theme=light]) .lftag{background:#16293a;color:#8cc8f0}}
+:root[data-theme=dark] .lfbox{background:#13222e;border-color:#24425a}:root[data-theme=dark] .lftag{background:#16293a;color:#8cc8f0}
+.chal{background:linear-gradient(160deg,var(--card),var(--accbg))}
+.chal .rc7{margin:6px 0 10px}
+.news{border:1.5px solid var(--acc)}
+.okb{display:inline-grid;place-items:center;width:22px;height:22px;border-radius:50%;background:var(--acc);color:var(--onacc);font-size:.8rem;vertical-align:3px;margin-left:4px}
+.sech .d{font-size:.85rem;font-weight:700}
 </style>
 </head>
 <body>
@@ -3808,6 +4132,809 @@ render = function () {
   }
   _render();
 };
+
+
+/* ================= v7.0 – designsystem, dashboard, timere, statistikk, søk ================= */
+const V7 = {ver: "7.0", lastKey: "", lastModal: "", ick: new Set(), supKind: "middag"};
+const LS = {get(k, d) { try { const v = localStorage.getItem(k); return v == null ? d : JSON.parse(v); } catch (_) { return d; } }, set(k, v) { try { localStorage.setItem(k, JSON.stringify(v)); } catch (_) {} }};
+const ICO = {
+  idag: '<path d="M3 10.5 12 3l9 7.5V20a1 1 0 0 1-1 1h-5v-6H9v6H4a1 1 0 0 1-1-1z"/>',
+  plan: '<rect x="3" y="4.5" width="18" height="16.5" rx="3"/><path d="M3 9.5h18M8 2.5v4M16 2.5v4"/><path d="M7.5 14h3M13.5 14h3M7.5 17.5h3"/>',
+  handle: '<path d="M3 4h2.2l2.3 11.2a1.5 1.5 0 0 0 1.5 1.2h8.6a1.5 1.5 0 0 0 1.5-1.1L21 8H6"/><circle cx="9.5" cy="20" r="1.4"/><circle cx="17.5" cy="20" r="1.4"/>',
+  retter: '<path d="M4 19.5V5a2 2 0 0 1 2-2h12.5a.5.5 0 0 1 .5.5V17H6a2 2 0 0 0-2 2.5 2 2 0 0 0 2 2h13"/><path d="M9 7.5h6"/>',
+  tilbud: '<path d="M3 12.2V4a1 1 0 0 1 1-1h8.2a1 1 0 0 1 .7.3l8 8a1 1 0 0 1 0 1.4l-8.2 8.2a1 1 0 0 1-1.4 0l-8-8a1 1 0 0 1-.3-.7z"/><circle cx="8" cy="8" r="1.6"/>',
+  fb: '<path d="M21 12a8 8 0 0 1-11.6 7.1L4 20.5l1.4-4.8A8 8 0 1 1 21 12z"/><path d="M8.5 11h7M8.5 14h4"/>',
+  search: '<circle cx="11" cy="11" r="7"/><path d="m20 20-3.6-3.6"/>',
+  gear: '<circle cx="12" cy="12" r="3.2"/><path d="M19.4 15a1.7 1.7 0 0 0 .3 1.8l.1.1a2 2 0 1 1-2.8 2.8l-.1-.1a1.7 1.7 0 0 0-1.8-.3 1.7 1.7 0 0 0-1 1.5V21a2 2 0 1 1-4 0v-.1a1.7 1.7 0 0 0-1.1-1.5 1.7 1.7 0 0 0-1.8.3l-.1.1a2 2 0 1 1-2.8-2.8l.1-.1a1.7 1.7 0 0 0 .3-1.8 1.7 1.7 0 0 0-1.5-1H3a2 2 0 1 1 0-4h.1a1.7 1.7 0 0 0 1.5-1.1 1.7 1.7 0 0 0-.3-1.8l-.1-.1a2 2 0 1 1 2.8-2.8l.1.1a1.7 1.7 0 0 0 1.8.3H9a1.7 1.7 0 0 0 1-1.5V3a2 2 0 1 1 4 0v.1a1.7 1.7 0 0 0 1 1.5 1.7 1.7 0 0 0 1.8-.3l.1-.1a2 2 0 1 1 2.8 2.8l-.1.1a1.7 1.7 0 0 0-.3 1.8V9a1.7 1.7 0 0 0 1.5 1H21a2 2 0 1 1 0 4h-.1a1.7 1.7 0 0 0-1.5 1z"/>'
+};
+const svg = (k, w) => `<svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="${w || 1.9}" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true">${ICO[k]}</svg>`;
+
+/* ---------- innstillinger: tema og dagsmål ---------- */
+function applyTheme() {
+  const t = LS.get("mat_theme_v7", "auto"), r = document.documentElement;
+  if (t === "auto") r.removeAttribute("data-theme"); else r.setAttribute("data-theme", t);
+  const dark = t === "dark" || (t === "auto" && matchMedia("(prefers-color-scheme: dark)").matches);
+  const m = document.querySelector('meta[name="theme-color"]'); if (m) m.content = dark ? "#0c110e" : "#f4f3ee";
+}
+{ const g = LS.get("mat_goal_v7", null); if (g && g.kcal && g.prot) { GOAL.kcal = g.kcal; GOAL.prot = g.prot; } }
+applyTheme();
+try { matchMedia("(prefers-color-scheme: dark)").addEventListener("change", applyTheme); } catch (_) {}
+
+/* ---------- matkunst ---------- */
+const ART_E = [[/pizza/, "🍕"], [/burger/, "🍔"], [/taco|burrito|quesadilla|fajita|enchilada|nacho/, "🌮"], [/sushi|poke|laksebowl/, "🍣"], [/suppe|chowder/, "🍲"],
+  [/pad thai|lo mein|nudl|ramen|\bwok\b/, "🍜"], [/pasta|spaghetti|lasagne|makaroni|carbonara|gnocchi|tortellini|orzo|mac and|bolognese|arrabbiata|alfredo|diavola/, "🍝"],
+  [/curry|tikka|masala|butter chicken|gryte|satay|stroganoff|chili con/, "🍛"], [/bibimbap|bowl|bolle med ris|risotto|stekt ris|kylling og ris|ris i boks/, "🍚"],
+  [/fiskepinne|fiskekake|fiskeburger|fish|torsk|laks|reke|tunfisk|fisk/, "🐟"], [/pølse|wiener/, "🌭"], [/kebab|shawarma|pita|gyro/, "🥙"], [/wrap|lompe|caesar/, "🌯"],
+  [/pannekake|vaffel|vafler|french toast/, "🥞"], [/grøt|oats|cream of rice|müsli|havre/, "🥣"], [/omelett|eggerøre|egg|shakshuka/, "🍳"],
+  [/smoothie|shake|proteinmelk|drikk|kakao/, "🥤"], [/parfait|skyr|yoghurt|kvarg|pudding|riskrem|bark/, "🍨"], [/popcorn/, "🍿"], [/nøtt|peanøtt|proteinball/, "🥜"],
+  [/banan/, "🍌"], [/eple/, "🍎"], [/kikert/, "🫘"], [/bagel|toast|brød|rundstykke|smørbrød|knekkebrød|riskake/, "🥪"], [/salat/, "🥗"], [/jerky|biff|karbonade|kjøttdeig|kjøttbolle|kjøttkake/, "🥩"],
+  [/kylling|nugget/, "🍗"], [/potet/, "🥔"], [/bar\b|proteinbar/, "🍫"]];
+function artOf(r) {
+  if (!r) return {e: "🍽️", c: "annet"};
+  const n = (r.name || "").toLowerCase(); let e = null;
+  for (const [re, x] of ART_E) if (re.test(n)) { e = x; break; }
+  const k = r.kind === "frokost" ? "frokost" : r.kind === "snack" ? "snack" : (typeof mainProt === "function" ? mainProt(r) : "annet");
+  return {e: e || {frokost: "🥣", lunsj: "🥪", snack: "🍎", middag: "🍽️"}[r.kind] || "🍽️", c: ["kylling", "fisk", "storfe", "svin", "egg", "frokost", "snack"].includes(k) ? k : "annet"};
+}
+const artH = (r, s) => { const a = artOf(r); return `<span class="art ${s || "s"} a-${a.c}" aria-hidden="true"><span>${a.e}</span></span>`; };
+let pillsOf = r => [r.minutes ? `<span class="mp">⏱ ${r.minutes} min</span>` : "", r.protein ? `<span class="mp p">💪 ${r.protein} g</span>` : "", r.kcal ? `<span class="mp">🔥 ${r.kcal}</span>` : ""].join("");
+function newestIds() {
+  if (V7._newN === recipes.length && V7._new) return V7._new;
+  V7._newN = recipes.length;
+  return (V7._new = new Set(recipes.filter(r => r.variant !== "hurtig").sort((a, b) => b.id - a.id).slice(0, 51).map(r => r.id)));
+}
+const isNewest = r => newestIds().has(r.id) && r.tag === "prøv" && !r.favorite;
+let rc7 = (r, attr) => `<button type="button" class="rc7 ${r.hidden ? "hid" : ""}" ${attr || `data-rec="${r.id}"`}>${artH(r, "s")}<span class="rb">
+  <span class="rk">${esc(KL[r.kind] || "")}${r.variant === "bunnen" || hurtigOf(r) ? " · ⚡ har hurtig" : r.variant === "hurtig" ? " · ⚡ hurtig" : ""}${r.tag === "liker" ? " · liker" : ""}${isNewest(r) ? '<span class="newb">Ny</span>' : ""}</span>
+  <span class="rn">${esc(r.name)}${r.favorite ? '<span class="fv">★</span>' : ""}</span><span class="rt">${pillsOf(r)}</span></span></button>`;
+const ccard = r => `<button type="button" class="cc" data-rec="${r.id}">${artH(r, "")}<b>${esc(r.name)}</b>${r.minutes ? `<span class="mp">⏱ ${r.minutes}</span>` : ""}${r.protein ? `<span class="mp p">💪 ${r.protein} g</span>` : ""}</button>`;
+function seeded(seed) { let s = seed >>> 0; return () => { s = (s * 1664525 + 1013904223) >>> 0; return s / 4294967296; }; }
+
+/* ---------- app-bar, bunnmeny, skjelett ---------- */
+function initChrome() {
+  if (!$("#appbar")) {
+    const h = document.createElement("header"); h.id = "appbar";
+    h.innerHTML = `<button class="brand" data-v7home aria-label="Til I dag"><i>M</i><span>Mat<br><small id="v7date"></small></span></button><span class="sp"></span>
+      <button class="ib" data-v7search aria-label="Søk (/)">${svg("search")}</button><button class="ib" data-v7set aria-label="Innstillinger">${svg("gear")}</button>`;
+    document.body.insertBefore(h, $("#view"));
+  }
+  document.querySelectorAll(".tab").forEach(t => { if (!t.querySelector("svg") && ICO[t.dataset.t]) t.insertAdjacentHTML("afterbegin", svg(t.dataset.t)); });
+  const fbT = document.querySelector('.tab[data-t="fb"]'); if (fbT && /Feedback/.test(fbT.textContent)) fbT.lastChild.textContent = "Notater";
+  if (!$("#timers")) { const d = document.createElement("div"); d.id = "timers"; d.setAttribute("aria-live", "polite"); document.body.appendChild(d); }
+  const dt = $("#v7date"); if (dt) dt.textContent = new Date().toLocaleDateString("nb-NO", {weekday: "short", day: "numeric", month: "short"});
+  if (!loaded && $("#view .msg")) $("#view").innerHTML = `<div class="skel"><i style="height:190px;border-radius:28px"></i><i style="height:84px"></i><i style="height:150px"></i><i style="height:150px"></i></div>`;
+}
+addEventListener("scroll", () => { const a = $("#appbar"); if (a) a.classList.toggle("sc", scrollY > 4); }, {passive: true});
+
+/* ---------- ringer og I dag ---------- */
+const PROTG = {lite: 6, greit: 18, mye: 32};
+function dayTotals(d) {
+  let kc = 0, pr = 0, eatenP = 0, eatenK = 0;
+  for (const p of planOf(d)) {
+    if (p.status === "hoppet_over") continue;
+    const r = R(p.recipe_id) || {};
+    if (p.status === "endret") { const x = PROTG[p.actual_protein] || 15; pr += x; eatenP += x; kc += 500; eatenK += 500; continue; }
+    pr += r.protein || 0; kc += r.kcal || 0;
+    if (p.status === "som_planlagt") { eatenP += r.protein || 0; eatenK += r.kcal || 0; }
+  }
+  for (const e of entries.filter(x => x.date === d)) { const x = PROTG[e.protein] || 8; pr += x; eatenP += x; kc += 180; eatenK += 180; }
+  return {kc, pr, eatenP, eatenK};
+}
+function ringSvg(v, eaten, goal) {
+  const r = 24, c = 2 * Math.PI * r, f = x => Math.max(0, Math.min(1, x / goal)), pct = Math.round(v / goal * 100);
+  return `<span class="rg"><svg viewBox="0 0 58 58"><circle cx="29" cy="29" r="${r}" fill="none" stroke="rgba(255,255,255,.2)" stroke-width="7"/><circle cx="29" cy="29" r="${r}" fill="none" stroke="rgba(255,255,255,.5)" stroke-width="7" stroke-linecap="round" stroke-dasharray="${(c * f(v)).toFixed(1)} ${c.toFixed(1)}"/>${eaten > 0 ? `<circle cx="29" cy="29" r="${r}" fill="none" stroke="#fff" stroke-width="7" stroke-linecap="round" stroke-dasharray="${(c * f(eaten)).toFixed(1)} ${c.toFixed(1)}"/>` : ""}</svg><i>${pct >= 100 ? "✓" : pct + "%"}</i></span>`;
+}
+
+function greet() { const h = new Date().getHours(); return h < 5 ? "God natt" : h < 10 ? "God morgen" : h < 17 ? "God dag" : "God kveld"; }
+const _v6Idag = viewIdag;
+viewIdag = function () {
+  if (NAV.idag === "mer") return _v6Idag();
+  const d = sel, sm = monday(d), t = dayTotals(d), isT = d === today(), rel = relDay(d);
+  let h = `<div class="offpage"><section class="hero"><div class="hg">${isT ? greet() + " 👋" : esc(rel || "Planlagt")}</div><h1>${esc(DL[wd(d)])} ${esc(fmt(d, {day: "numeric", month: "long"}))}</h1>
+    <div class="hd">Uke ${isoWeek(d)} · ${planOf(d).length} ${planOf(d).length === 1 ? "måltid" : "måltider"} planlagt</div>
+    <div class="rings" title="Lys del = planlagt, hvit del = spist (logget)"><div class="ring" title="Protein planlagt i dag">${ringSvg(t.pr, t.eatenP, GOAL.prot[0])}<div><div class="rl">Protein</div><div class="rv">${t.pr} g</div><div class="rs">${t.eatenP} g spist · mål ${GOAL.prot[0]}–${GOAL.prot[1]}</div></div></div>
+    <div class="ring" title="Kalorier planlagt i dag">${ringSvg(t.kc, t.eatenK, GOAL.kcal[0])}<div><div class="rl">Energi</div><div class="rv">${t.kc} kcal</div><div class="rs">${t.eatenK} spist · mål ${GOAL.kcal[0]}–${GOAL.kcal[1]}</div></div></div></div></section>`;
+  h += `<div class="strip">${DK.map((x, i) => { const dd = add(sm, i); return `<button class="pill ${dd === d ? "on" : ""} ${dd === today() ? "today" : ""}" data-sel="${dd}">${x}<i class="${dayState(dd)}"></i></button>`; }).join("")}</div>`;
+  if (!isT) h += `<div class="back"><button class="btn sm" data-sel="${today()}">⟵ Tilbake til i dag</button></div>`;
+  const shopN = (items || []).filter(i => !i.checked).length;
+  h += `<div class="qa"><button data-v7sup="${d}"><span>🎲</span>Overrask meg</button><button data-have><span>🧊</span>Hva har jeg?</button><button data-v7go="handle/liste"><span>🛒</span>${shopN ? shopN + " å kjøpe" : "Handle"}</button><button data-add><span>✍️</span>Logg mat</button></div>`;
+  if (t.pr < GOAL.prot[0] && planOf(d).length && isT) h += `<div class="warn" style="background:var(--ambbg);color:var(--amb)">💡 ${GOAL.prot[0] - t.pr} g protein under målet. Skyr (+17 g), proteinshake (+30 g) eller 2 egg (+13 g) fyller hullet.</div>`;
+  const ps = planOf(d);
+  for (const p of ps) {
+    const r = R(p.recipe_id) || {name: "(slettet rett)", ing: []}, k = "p:" + p.id, nfb = fb.filter(f => f.recipe_id === p.recipe_id).length;
+    h += `<section class="card mcard ${p.status ? "done" : ""}" id="pe${p.id}"><div class="mh">${artH(p.leftover_of ? (R((srcOf(p) || {}).recipe_id) || r) : r, "m")}<div style="min-width:0">
+      <div class="lab" style="margin:0">${SI[p.slot]} ${SL[p.slot]}${p.status === "som_planlagt" ? '<span class="stamp">✓ Spist</span>' : ""}</div><h2>${esc(pname(p, r))}</h2>
+      <div class="rt" style="display:flex;flex-wrap:wrap;gap:5px;margin-top:6px">${pillsOf(r)}${+p.portions !== 1 ? `<span class="mp">🍽 ${num(p.portions)} porsj.</span>` : ""}</div></div></div>
+      <div class="mb">${restInfo(p)}${r.veg_addon ? `<div class="note" style="margin-top:6px">🥦 ${esc(r.veg_addon)}</div>` : ""}
+      ${logButtons(k)}${p.slot === "middag" ? dblBlock(p) : ""}
+      <div class="grid2" style="margin-top:10px"><button class="btn sm" data-showrec="${p.id}">${showRec.has(p.id) ? "Skjul oppskrift" : "📖 Oppskrift"}</button>${(stepList(r).length ? `<button class="btn sm" data-cook="${r.id}" data-cport="${p.portions || ""}">👨‍🍳 Kokemodus</button>` : `<button class="btn sm" data-fb="${k}">💬 Notat${nfb ? " (" + nfb + ")" : ""}</button>`)}</div>
+      ${showRec.has(p.id) ? recipeBody(r, p.portions) + `<div class="stack"><button class="btn sm" data-fb="${k}">💬 Notat om retten${nfb ? " (" + nfb + ")" : ""}</button></div>` : ""}</div></section>`;
+  }
+  if (!ps.some(p => p.slot === "middag")) h += `<section class="card"><div class="lab">🍽️ Middag</div><div class="d">Ingen middag planlagt ${isT ? "i dag" : "denne dagen"}.</div>
+    <div class="grid2"><button class="btn go" data-pick="${d}" data-slot="middag">＋ Velg middag</button><button class="btn" data-v7sup="${d}">🎲 Forslag</button></div></section>`;
+  const li = dayItems(d).filter(x => x.eid);
+  h += `<section class="card"><div class="lab">🍴 Annet ${isT ? "i dag" : "denne dagen"}</div>${li.length ? `<div class="tl">${li.map(x => `<div class="le"><div class="lt">${x.time ? esc(x.time) : x.icon}</div><div class="lm"><div class="ln">${esc(x.name)}</div><div class="ls">${esc(x.sub)}</div></div><button class="lx" data-deid="${x.eid}" aria-label="Fjern">✕</button></div>`).join("")}</div>` : `<div class="hint">Ingenting ekstra logget. Shake, skyr, frukt – legg det til her.</div>`}
+    <div class="grid2"><button class="btn go sm" data-add>＋ Legg til</button><button class="btn sm" data-pick="${d}" data-slot="${hhmm() < "10:00" ? "frokost" : hhmm() < "14:00" ? "lunsj" : "snack"}">📅 Planlegg rett</button></div></section>`;
+  h += `<nav class="offhub">${hubTile("mer", "➕", "Mer for dagen", "Alle måltider, dagsmål og detaljert logg")}</nav></div>`;
+  return h;
+};
+
+/* ---------- oppskrift ---------- */
+const TRX = /(\d+(?:[.,]\d+)?)(?:\s*[–-]\s*(\d+(?:[.,]\d+)?))?\s*(min(?:utt(?:er)?)?|sek(?:under)?|timer?)\b/gi;
+function timersIn(txt) {
+  const out = []; let m; TRX.lastIndex = 0;
+  while ((m = TRX.exec(txt))) {
+    const v = parseFloat((m[2] || m[1]).replace(",", ".")), u = m[3].toLowerCase(), s = Math.round(u.startsWith("sek") ? v : u.startsWith("time") ? v * 3600 : v * 60);
+    if (s >= 20 && s <= 4 * 3600 && !out.some(o => o.s === s)) out.push({s, txt: m[0]});
+  }
+  return out.slice(0, 3);
+}
+const fmtS = s => { s = Math.max(0, Math.round(s)); const h = Math.floor(s / 3600), m = Math.floor(s % 3600 / 60), x = s % 60; return (h ? h + ":" + String(m).padStart(2, "0") : m) + ":" + String(x).padStart(2, "0"); };
+const tchips = (txt, label) => timersIn(txt).map(t => `<button type="button" class="tchip" data-timer="${t.s}" data-tlabel="${esc(label)}">⏱ ${esc(t.txt)}</button>`).join("");
+function ingList(r, f) {
+  return `<ul class="ilist7">${(r.ing || []).map((i, n) => { const k = r.id + ":" + n, on = V7.ick.has(k);
+    return `<li class="${on ? "on" : ""}" data-v7ing="${k}"><span class="ck">${on ? "✓" : ""}</span><span class="nm">${esc(i.name)}${i.at_home ? `<span class="h">har du vanligvis</span>` : ""}</span>${i.qty != null ? `<span class="q">${esc(qtyTxt(i.qty * f, i.unit))}</span>` : ""}</li>`; }).join("") || "<li class='d'>Ingen ingredienser</li>"}</ul>`;
+}
+recipeBody = function (r, portions) {
+  const f = portions && r.servings ? portions / r.servings : 1, st = stepList(r), tips = String(r.tips || "").split(/\n+/).filter(Boolean);
+  return `<div style="margin-top:12px">
+    ${st.length ? `<button class="btn go cookb" data-cook="${r.id}" data-cport="${portions || ""}">👨‍🍳 Start kokemodus</button>` : ""}
+    <div class="lab" style="margin-top:16px">Ingredienser · ${portions ? num(portions) : r.servings} porsjoner${f !== 1 ? ` <span class="badge prøv">skalert ×${num(f)}</span>` : ""}</div>
+    ${ingList(r, f)}
+    ${f !== 1 && st.length ? `<div class="note" style="margin-top:6px">Mengdene i stegene gjelder ${r.servings} porsjoner – bruk lista over.</div>` : ""}
+    ${r.prep ? `<div class="rbox prep"><div class="lab">🔪 Forberedelse</div><div>${esc(r.prep)}</div></div>` : ""}
+    ${st.length ? `<div class="lab" style="margin-top:16px">Slik gjør du${r.minutes ? ` · ca. ${r.minutes} min` : ""}</div><ol class="rsteps7">${st.map((x, i) => `<li>${esc(x)}${tchips(x, "Steg " + (i + 1) + " · " + r.name) ? `<div>${tchips(x, "Steg " + (i + 1) + " · " + r.name)}</div>` : ""}</li>`).join("")}</ol>` : ""}
+    ${tips.length ? `<div class="rbox tips"><div class="lab">💡 Tips og vanlige feil</div><ul>${tips.map(x => `<li>${esc(x)}</li>`).join("")}</ul></div>` : ""}
+    ${r.veg_addon ? `<div class="rbox" style="margin-top:12px"><div class="lab">🥦 Grønt (enkelt)</div><div>${esc(r.veg_addon)}</div></div>` : ""}</div>`;
+};
+recHtml = function (m) {
+  const r = R(m.id); if (!r) return null;
+  const pl = m.pl, nf = fb.filter(f => f.recipe_id === r.id);
+  if (m.port == null) m.port = m.back && m.back.t === "entry" ? +((plan.find(x => x.id === m.back.id) || {}).portions || r.servings) : (r.servings || 2);
+  const le = hist ? lastEaten()[baseId(r.id)] : null;
+  return `${backBtn()}<div class="top"><div><div class="lab">${esc(KL[r.kind])}${r.custom ? " · egen rett" : ""}${isNewest(r) ? '<span class="newb">Ny</span>' : ""}</div></div>${closeB}</div>
+    <div class="rhero">${artH(r, "l")}</div><h2 style="font-size:1.45rem;margin:0 0 4px">${esc(r.name)}${r.favorite ? ' <span style="color:var(--star)">★</span>' : ""}</h2>
+    <div class="d">${badges(r)} ${esc((r.equipment || []).map(e => EQL[e]).join(" · "))}${le ? ` · sist spist ${esc(fmt(le))}` : ""}</div>
+    <div class="rstats"><div class="rstat"><b>${r.minutes || "–"}</b><span>min</span></div><div class="rstat"><b style="color:var(--acc)">${r.protein || "–"} g</b><span>protein</span></div><div class="rstat"><b>${r.kcal || "–"}</b><span>kcal</span></div></div>
+    ${varToggle(r, "rvar")}
+    <div class="grid2"><button class="btn sm ${r.favorite ? "go" : ""}" data-fav>${r.favorite ? "★ Favoritt" : "☆ Favoritt"}</button><button class="btn sm ${pl ? "go" : ""}" data-plan-open>📅 Planlegg</button></div>
+    ${pl ? `<div class="sheet" style="border-color:var(--acc);background:var(--accbg)"><label class="q">Hvilken dag? <span class="d">(uke ${isoWeek(pl.mon)})</span></label>
+      ${dayPills(pl.mon, pl.date, "pld")}
+      <div class="grid2" style="margin:0 0 10px"><button class="btn sm" data-plwk="-7">◀ Uka før</button><button class="btn sm" data-plwk="7">Uka etter ▶</button></div>
+      <label class="q">Måltid</label>${slotChips(pl.slot, "pls")}
+      <button class="btn go" data-pladd>＋ Legg til ${DK[wd(pl.date)]} ${esc(fmt(pl.date))}</button></div>` : ""}
+    <div class="portb"><b>Porsjoner</b><div class="pc"><button class="ib" data-v7port="-1" aria-label="Færre porsjoner">−</button><span>${num(m.port)}</span><button class="ib" data-v7port="1" aria-label="Flere porsjoner">＋</button></div></div>
+    ${recipeBody(r, m.port)}
+    <div class="grid2" style="margin-top:16px"><button class="btn sm" data-edit="${r.id}">✎ Rediger</button><button class="btn sm" data-hide>${r.hidden ? "👁 Vis igjen" : "🙈 Skjul"}</button></div>
+    <div class="stack" style="margin-top:10px"><button class="btn sm" data-v7copy="${r.id}">📋 Kopier ingrediensliste</button><button class="btn sm" data-fb="r:${r.id}">💬 Gi tilbakemelding</button></div>
+    ${nf.length ? `<h2 style="margin:18px 0 4px">Tilbakemeldinger</h2>${nf.map(fbItem).join("")}` : ""}`;
+};
+pickHtml = function (m) {
+  const list = filterRecipes(m.f);
+  return `<div class="top"><div><div class="lab">${m.swap ? "Bytt rett" : "Velg rett"}</div><h2>${DL[wd(m.date)]} ${esc(fmt(m.date))}</h2></div>${closeB}</div>
+    ${m.swap ? "" : slotChips(m.slot, "pslot")}<div class="fl"><button class="chip ${m.fast ? "on" : ""}" data-pfast>⚡ Bruk hurtig-variant når den finnes</button></div>
+    ${filterBar(m.f, "p", false)}<div class="cntb">${list.length} retter · trykk for å legge til</div>
+    ${list.map(r => rc7(r, `data-padd="${r.id}"`)).join("") || `<div class="msg">Ingen treff. Prøv et annet filter.</div>`}`;
+};
+
+/* ---------- Retter ---------- */
+HUB_VIEWS.retter.push("nyeste");
+HUB_VIEWS.plan.push("stats");
+const _v6Retter = viewRetter;
+viewRetter = function () {
+  const html = _v6Retter();
+  if (NAV.retter) return html;
+  const pool = recipes.filter(r => !r.hidden && r.variant !== "hurtig" && r.kind === "middag"), rnd = seeded(isoWeek(today()) * 7919 + new Date().getFullYear());
+  const insp = pool.map(r => [rnd(), r]).sort((a, b) => a[0] - b[0]).slice(0, 8).map(x => x[1]);
+  const nyest = recipes.filter(r => !r.hidden && r.variant !== "hurtig").sort((a, b) => b.id - a.id).slice(0, 10);
+  const extra = `<div class="sech"><h2>✨ Ukens inspirasjon</h2><button data-v7sup="">🎲 Overrask meg</button></div><div class="car">${insp.map(ccard).join("")}</div>
+    <div class="sech"><h2>🆕 Nyeste retter</h2><button data-hubgo="nyeste">Se alle</button></div><div class="car">${nyest.map(ccard).join("")}</div>`;
+  return html.replace('<nav class="offhub">', extra + '<nav class="offhub">' + hubTile("nyeste", "🆕", "Nyeste retter", "Sist lagt til i banken")).replace(/(<p class="sub">Finn noe ut fra det du har, eller bla i banken.<\/p>)/, "");
+};
+viewRetterBrowse = function (title, mode) {
+  const f = Object.assign({}, RF); let list;
+  if (mode === "favsliker") list = filterRecipes(Object.assign({}, f, {tag: ""})).filter(r => r.favorite || r.tag === "liker");
+  else if (mode === "prøv") list = filterRecipes(Object.assign({}, f, {tag: "prøv"}));
+  else if (mode === "raske") list = filterRecipes(Object.assign({}, f, {time: f.time || 20}));
+  else if (mode === "protein") list = filterRecipes(f).slice().sort((a, b) => (b.protein || 0) - (a.protein || 0) || a.name.localeCompare(b.name, "nb"));
+  else if (mode === "smak") list = filterRecipes(f).filter(isSpicy);
+  else if (mode === "nyeste") list = filterRecipes(f).slice().sort((a, b) => b.id - a.id).slice(0, 60);
+  else list = filterRecipes(f);
+  return hubBar(title, "Retter") + filterBar(f, "r", mode === "") + `<div class="cntb">${list.length} treff</div>${list.map(r => rc7(r)).join("") || `<div class="msg">Ingen treff. Prøv et annet filter.</div>`}</div>`;
+};
+{ const _vr = viewRetter; viewRetter = function () { if (NAV.retter === "nyeste") return viewRetterBrowse("Nyeste retter", "nyeste"); return _vr(); }; }
+
+/* ---------- Plan: uke-glimt, ukesplan med bilder, statistikk ---------- */
+planGlance = function () {
+  let h = `<div class="wkg">`;
+  for (let i = 0; i < 7; i++) {
+    const d = add(viewMon, i), ps = planOf(d), din = ps.find(p => p.slot === "middag"), r = din ? (R(din.recipe_id) || {name: "?"}) : null, st = dayState(d);
+    h += `<button type="button" class="gd ${d === today() ? "today" : ""}" data-hubgo="uke" data-planday="${d}"><span class="dn"><b>${DK[i]}</b><span>${pd(d).getDate()}</span></span>
+      ${r ? artH(din.leftover_of ? (R((srcOf(din) || {}).recipe_id) || r) : r, "xs") : `<span class="empty">＋</span>`}<span class="gm"><b>${r ? esc(pname(din, r)) : "Ingen middag ennå"}</b><small>${ps.length ? ps.length + " " + (ps.length > 1 ? "måltider" : "måltid") + (r && r.protein ? " · " + r.protein + " g protein" : "") : "Trykk for å planlegge"}</small></span><span class="dotst ${st}"></span></button>`;
+  }
+  return h + `</div>`;
+};
+const _v6Plan = viewPlan;
+viewPlan = function () {
+  if (NAV.plan === "stats") return viewPlanStats();
+  const html = _v6Plan();
+  if (NAV.plan) return html;
+  return html.replace("</nav>", hubTile("stats", "📊", "Statistikk", "Protein per dag, favoritter og variasjon") + "</nav>");
+};
+viewPlanUke = function () {
+  const {end, wk, dn} = planWeekSummary();
+  let h = hubBar("Ukens plan", "Plan");
+  h += `<div class="wkn"><button class="btn" data-wk="-1" aria-label="Forrige uke">◀</button><div class="c"><b>Uke ${isoWeek(viewMon)}</b><span>${esc(fmt(viewMon))} – ${esc(fmt(end))}</span></div><button class="btn" data-wk="1" aria-label="Neste uke">▶</button></div>`;
+  h += `<p class="offsum">🍽️ ${dn} av 7 middager · ${wk.length} ${wk.length === 1 ? "rett" : "retter"} totalt</p>`;
+  for (let i = 0; i < 7; i++) {
+    const d = add(viewMon, i), ps = planOf(d), t = dayTotals(d);
+    h += `<section class="pday ${d === today() ? "today" : ""}" id="pd-${d}"><div class="ph"><div><b>${DL[i]}</b><span>${esc(fmt(d))}${relDay(d) ? " · " + relDay(d) : ""}${ps.length ? " · " + t.pr + " g protein" : ""}</span></div>${d >= today() ? `<button class="btn aut" data-auto="${d}" aria-label="Auto-fyll middag ${DL[i]}">✨</button>` : ""}</div>`;
+    for (const p of ps) {
+      const r = R(p.recipe_id) || {name: "(slettet rett)"};
+      h += `<button class="pe ${p.status ? SC[p.status] : ""}" data-pe="${p.id}">${artH(p.leftover_of ? (R((srcOf(p) || {}).recipe_id) || r) : r, "xs")}<span class="pm"><span class="pn">${esc(pname(p, r))}</span>${leftOf(p) ? ` <span class="b2x">2x</span>` : ""}<br><span class="ps">${SI[p.slot]} ${SL[p.slot]} · ${num(p.portions)} porsj.${p.status ? " · " + esc(statusText(p)) : ""}</span></span><span class="d">›</span></button>`;
+    }
+    if (!ps.some(p => p.slot === "middag")) h += `<div class="grid2" style="margin:6px 0 0"><button class="pe addd" style="margin:0" data-pick="${d}" data-slot="middag">＋ Middag</button><button class="pe addd" style="margin:0" data-v7sup="${d}">🎲 Forslag</button></div>`;
+    h += `<button class="pe addd" style="min-height:48px" data-pick="${d}" data-slot="frokost">＋ Annet måltid</button></section>`;
+  }
+  h += `<div class="stack"><button class="btn go" data-shopweek>🛒 Lag handleliste for uke ${isoWeek(viewMon)}</button></div></div>`;
+  return h;
+};
+const PNAME = {kylling: "Kylling", fisk: "Fisk og sjømat", storfe: "Storfe / kjøttdeig", svin: "Svin, bacon, pølser", egg: "Egg", annet: "Annet / vegetar"};
+function viewPlanStats() {
+  let h = hubBar("Statistikk", "Plan");
+  const days = [...Array(7)].map((_, i) => add(viewMon, i)), vals = days.map(d => ({d, ...dayTotals(d), n: planOf(d).filter(p => p.status !== "hoppet_over").length}));
+  const withPlan = vals.filter(v => v.n), avgP = withPlan.length ? Math.round(withPlan.reduce((s, v) => s + v.pr, 0) / withPlan.length) : 0;
+  const dn = new Set(plan.filter(p => p.date >= viewMon && p.date <= days[6] && p.slot === "middag").map(p => p.date)).size;
+  const src = [], seen = new Set(); for (const p of [...(hist || []), ...plan]) if (!seen.has(p.id)) { seen.add(p.id); src.push(p); }
+  const t = today(), from28 = add(t, -28), past = src.filter(p => p.date <= t && p.date >= from28);
+  const logged = past.filter(p => p.status), okPct = logged.length ? Math.round(logged.filter(p => p.status === "som_planlagt").length / logged.length * 100) : null;
+  const uniq = new Set(past.filter(p => p.slot === "middag" && p.status !== "hoppet_over").map(p => baseId(p.recipe_id))).size;
+  h += `<p class="sub">Uke ${isoWeek(viewMon)} · tall per porsjon fra planen${hist == null ? " · laster historikk …" : ""}</p>
+  <div class="wkn"><button class="btn" data-wk="-1" aria-label="Forrige uke">◀</button><div class="c"><b>Uke ${isoWeek(viewMon)}</b><span>${esc(fmt(viewMon))} – ${esc(fmt(days[6]))}</span></div><button class="btn" data-wk="1" aria-label="Neste uke">▶</button></div>
+  <div class="kpis"><div class="kpi"><span>Snitt protein / dag</span><b>${avgP} g</b><small>mål ${GOAL.prot[0]}–${GOAL.prot[1]} g · ${withPlan.length} dager med plan</small></div>
+  <div class="kpi"><span>Middager planlagt</span><b>${dn} / 7</b><small>denne uka</small></div>
+  <div class="kpi"><span>Spist som planlagt</span><b>${okPct == null ? "–" : okPct + " %"}</b><small>av loggede måltider, 4 uker</small></div>
+  <div class="kpi"><span>Ulike middager</span><b>${uniq}</b><small>siste 4 uker</small></div></div>`;
+  // søylediagram: protein per dag (én serie), målbånd
+  const W = 340, H = 180, padL = 30, padB = 24, top = 10, max = Math.max(GOAL.prot[1] + 20, ...vals.map(v => v.pr)), y = v => top + (H - padB - top) * (1 - v / max), bw = (W - padL) / 7;
+  let s = `<svg viewBox="0 0 ${W} ${H}" role="img" aria-label="Protein per dag denne uka">`;
+  s += `<rect x="${padL}" y="${y(GOAL.prot[1])}" width="${W - padL}" height="${y(GOAL.prot[0]) - y(GOAL.prot[1])}" fill="var(--accbg)"/>`;
+  for (const g of [0, 50, 100, 150, 200].filter(g => g <= max)) s += `<line x1="${padL}" x2="${W}" y1="${y(g)}" y2="${y(g)}" stroke="var(--line)" stroke-width="1"/><text x="${padL - 6}" y="${y(g) + 4}" text-anchor="end" font-size="10" fill="var(--mut)">${g}</text>`;
+  s += `<text x="${W - 2}" y="${y(GOAL.prot[1]) - 4}" text-anchor="end" font-size="10" font-weight="700" fill="var(--acc)">mål</text>`;
+  vals.forEach((v, i) => {
+    const x = padL + i * bw + bw * .22, w = bw * .56, yy = y(v.pr), hh = Math.max(0, H - padB - yy), rr = Math.min(4, hh);
+    const tip = `${DK[wd(v.d)]} ${fmt(v.d)}: ${v.pr} g protein · ${v.kc} kcal (${v.n} ${v.n === 1 ? "rett" : "retter"})`;
+    if (hh > 0) s += `<path d="M${x} ${H - padB}V${yy + rr}q0 -${rr} ${rr} -${rr}h${w - 2 * rr}q${rr} 0 ${rr} ${rr}V${H - padB}z" fill="${v.d === t ? "var(--acc)" : "color-mix(in srgb,var(--acc) 72%,var(--card))"}"/>`;
+    s += `<rect x="${padL + i * bw}" y="${top}" width="${bw}" height="${H - padB - top}" fill="transparent" data-tip="${esc(tip)}" style="cursor:pointer"/>`;
+    s += `<text x="${padL + i * bw + bw / 2}" y="${H - 7}" text-anchor="middle" font-size="11" font-weight="${v.d === t ? 800 : 600}" fill="${v.d === t ? "var(--ink)" : "var(--mut)"}">${DK[wd(v.d)]}</text>`;
+    if (v.d === t && v.pr) s += `<text x="${x + w / 2}" y="${yy - 5}" text-anchor="middle" font-size="11" font-weight="800" fill="var(--ink)">${v.pr}</text>`;
+  });
+  s += `<line x1="${padL}" x2="${W}" y1="${H - padB}" y2="${H - padB}" stroke="var(--line2)"/></svg>`;
+  h += `<section class="card"><div class="lab">Protein per dag (g)</div><div class="chart" data-chart>${s}<div class="tt"></div></div>
+    <details class="tbl"><summary>Vis som tabell</summary><table><tr><th>Dag</th><th>Protein</th><th>kcal</th><th>Retter</th></tr>${vals.map(v => `<tr><td>${DK[wd(v.d)]} ${esc(fmt(v.d))}</td><td>${v.pr} g</td><td>${v.kc}</td><td>${v.n}</td></tr>`).join("")}</table></details></section>`;
+  // proteinkilder
+  const from60 = add(t, -60), cnt = {};
+  src.filter(p => p.slot === "middag" && p.date >= from60 && p.status !== "hoppet_over" && !p.leftover_of).forEach(p => { const r = R(p.recipe_id); if (r) { const k = mainProt(r); cnt[k] = (cnt[k] || 0) + 1; } });
+  const tot = Object.values(cnt).reduce((a, b) => a + b, 0), mx = Math.max(1, ...Object.values(cnt));
+  h += `<section class="card"><div class="lab">Hovedprotein i middagene · 60 dager</div>${tot ? Object.entries(cnt).sort((a, b) => b[1] - a[1]).map(([k, n]) => `<div class="hbar"><span>${esc(PNAME[k] || k)}</span><span class="w"><span class="t" style="display:block;width:${Math.round(n / mx * 100)}%"></span></span><b>${n}</b></div>`).join("") + `<div class="hint">${cnt.fisk ? "" : "🐟 Ingen fisk på en stund – prøv f.eks. laksebowl eller fiskesuppe. "}Variasjon i proteinkilder gir bredere næring.</div>` : `<div class="hint">Ingen middager i perioden ennå.</div>`}</section>`;
+  // mest spist
+  const top5 = {}; src.filter(p => p.status === "som_planlagt" && p.date >= add(t, -120)).forEach(p => { const k = baseId(p.recipe_id); top5[k] = (top5[k] || 0) + 1; });
+  const tl = Object.entries(top5).sort((a, b) => b[1] - a[1]).slice(0, 5);
+  h += `<section class="card"><div class="lab">Mest spist · 4 måneder</div>${tl.length ? `<ol class="top5">${tl.map(([id, n]) => { const r = R(+id); return r ? `<li data-rec="${r.id}" style="cursor:pointer">${artH(r, "xs")}<span class="nm">${esc(r.name)}</span><span class="c">${n}×</span></li>` : ""; }).join("")}</ol>` : `<div class="hint">Logg måltider som «spist som planlagt», så dukker favorittene opp her.</div>`}</section>`;
+  return h + `</div>`;
+}
+
+/* ---------- Handle: del liste ---------- */
+const _v6Liste = viewHandleListe;
+viewHandleListe = function () {
+  return _v6Liste().replace(`<button type="button" class="btn go" data-offhvor>📍 Hvor bør jeg handle?</button></div>`, `<button type="button" class="btn go" data-offhvor>📍 Hvor bør jeg handle?</button><button type="button" class="btn sm" data-v7share>📤 Del eller kopier lista</button></div>`);
+};
+async function shareText(title, text) {
+  try { if (navigator.share) { await navigator.share({title, text}); return; } } catch (e) { if (e && e.name === "AbortError") return; }
+  try { await navigator.clipboard.writeText(text); showToast("📋 Kopiert til utklippstavlen"); } catch (_) { showToast("Kunne ikke kopiere"); }
+}
+
+/* ---------- Overrask meg ---------- */
+function supPick(m) {
+  const le = lastEaten(), t = today();
+  let c = recipes.filter(r => !r.hidden && r.variant !== "hurtig" && r.kind === m.kind && r.name !== "Rester fra middag" && !m.tried.includes(r.id));
+  if (!c.length) { m.tried = []; c = recipes.filter(r => !r.hidden && r.variant !== "hurtig" && r.kind === m.kind); }
+  const w = r => (r.favorite ? 3 : r.tag === "liker" ? 1.8 : 1) * (le[r.id] && diffDays(le[r.id], t) < 14 ? .25 : 1) * (isNewest(r) ? 1.4 : 1);
+  const ws = c.map(w), sum = ws.reduce((a, b) => a + b, 0); let k = Math.random() * sum;
+  for (let i = 0; i < c.length; i++) { k -= ws[i]; if (k <= 0) return c[i]; }
+  return c[0];
+}
+function openSup(date) { M = {t: "v7sup", date: date || today(), kind: V7.supKind, tried: []}; const r = supPick(M); M.rid = r && r.id; render(); }
+function supHtml(m) {
+  const r = R(m.rid);
+  return `<div class="top"><div><div class="lab">🎲 Overrask meg</div><h2>${esc(DL[wd(m.date)])} ${esc(fmt(m.date))}</h2></div>${closeB}</div>
+    <div class="chips" style="margin-top:0">${KINDS.map(([k, l]) => `<button class="chip ${m.kind === k ? "on" : ""}" data-v7supk="${k}">${l}</button>`).join("")}</div>
+    ${r ? `<div class="sup">${artH(r, "l")}<div class="lab">${esc(KL[r.kind])}${isNewest(r) ? '<span class="newb">Ny</span>' : ""}</div><h2>${esc(r.name)}</h2><div class="rt">${pillsOf(r)}</div>
+      <p class="sub">${r.favorite ? "★ En av favorittene dine." : r.tag === "liker" ? "Noe du liker." : "Noe nytt å prøve!"}</p></div>
+      <div class="stack"><button class="btn go" data-v7supadd>📅 Legg til ${esc(DK[wd(m.date)])} ${esc(fmt(m.date))}</button>
+      <div class="grid2" style="margin:0"><button class="btn" data-v7supre>🎲 En til</button><button class="btn" data-v7suprec="${r.id}">📖 Oppskrift</button></div></div>` : `<div class="msg">Fant ingen retter.</div>`}`;
+}
+
+/* ---------- innstillinger ---------- */
+function setHtml() {
+  const t = LS.get("mat_theme_v7", "auto");
+  return `<div class="top"><div><div class="lab">Innstillinger</div><h2>Mat ${V7.ver}</h2></div>${closeB}</div>
+    <label class="lbl">Utseende</label><div class="seg3">${[["auto", "Auto"], ["light", "☀️ Lys"], ["dark", "🌙 Mørk"]].map(([k, l]) => `<button class="${t === k ? "on" : ""}" data-v7theme="${k}">${l}</button>`).join("")}</div>
+    <label class="lbl">Dagsmål</label>
+    <div class="grid2" style="margin-top:0"><div><label class="d" for="g-p0">Protein fra (g)</label><input class="inp" id="g-p0" type="number" inputmode="numeric" value="${GOAL.prot[0]}"></div><div><label class="d" for="g-p1">Protein til (g)</label><input class="inp" id="g-p1" type="number" inputmode="numeric" value="${GOAL.prot[1]}"></div>
+    <div><label class="d" for="g-k0">kcal fra</label><input class="inp" id="g-k0" type="number" inputmode="numeric" value="${GOAL.kcal[0]}"></div><div><label class="d" for="g-k1">kcal til</label><input class="inp" id="g-k1" type="number" inputmode="numeric" value="${GOAL.kcal[1]}"></div></div>
+    <div class="stack"><button class="btn go" data-v7goal>Lagre dagsmål</button></div>
+    <div class="rbox" style="margin-top:16px"><div class="lab">📱 Installer som app</div><div>iPhone: Del-knappen → «Legg til på Hjem-skjerm». Android: menyen ⋮ → «Installer app». Appen åpnes da i fullskjerm og fungerer delvis uten nett.</div></div>
+    <div class="rbox"><div class="lab">⌨️ Snarveier</div><div><kbd>/</kbd> søk · <kbd>Esc</kbd> lukk · i kokemodus: sveip eller <kbd>←</kbd> <kbd>→</kbd></div></div>
+    <p class="hint" style="text-align:center;margin-top:16px">${recipes.length} retter i banken · v${V7.ver}</p>`;
+}
+
+/* ---------- modal-utvidelse ---------- */
+const _v6Modal = renderModal;
+renderModal = function () {
+  const el = $("#modal");
+  if (M && (M.t === "v7sup" || M.t === "v7set")) {
+    const old = el.querySelector(".sh"), top = old ? old.scrollTop : 0, key = M.t + ":" + (M.date || "");
+    el.innerHTML = `<div class="ov" data-ov><div class="sh">${M.t === "v7sup" ? supHtml(M) : setHtml()}</div></div>`;
+    document.body.classList.add("nos"); const n = el.querySelector(".sh"); if (n && el.dataset.k === key) n.scrollTop = top; el.dataset.k = key;
+  } else _v6Modal();
+  const k = el.dataset.k || "";
+  if (k && k !== V7.lastModal) { el.classList.add("enter"); clearTimeout(V7._mt); V7._mt = setTimeout(() => el.classList.remove("enter"), 380); }
+  V7.lastModal = k;
+};
+
+/* ---------- kokemodus ---------- */
+renderCook = function () {
+  if (!CK) return; const r = R(CK.id); if (!r) return closeCook();
+  let el = $("#cook"); if (!el) { el = document.createElement("div"); el.id = "cook"; el.setAttribute("role", "dialog"); el.setAttribute("aria-label", "Kokemodus"); document.body.appendChild(el); }
+  const st = stepList(r), n = st.length, i = CK.i, f = CK.port && r.servings ? CK.port / r.servings : 1;
+  const wake = "wakeLock" in navigator ? (wl ? "🔆 Skjermen holdes våken" : "Skjermen kan slukke") : "Trykk på skjermen innimellom";
+  let body;
+  if (i < 0) body = `<div class="ckart">${artH(r, "m")}<div><div class="cklab">Før du starter</div><div class="ckname">${esc(r.name)}</div><div class="d">${CK.port ? num(CK.port) : r.servings} porsjoner${r.minutes ? " · ca. " + r.minutes + " min" : ""} · ${n} steg</div></div></div>
+    <div class="lab" style="margin-top:14px">Finn frem – kryss av</div>${ingList(r, f)}
+    ${r.prep ? `<div class="rbox prep"><div class="lab">🔪 Forberedelse</div><div class="cktxt sm">${esc(r.prep)}</div></div>` : ""}`;
+  else if (i >= n) body = `<div style="text-align:center;padding-top:20px">${artH(r, "l")}<div class="cklab" style="margin-top:16px">Ferdig!</div><div class="cktxt">🍽️ Velbekomme!</div></div>
+    ${r.tips ? `<div class="rbox tips"><div class="lab">💡 Husk til neste gang</div><ul>${String(r.tips).split(/\n+/).map(x => `<li>${esc(x)}</li>`).join("")}</ul></div>` : ""}`;
+  else body = `<div class="cklab">Steg ${i + 1} av ${n}</div><div class="ckdots">${st.map((_, j) => `<i class="${j <= i ? "on" : ""}"></i>`).join("")}</div>
+    <div class="cktxt">${esc(st[i])}</div>${tchips(st[i], "Steg " + (i + 1) + " · " + r.name) ? `<div style="margin:-8px 0 18px">${tchips(st[i], "Steg " + (i + 1) + " · " + r.name)}</div>` : ""}
+    <button class="btn sm" data-ckin>${CK.ing ? "Skjul ingredienser" : "🧾 Vis ingredienser"}</button>${CK.ing ? ingList(r, f) : ""}
+    ${i + 1 < n ? `<div class="cknext"><div class="lab">Neste steg</div><div>${esc(st[i + 1])}</div></div>` : `<div class="cknext"><div class="lab">Neste</div><div>🍽️ Server og nyt!</div></div>`}`;
+  el.innerHTML = `<div class="cktop"><button class="btn sm" data-ckx aria-label="Lukk kokemodus">✕ Lukk</button><span class="ckw">${wake}</span></div>
+    <div class="ckbody">${body}</div>
+    <div class="cknav"><button class="btn" data-ckp ${i < 0 ? "disabled" : ""}>◀ Forrige</button>${i >= n ? `<button class="btn go" data-ckx>Ferdig ✓</button>` : `<button class="btn go" data-ckn>${i < 0 ? "Start ▶" : i === n - 1 ? "Ferdig ▶" : "Neste ▶"}</button>`}</div>`;
+  renderTimers();
+};
+{ let sx = null, sy = null;
+  document.addEventListener("touchstart", e => { if (!CK || !e.target.closest("#cook .ckbody")) return; sx = e.touches[0].clientX; sy = e.touches[0].clientY; }, {passive: true});
+  document.addEventListener("touchend", e => { if (!CK || sx == null) return; const dx = e.changedTouches[0].clientX - sx, dy = e.changedTouches[0].clientY - sy; sx = null;
+    if (Math.abs(dx) > 70 && Math.abs(dx) > Math.abs(dy) * 1.5) { const b = document.querySelector(dx < 0 ? "#cook [data-ckn]" : "#cook [data-ckp]:not([disabled])"); if (b) b.click(); } }, {passive: true});
+  document.addEventListener("keydown", e => { if (!CK) return; if (e.key === "ArrowRight") { const b = $("#cook [data-ckn]"); if (b) b.click(); } if (e.key === "ArrowLeft") { const b = $("#cook [data-ckp]:not([disabled])"); if (b) b.click(); } });
+}
+
+/* ---------- kjøkkentimere ---------- */
+let TM = LS.get("mat_timers_v7", []).filter(t => t.end > Date.now() - 3600e3), tmInt = null, actx = null;
+const saveTM = () => LS.set("mat_timers_v7", TM);
+function beep() {
+  try { actx = actx || new (window.AudioContext || window.webkitAudioContext)(); const t0 = actx.currentTime;
+    for (let k = 0; k < 3; k++) { const o = actx.createOscillator(), g = actx.createGain(); o.type = "sine"; o.frequency.value = 880; o.connect(g); g.connect(actx.destination);
+      g.gain.setValueAtTime(0, t0 + k * .45); g.gain.linearRampToValueAtTime(.35, t0 + k * .45 + .02); g.gain.linearRampToValueAtTime(0, t0 + k * .45 + .3); o.start(t0 + k * .45); o.stop(t0 + k * .45 + .32); } } catch (_) {}
+}
+function startTimer(sec, label) {
+  try { actx = actx || new (window.AudioContext || window.webkitAudioContext)(); if (actx.state === "suspended") actx.resume(); } catch (_) {}
+  try { if ("Notification" in window && Notification.permission === "default") Notification.requestPermission(); } catch (_) {}
+  TM.push({id: Date.now() + Math.random(), label, end: Date.now() + sec * 1000, dur: sec, done: false}); saveTM();
+  showToast("⏱ Timer startet: " + fmtS(sec)); renderTimers();
+}
+function tickTimers() {
+  const now = Date.now();
+  for (const t of TM) if (!t.done && t.end <= now) {
+    t.done = true; saveTM(); beep(); try { navigator.vibrate && navigator.vibrate([300, 150, 300, 150, 300]); } catch (_) {}
+    try { if ("Notification" in window && Notification.permission === "granted") new Notification("⏱ Tiden er ute!", {body: t.label, tag: "mat-timer"}); } catch (_) {}
+  }
+  renderTimers();
+}
+function renderTimers() {
+  const el = $("#timers"); if (!el) return;
+  if (!TM.length) { el.innerHTML = ""; clearInterval(tmInt); tmInt = null; return; }
+  if (!tmInt) tmInt = setInterval(tickTimers, 1000);
+  const now = Date.now();
+  el.innerHTML = TM.map(t => `<div class="tm ${t.done ? "done" : ""}" role="timer"><b>${t.done ? "0:00" : fmtS((t.end - now) / 1000)}</b><span>${t.done ? "⏰ Ferdig! " : ""}${esc(t.label)}</span>
+    ${t.done ? `<button data-tmx="${t.id}">OK</button>` : `<button data-tmadd="${t.id}" aria-label="Ett minutt til">+1</button><button data-tmx="${t.id}" aria-label="Stopp timer">✕</button>`}</div>`).join("");
+}
+
+/* ---------- søk (kommandopalett) ---------- */
+const CMDS = [["🏠", "I dag", "Dagens måltider", () => go("idag")], ["📅", "Ukens plan", "Plan → uke", () => { go("plan"); goHub("uke"); }], ["✨", "Auto-fyll uke", "Middagsforslag for uka", () => { go("plan"); openAuto(null); }],
+  ["📊", "Statistikk", "Protein og variasjon", () => { go("plan"); goHub("stats"); }], ["🛒", "Handleliste", "Aktiv liste", () => { go("handle"); goHub("liste"); }], ["🧾", "Ny handleliste", "Fra planen", () => { go("handle"); goHub("ny"); }],
+  ["🧊", "Hva har jeg?", "Finn retter fra det du har", () => openHave()], ["🎲", "Overrask meg", "Tilfeldig middag", () => openSup(today())], ["🏷️", "Tilbud", "Kundeaviser og priser", () => go("tilbud")],
+  ["🆕", "Nyeste retter", "Sist lagt til", () => { go("retter"); goHub("nyeste"); }], ["➕", "Ny rett", "Lag en egen oppskrift", () => { go("retter"); openEdit(null); }], ["⚙️", "Innstillinger", "Tema og dagsmål", () => { M = {t: "v7set"}; render(); }]];
+let CK7 = null;
+const fold = s => String(s || "").toLowerCase().normalize("NFD").replace(/[̀-ͯ]/g, "");
+function openCmd() {
+  if ($("#cmdk")) return; CK7 = {q: "", sel: 0};
+  const d = document.createElement("div"); d.id = "cmdk"; d.setAttribute("role", "dialog"); d.setAttribute("aria-label", "Søk");
+  d.innerHTML = `<div class="box"><div class="bar">${svg("search")}<input id="cmdq" type="search" placeholder="Søk retter, ingredienser eller handlinger" autocomplete="off" enterkeyhint="go"><button class="ib" data-cmdx aria-label="Lukk">✕</button></div><div class="res"></div></div>`;
+  document.body.appendChild(d); document.body.classList.add("nos"); cmdRender(); setTimeout(() => { const i = $("#cmdq"); if (i) i.focus(); }, 30);
+}
+function closeCmd() { const d = $("#cmdk"); if (d) d.remove(); CK7 = null; if (!M) document.body.classList.remove("nos"); }
+function cmdResults() {
+  const q = fold(CK7.q.trim()), out = [];
+  CMDS.forEach((c, i) => { if (!q || fold(c[1] + " " + c[2]).includes(q)) out.push({type: "c", i, ico: c[0], t: c[1], s: c[2]}); });
+  if (q) {
+    const words = q.split(/\s+/).filter(Boolean);
+    const sc = r => { const n = fold(r.name), ing = fold((r.ing || []).map(i => i.name).join(" ")); if (!words.every(w => n.includes(w) || ing.includes(w))) return -1; return (n.startsWith(q) ? 30 : 0) + (words.every(w => n.includes(w)) ? 20 : 0) + (r.favorite ? 5 : 0) + (r.tag === "liker" ? 3 : 0); };
+    recipes.filter(r => !r.hidden && r.variant !== "hurtig").map(r => [sc(r), r]).filter(x => x[0] >= 0).sort((a, b) => b[0] - a[0] || a[1].name.localeCompare(b[1].name, "nb")).slice(0, 14).forEach(([, r]) => out.push({type: "r", r}));
+  }
+  return out;
+}
+function cmdRender() {
+  const el = $("#cmdk .res"); if (!el) return;
+  const res = cmdResults(); CK7.res = res; CK7.sel = Math.min(CK7.sel, Math.max(0, res.length - 1));
+  const cs = res.filter(x => x.type === "c"), rs = res.filter(x => x.type === "r");
+  const row = (x, i) => x.type === "c" ? `<button class="cmd ${i === CK7.sel ? "sel" : ""}" data-cmdi="${i}"><span class="ico">${x.ico}</span><span><b>${esc(x.t)}</b><small>${esc(x.s)}</small></span></button>`
+    : `<button class="cmd ${i === CK7.sel ? "sel" : ""}" data-cmdi="${i}">${artH(x.r, "xs")}<span style="min-width:0"><b>${esc(x.r.name)}</b><small>${esc(KL[x.r.kind])}${x.r.minutes ? " · " + x.r.minutes + " min" : ""}${x.r.protein ? " · " + x.r.protein + " g protein" : ""}</small></span></button>`;
+  el.innerHTML = (rs.length ? `<div class="grp">Retter</div>` + rs.map(x => row(x, res.indexOf(x))).join("") : "") + (cs.length ? `<div class="grp">Handlinger</div>` + cs.map(x => row(x, res.indexOf(x))).join("") : "") + (!res.length ? `<div class="msg">Ingen treff på «${esc(CK7.q)}»</div>` : "");
+}
+function cmdRun(i) {
+  const x = CK7 && CK7.res[i]; if (!x) return; closeCmd();
+  if (x.type === "c") CMDS[x.i][3](); else { M = {t: "recipe", id: x.r.id}; render(); }
+}
+
+/* ---------- hendelser ---------- */
+document.addEventListener("click", ev => {
+  const c = s => ev.target.closest(s); let e;
+  const stop = () => { ev.stopPropagation(); ev.preventDefault(); };
+  if ((e = c("[data-timer]"))) { stop(); return startTimer(+e.dataset.timer, e.dataset.tlabel || "Timer"); }
+  if ((e = c("[data-tmx]"))) { stop(); TM = TM.filter(t => String(t.id) !== e.dataset.tmx); saveTM(); return renderTimers(); }
+  if ((e = c("[data-tmadd]"))) { stop(); const t = TM.find(t => String(t.id) === e.dataset.tmadd); if (t) { t.end += 60e3; saveTM(); } return renderTimers(); }
+  if ((e = c("[data-v7ing]"))) { stop(); const k = e.dataset.v7ing; V7.ick.has(k) ? V7.ick.delete(k) : V7.ick.add(k); try { navigator.vibrate && navigator.vibrate(8); } catch (_) {} if (CK) renderCook(); return render(); }
+  if (c("[data-v7search]")) { stop(); return openCmd(); }
+  if (c("[data-cmdx]") || (ev.target.id === "cmdk")) { stop(); return closeCmd(); }
+  if ((e = c("[data-cmdi]"))) { stop(); return cmdRun(+e.dataset.cmdi); }
+  if (c("[data-v7home]")) { stop(); sel = today(); return go("idag"); }
+  if (c("[data-v7set]")) { stop(); M = {t: "v7set"}; return render(); }
+  if ((e = c("[data-v7theme]"))) { stop(); LS.set("mat_theme_v7", e.dataset.v7theme); applyTheme(); return render(); }
+  if (c("[data-v7goal]")) { stop(); const v = id => +(($("#" + id) || {}).value || 0), p0 = v("g-p0"), p1 = v("g-p1"), k0 = v("g-k0"), k1 = v("g-k1");
+    if (!(p0 > 0 && p1 >= p0 && k0 > 0 && k1 >= k0)) return showToast("Sjekk tallene – «til» må være minst like høy som «fra»");
+    GOAL.prot = [p0, p1]; GOAL.kcal = [k0, k1]; LS.set("mat_goal_v7", GOAL); M = null; render(); return showToast("✓ Dagsmål lagret"); }
+  if ((e = c("[data-v7go]"))) { stop(); const [t, v] = e.dataset.v7go.split("/"); go(t); if (v) goHub(v); return; }
+  if ((e = c("[data-v7sup]"))) { stop(); hist == null && loadHist().catch(() => { hist = []; }); return openSup(e.dataset.v7sup || today()); }
+  if (M && M.t === "v7sup") {
+    if ((e = c("[data-v7supk]"))) { stop(); M.kind = V7.supKind = e.dataset.v7supk; M.tried = []; const r = supPick(M); M.rid = r && r.id; return render(); }
+    if (c("[data-v7supre]")) { stop(); M.tried.push(M.rid); const r = supPick(M); M.rid = r && r.id; return render(); }
+    if ((e = c("[data-v7suprec]"))) { stop(); M = {t: "recipe", id: +e.dataset.v7suprec, back: M}; return render(); }
+    if (c("[data-v7supadd]")) { stop(); const m = M, r = R(m.rid); M = null; render(); return planAdd(m.date, typeof slotFor === "function" ? slotFor(r) : r.kind, r.id); }
+  }
+  if (M && M.t === "recipe" && (e = c("[data-v7port]"))) { stop(); M.port = Math.min(12, Math.max(1, Math.round(+M.port) + +e.dataset.v7port)); return render(); }
+  if ((e = c("[data-v7copy]"))) { stop(); const r = R(+e.dataset.v7copy), f = M && M.port && r.servings ? M.port / r.servings : 1;
+    return shareText(r.name, r.name + " (" + num(M && M.port || r.servings) + " porsj.)\n" + r.ing.filter(i => !i.at_home).map(i => "• " + i.name + (i.qty != null ? " – " + qtyTxt(i.qty * f, i.unit) : "")).join("\n")); }
+  if (c("[data-v7share]")) { stop(); const L = lists.find(l => l.id === curList), left = items.filter(i => !i.checked);
+    const by = {}; left.forEach(i => (by[i.category] = by[i.category] || []).push(i));
+    return shareText(L ? L.title : "Handleliste", (L ? L.title + "\n" : "") + Object.entries(by).map(([k, v]) => k + ":\n" + v.map(i => "☐ " + i.name + (i.qty != null ? " – " + qtyTxt(i.qty, i.unit) : "")).join("\n")).join("\n\n")); }
+}, true);
+document.addEventListener("input", ev => { if (ev.target.id === "cmdq" && CK7) { CK7.q = ev.target.value; CK7.sel = 0; cmdRender(); } });
+document.addEventListener("keydown", ev => {
+  if ($("#cmdk")) {
+    if (ev.key === "Escape") { ev.preventDefault(); return closeCmd(); }
+    if (ev.key === "ArrowDown" || ev.key === "ArrowUp") { ev.preventDefault(); CK7.sel = Math.max(0, Math.min(CK7.res.length - 1, CK7.sel + (ev.key === "ArrowDown" ? 1 : -1))); cmdRender(); const s = $("#cmdk .cmd.sel"); if (s) s.scrollIntoView({block: "nearest"}); return; }
+    if (ev.key === "Enter") { ev.preventDefault(); ev.stopPropagation(); return cmdRun(CK7.sel); }
+    return;
+  }
+  const t = ev.target, typing = t && t.matches && t.matches("input, textarea, select, [contenteditable]");
+  if (!typing && !CK && (ev.key === "/" || ((ev.ctrlKey || ev.metaKey) && ev.key.toLowerCase() === "k"))) { ev.preventDefault(); openCmd(); }
+  if (ev.key === "Escape" && M && !CK) { M = null; render(); }
+}, true);
+document.addEventListener("change", ev => { if (ev.target.closest && ev.target.closest(".it") && ev.target.type === "checkbox") { try { navigator.vibrate && navigator.vibrate(10); } catch (_) {} } });
+/* diagram-tooltip */
+document.addEventListener("pointermove", ev => {
+  const ch = ev.target.closest && ev.target.closest("[data-chart]"); if (!ch) return;
+  const tt = ch.querySelector(".tt"), tip = ev.target.getAttribute && ev.target.getAttribute("data-tip");
+  if (!tip) { tt.style.opacity = 0; return; }
+  const b = ch.getBoundingClientRect(); tt.textContent = tip; tt.style.left = Math.min(b.width - 80, Math.max(80, ev.clientX - b.left)) + "px"; tt.style.top = (ev.clientY - b.top) + "px"; tt.style.opacity = 1;
+});
+document.addEventListener("pointerleave", ev => { const tt = document.querySelector("[data-chart] .tt"); if (tt) tt.style.opacity = 0; }, true);
+
+/* ---------- render-utvidelse ---------- */
+function routeKey() { return [tab, NAV[tab] || "", tab === "retter" ? NAV.haveRes : "", tab === "tilbud" && typeof OF !== "undefined" ? (OF.view || "") + (OF.store || "") : "", tab === "idag" ? sel : "", tab === "plan" ? viewMon : ""].join("|"); }
+const _v6Render = render;
+render = function () {
+  if (tab === "plan" && NAV.plan === "stats" && hist == null && !NAV._histBusy) {
+    NAV._histBusy = true;
+    loadHist().catch(() => { hist = []; }).finally(() => { NAV._histBusy = false; render(); });
+  }
+  _v6Render();
+  if (!loaded) return;
+  const k = routeKey(), v = $("#view");
+  if (k !== V7.lastKey) { v.classList.add("enter"); clearTimeout(V7._vt); V7._vt = setTimeout(() => v.classList.remove("enter"), 380); }
+  V7.lastKey = k;
+};
+
+/* ---------- PWA ---------- */
+if ("serviceWorker" in navigator && location.protocol === "https:") addEventListener("load", () => navigator.serviceWorker.register("sw.js").catch(() => {}));
+initChrome();
+renderTimers();
+
+
+/* ================= v8.0 – enklere navigasjon, kategorier, laktosefritt, smaksreise ================= */
+V7.ver = "8.0";
+const V8 = {rcat: "", seen: LS.get("mat_seen_v8", false)};
+let DIET = LS.get("mat_diet_v8", {lf: false});
+const saveDiet = () => LS.set("mat_diet_v8", DIET);
+EQL.blender = "Stavmikser"; EQ.push(["blender", "Stavmikser"]);
+
+/* ---------- kategorier ---------- */
+const CAT8 = [["middag", "Middag", "🍽️"], ["lunsj", "Lunsj", "🥪"], ["frokost", "Frokost", "🥣"], ["snack", "Mellommåltid", "🍎"], ["dessert", "Dessert", "🍰"], ["bakst", "Bakst", "🥐"], ["creami", "Ninja Creami", "🍦"]];
+const CATL = Object.fromEntries(CAT8.map(c => [c[0], c[1]])), CATI = Object.fromEntries(CAT8.map(c => [c[0], c[2]]));
+const CATV = {middag: "middag", lunsj: "lunsj", frokost: "frokost", mellommaltid: "snack", dessert: "dessert", bakst: "bakst", creami: "creami"};
+const BAKST_RE = /bananbrød|boller\b|rundstykker|muffins|brownies?|cookies|focaccia|scones|gulrotkake|\bkake\b|\bbrød\b/i;
+const DESSERT_RE = /mousse|cheesecake|crumble|panna cotta|fondant|lava cake|tiramisu|riskrem|bakt banan|dessert|sorbet|pudding|skyr-bark|\bis\b/i;
+function catOf(r) {
+  if (!r) return "middag";
+  if (r._cat) return r._cat;
+  const n = r.name || "";
+  return (r._cat = /creami/i.test(n) ? "creami" : r.kind === "snack" && BAKST_RE.test(n) ? "bakst" : r.kind === "snack" && DESSERT_RE.test(n) ? "dessert" : r.kind);
+}
+const catLabel = r => CATL[catOf(r)] || KL[r.kind] || "";
+const slotFor = r => { const c = catOf(r); return c === "dessert" || c === "creami" ? "kvelds" : c === "bakst" ? "snack" : r.kind; };
+ART_E.unshift([/creami|proteinis/, "🍦"], [/sorbet/, "🍧"], [/muffins/, "🧁"], [/cookies/, "🍪"], [/brownie|fondant|lava/, "🍫"], [/kanelboller|boller/, "🥐"],
+  [/rundstykker|focaccia|bananbrød/, "🍞"], [/cheesecake|tiramisu|gulrotkake|kake/, "🍰"], [/mousse|panna cotta|pudding/, "🍮"], [/crumble|pai\b/, "🥧"], [/bakt banan/, "🍌"]);
+{ const _art = artOf; artOf = function (r) { const a = _art(r), c = catOf(r); if (["dessert", "bakst", "creami"].includes(c)) a.c = c; return a; }; }
+
+/* ---------- laktose ---------- */
+const LAC_FREE = /laktosefri|whey isolat|plantebasert|havredrikk|havremelk|kokosmelk|soyadrikk|mandeldrikk/i;
+const LAC_LOW = /parmesan|revet ost|ost \(skiver\)|^ost\b|gulost|cheddar|mozzarella|^smør|fetaost|whey isolat|proteinpulver/i;
+const LAC_HIGH = /melk|fløte|rømme|skyr|yoghurt|kvarg|cottage|kremost|riskrem|proteinpudding|proteindrikk|vaniljesaus|iskrem|potetsalat|tortellini med ost/i;
+const LAC_CHECK = /saus \(pose\)|bearnaise|butter chicken-saus|tikka masala-saus|posemix|carbonara \(saus|grandiosa|ferdigpizza|pizza|nuggets|fiskekaker|fiskeburger|kjøttboller \(ferdige|kjøttkaker \(ferdige|naanbrød|lompe|vafler/i;
+const LAC_SWAP = [[/^melk$/i, "Laktosefri melk"], [/rømme/i, "Laktosefri rømme"], [/fløte/i, "Laktosefri matfløte"], [/skyr/i, "Laktosefri skyr"], [/cottage/i, "Laktosefri cottage cheese"],
+  [/gresk yoghurt/i, "Laktosefri gresk yoghurt"], [/yoghurt/i, "Laktosefri yoghurt"], [/kremost/i, "Laktosefri kremost"], [/kvarg/i, "Laktosefri kvarg"], [/proteinpudding/i, "Laktosefri proteinpudding"],
+  [/proteindrikk/i, "Laktosefri proteindrikk"], [/riskrem/i, "Riskrem laget med laktosefri fløte"], [/vaniljesaus/i, "Laktosefri vaniljesaus"], [/tortellini/i, "Pasta uten ost + revet hard ost"], [/melk/i, "Laktosefri melk"]];
+function lacOf(name) {
+  const n = String(name || "");
+  if (LAC_FREE.test(n) || /^gjær$/i.test(n)) return "free";
+  if (LAC_HIGH.test(n) && !LAC_LOW.test(n)) return "high";
+  if (LAC_LOW.test(n)) return "low";
+  if (LAC_CHECK.test(n)) return "check";
+  return "free";
+}
+const lacSwap = name => { for (const [re, s] of LAC_SWAP) if (re.test(name)) return s; return "Laktosefri " + String(name).toLowerCase(); };
+function lacInfo(r) {
+  if (!r) return {st: "free", high: [], low: [], check: []};
+  if (r._lac) return r._lac;
+  const o = {high: [], low: [], check: []};
+  for (const i of r.ing || []) { const s = lacOf(i.name); if (s !== "free") o[s].push(i.name); }
+  o.st = o.check.length ? "check" : o.high.length ? "swap" : o.low.length ? "low" : "free";
+  return (r._lac = o);
+}
+const lacOk = r => ["free", "low"].includes(lacInfo(r).st);
+function lacPill(r) {
+  const s = lacInfo(r).st;
+  if (s === "free") return `<span class="mp lf" title="Ingen ingredienser med laktose">🥛 Laktosefri</span>`;
+  if (s === "low") return `<span class="mp lf" title="Bare hard ost/smør/whey isolat – svært lite laktose">🥛 Nesten laktosefri</span>`;
+  if (!DIET.lf) return "";
+  return s === "swap" ? `<span class="mp sw" title="Kan lages laktosefri med enkle bytter">🔄 Kan byttes</span>` : `<span class="mp sw" title="Inneholder ferdigvarer som kan ha melk – sjekk pakken">⚠️ Sjekk pakken</span>`;
+}
+{ const _p = pillsOf; pillsOf = r => _p(r) + lacPill(r); }
+
+/* rettkort med kategori */
+rc7 = (r, attr) => `<button type="button" class="rc7 ${r.hidden ? "hid" : ""}" ${attr || `data-rec="${r.id}"`}>${artH(r, "s")}<span class="rb">
+  <span class="rk">${CATI[catOf(r)] || ""} ${esc(catLabel(r))}${hurtigOf(r) ? " · ⚡ har hurtig" : r.variant === "hurtig" ? " · ⚡ hurtig" : ""}${r.tag === "liker" ? " · liker" : ""}${isNewest(r) ? '<span class="newb">Ny</span>' : ""}</span>
+  <span class="rn">${esc(catOf(r) === "creami" ? r.name.replace(/\s*\(Ninja Creami\)/i, "") : r.name)}${r.favorite ? '<span class="fv">★</span>' : ""}</span><span class="rt">${pillsOf(r)}</span></span></button>`;
+{ newestIds = function () { if (V7._newN === recipes.length && V7._new) return V7._new; V7._newN = recipes.length; return (V7._new = new Set(recipes.filter(r => r.variant !== "hurtig").sort((a, b) => b.id - a.id).slice(0, 44).map(r => r.id))); }; }
+
+/* ---------- smaksreise ---------- */
+const CUIS = [["asia", "Asia", "🥢", /teriyaki|gochujang|bulgogi|koreansk|bibimbap|kung pao|wok|nudl|ramen|pad thai|thai|satay|sushi|katsu|japansk|banh mi|sursøt|stekt ris|bang bang|sticky|lo mein|soya-honning|kimchi/i],
+  ["mex", "Mexico", "🌮", /taco|burrito|quesadilla|fajita|enchilada|chili con|chili sin|chipotle|meksikansk|huevos|mexi/i],
+  ["ita", "Italia", "🍝", /pasta|spaghetti|lasagne|carbonara|pesto|bolognese|arrabbiata|gnocchi|tortellini|orzo|risotto|pizza|focaccia|tiramisu|panna cotta|diavola|alfredo|parmesan-kylling/i],
+  ["ind", "India", "🍛", /tikka|masala|butter chicken|tandoori|dal\b|korma|karri|curry/i],
+  ["med", "Midtøsten og Middelhavet", "🫒", /shawarma|kebab|harissa|suvlaki|gresk|marokkansk|hummus|falafel|shakshuka|couscous|oliven|pita/i],
+  ["usa", "USA", "🍔", /burger|bbq|buffalo|mac and|pulled|cajun|nuggets|fish and chips|hot dog|cookies|brownie|cheesecake|jerk|peri peri/i],
+  ["nor", "Norsk og nordisk", "🐟", /fiskekake|plukkfisk|karbonade|kjøttkake|kjøttboller|lapskaus|fiskesuppe|fiskegrateng|torsk med|pølse|lompe|kanelboller|rundstykker|grøt|ertestuing|stroganoff|gulasj/i]];
+function cuisOf(r) { if (r._cu !== undefined) return r._cu; const n = r.name || ""; for (const c of CUIS) if (c[3].test(n)) return (r._cu = c[0]); return (r._cu = null); }
+function weekChallenge() {
+  const le = lastEaten(), t = today(), wk = isoWeek(t);
+  const recent = new Set(Object.entries(le).filter(([, d]) => diffDays(d, t) <= 30).map(([id]) => cuisOf(R(+id) || {}) || "x"));
+  const pool = recipes.filter(r => r.kind === "middag" && !r.hidden && r.variant !== "hurtig" && !le[r.id] && cuisOf(r) && !recent.has(cuisOf(r)));
+  const pool2 = pool.length ? pool : recipes.filter(r => r.kind === "middag" && !r.hidden && r.variant !== "hurtig" && !le[r.id]);
+  if (!pool2.length) return null;
+  const rnd = seeded(wk * 104729 + 17); return pool2[Math.floor(rnd() * pool2.length)];
+}
+
+/* ---------- navigasjon: 5 faner + Mer ---------- */
+TABS.push("mer");
+HUB_VIEWS.mer = [null, "hjelp"];
+HUB_VIEWS.retter.push("middag", "lunsj", "frokost", "mellommaltid", "dessert", "bakst", "creami", "laktosefri", "reise", "alle");
+function initNav8() {
+  const nav = $(".tb"); if (!nav || nav.dataset.v8) return; nav.dataset.v8 = "1";
+  const T = [["idag", "I dag"], ["plan", "Plan"], ["retter", "Oppskrifter"], ["handle", "Handle"], ["mer", "Mer"]];
+  ICO.mer = '<circle cx="5.5" cy="12" r="1.6"/><circle cx="12" cy="12" r="1.6"/><circle cx="18.5" cy="12" r="1.6"/>';
+  nav.innerHTML = T.map(([t, l]) => `<button class="tab" data-t="${t}">${svg(t)}<span>${l}</span></button>`).join("");
+}
+const navTab = () => tab === "tilbud" ? "handle" : tab === "fb" ? "mer" : tab;
+function viewMer() {
+  if (NAV.mer === "hjelp") return viewHjelp();
+  const row = (attr, ico, t, s, right) => `<button type="button" class="mrow" ${attr}><span class="mi">${ico}</span><span class="mt"><b>${t}</b>${s ? `<small>${s}</small>` : ""}</span>${right || '<span class="chev">›</span>'}</button>`;
+  const sw = on => `<span class="sw ${on ? "on" : ""}" aria-hidden="true"><i></i></span>`;
+  return `<div class="offpage"><h1>Mer</h1><p class="offsum">Alt som ikke trengs hver dag, samlet på ett sted.</p>
+  <div class="mgh">Kosthold</div><div class="mgrp">
+    ${row('data-v8lfmode role="switch" aria-checked="' + DIET.lf + '"', "🥛", "Laktosefritt-modus", "Viser laktosefrie bytter i oppskrifter og på handlelista", sw(DIET.lf))}
+    ${row('data-v7set', "🎯", "Dagsmål", `${GOAL.prot[0]}–${GOAL.prot[1]} g protein · ${GOAL.kcal[0]}–${GOAL.kcal[1]} kcal`)}
+    ${row('data-v7go="retter/reise"', "🌍", "Smaksreise", "Utforsk mat fra ulike land og spis mer variert")}</div>
+  <div class="mgh">Planlegging</div><div class="mgrp">
+    ${row('data-v7go="plan/stats"', "📊", "Statistikk", "Protein per dag, variasjon og favoritter")}
+    ${row('data-auto=""', "✨", "Auto-fyll uka", "Få middagsforslag for hele uka")}
+    ${row('data-v7go="plan/rester"', "🍲", "Rester og 2x", "Lag dobbelt og spis rester dagen etter")}
+    ${row('data-v7go="plan/historikk"', "🕑", "Historikk", "Hva du har spist den siste tiden")}</div>
+  <div class="mgh">Handle</div><div class="mgrp">
+    ${row('data-v8off=""', "🏷️", "Tilbud og priser", "Kundeaviser fra butikkene rundt deg")}
+    ${row('data-offhvor', "📍", "Hvor bør jeg handle?", "Billigste butikk for handlelista")}
+    ${row('data-v8off="favs"', "⭐", "Favorittvarer på tilbud", "Varer du kjøper ofte")}</div>
+  <div class="mgh">Appen</div><div class="mgrp">
+    ${row('data-v7go="fb"', "💬", "Notater og tilbakemelding", fb.length ? fb.length + " lagret" : "Skriv hva som fungerer og ikke")}
+    ${row('data-v7set', "🎨", "Utseende", "Lys, mørk eller automatisk")}
+    ${row('data-hubgo="hjelp"', "❓", "Slik bruker du appen", "Kort guide til alle delene")}
+    ${row('data-v7search', "🔎", "Søk", "Retter, ingredienser og snarveier")}</div>
+  <p class="hint" style="text-align:center;margin-top:18px">Mat ${V7.ver} · ${recipes.length} retter</p></div>`;
+}
+function viewHjelp() {
+  const s = (ico, t, items) => `<section class="card"><div class="lab">${ico} ${t}</div><ul class="hlp">${items.map(x => `<li>${x}</li>`).join("")}</ul></section>`;
+  return hubBar("Slik bruker du appen", "Mer") + `<p class="sub">Fem faner nederst. Alt annet finner du under Mer.</p>` +
+    s("🏠", "I dag", ["Se dagens måltider og trykk <b>Spist som planlagt</b> når du har spist.", "Ringene viser protein og energi: lys del er planlagt, hvit del er spist.", "<b>🎲 Overrask meg</b> gir et forslag hvis du ikke vet hva du vil ha."]) +
+    s("📅", "Plan", ["Trykk på en dag for å legge til eller bytte retter.", "<b>Auto-fyll</b> foreslår middager for hele uka.", "<b>2x</b> på en middag lager dobbelt og legger inn rester dagen etter."]) +
+    s("📖", "Oppskrifter", ["Velg kategori: middag, lunsj, frokost, mellommåltid, dessert, bakst eller Ninja Creami.", "<b>🧊 Hva har jeg?</b> finner retter ut fra det som er i kjøleskapet.", "I en oppskrift: velg porsjoner, kryss av ingredienser og trykk <b>⏱</b> for å starte en timer.", "<b>👨‍🍳 Kokemodus</b> viser ett steg om gangen i stor tekst."]) +
+    s("🛒", "Handle", ["Lag handleliste fra planen for 5, 7 eller 14 dager.", "Kryss av mens du handler. <b>📤 Del</b> sender lista til andre.", "<b>Tilbud</b> viser hva som er billig og hvor du bør handle."]) +
+    s("🥛", "Laktosefritt", ["Slå på <b>Laktosefritt-modus</b> under Mer.", "Oppskrifter viser da laktosefrie bytter, og handlelista sier hvilke varer du bør velge laktosefritt.", "<b>🥛 Laktosefri</b>-merket betyr at retten ikke har laktose. Hard ost, smør og whey isolat har svært lite laktose og tåles av de fleste."]) +
+    `</div>`;
+}
+
+/* ---------- Oppskrifter: ny hub ---------- */
+const _v7Retter = viewRetter;
+viewRetter = function () {
+  const v = NAV.retter;
+  if (v && CATV[v]) return viewRetterBrowse(CATI[CATV[v]] + " " + CATL[CATV[v]], "cat:" + CATV[v]);
+  if (v === "laktosefri") return viewRetterBrowse("🥛 Laktosefrie retter", "laktosefri");
+  if (v === "reise") return viewReise();
+  if (v === "alle") return viewRetterBrowse("Alle oppskrifter", "");
+  if (v) return _v7Retter();
+  const vis = recipes.filter(r => !r.hidden && r.variant !== "hurtig"), cnt = {};
+  vis.forEach(r => { const c = catOf(r); cnt[c] = (cnt[c] || 0) + 1; });
+  const rnd = seeded(isoWeek(today()) * 7919 + new Date().getFullYear());
+  const insp = vis.filter(r => r.kind === "middag").map(r => [rnd(), r]).sort((a, b) => a[0] - b[0]).slice(0, 8).map(x => x[1]);
+  const nLf = vis.filter(lacOk).length, nFav = vis.filter(r => r.favorite || r.tag === "liker").length;
+  const sc = (go, ico, l) => `<button type="button" class="chip" data-hubgo="${go}">${ico} ${l}</button>`;
+  return `<div class="offpage"><h1>Oppskrifter</h1><p class="offsum">${vis.length} retter i banken</p>
+    <button type="button" class="fakesearch" data-v7search>${svg("search")}<span>Søk etter rett eller ingrediens …</span></button>
+    <div class="catg">${CAT8.map(([k, l, i]) => `<button type="button" class="catt a-${["dessert", "bakst", "creami", "frokost", "snack"].includes(k) ? (k === "snack" ? "annet" : k) : k === "middag" ? "kylling" : k === "lunsj" ? "fisk" : "egg"}" data-hubgo="${Object.keys(CATV).find(x => CATV[x] === k)}"><span class="ce">${i}</span><b>${l}</b><small>${cnt[k] || 0} retter</small></button>`).join("")}
+      <button type="button" class="catt a-annet" data-hubgo="alle"><span class="ce">📚</span><b>Alle</b><small>${vis.length} retter</small></button></div>
+    <div class="duo"><button type="button" class="bigact" data-have><span>🧊</span><b>Hva har jeg?</b><small>Finn retter fra kjøleskapet</small></button><button type="button" class="bigact" data-v7sup=""><span>🎲</span><b>Overrask meg</b><small>Et tilfeldig forslag</small></button></div>
+    <div class="sech"><h2>Snarveier</h2></div>
+    <div class="chips">${sc("favs", "⭐", "Favoritter (" + nFav + ")")}${sc("raske", "⚡", "Raske")}${sc("protein", "💪", "Mest protein")}${sc("laktosefri", "🥛", "Laktosefri (" + nLf + ")")}${sc("smak", "🌶️", "Mye smak")}${sc("reise", "🌍", "Smaksreise")}${sc("nyeste", "🆕", "Nyeste")}${sc("nytt", "🔁", "Ikke prøvd")}</div>
+    <div class="sech"><h2>✨ Ukens inspirasjon</h2></div><div class="car">${insp.map(ccard).join("")}</div>
+    <div class="stack"><button class="btn sm" data-hubgo="ny">➕ Lag din egen oppskrift</button></div></div>`;
+};
+viewRetterBrowse = function (title, mode) {
+  const f = Object.assign({}, RF, {kind: ""}); let list = filterRecipes(f), cat = mode.startsWith("cat:") ? mode.slice(4) : "";
+  if (mode === "favsliker") list = filterRecipes(Object.assign({}, f, {tag: ""})).filter(r => r.favorite || r.tag === "liker");
+  else if (mode === "prøv") list = filterRecipes(Object.assign({}, f, {tag: "prøv"})).filter(r => !lastEaten()[r.id]);
+  else if (mode === "raske") list = filterRecipes(Object.assign({}, f, {time: f.time || 20}));
+  else if (mode === "protein") list = list.slice().sort((a, b) => (b.protein || 0) - (a.protein || 0) || a.name.localeCompare(b.name, "nb"));
+  else if (mode === "smak") list = list.filter(isSpicy);
+  else if (mode === "nyeste") list = list.slice().sort((a, b) => b.id - a.id).slice(0, 60);
+  else if (mode === "laktosefri") list = list.filter(lacOk);
+  if (cat) list = list.filter(r => catOf(r) === cat);
+  else if (V8.rcat) list = list.filter(r => catOf(r) === V8.rcat);
+  if (DIET.lfOnly && mode !== "laktosefri") list = list.filter(lacOk);
+  const chip = (attr, on, l) => `<button type="button" class="chip ${on ? "on" : ""}" ${attr}>${l}</button>`;
+  let h = hubBar(title, "Oppskrifter");
+  if (cat === "creami") h += `<div class="rbox prep" style="margin:0 0 12px"><div class="lab">🍦 Ninja Creami – slik lykkes du</div><div>Fyll til streken, frys flatt i <b>24 timer</b>, kjør «Lite Ice Cream». Smuldrete? Ha i 1–2 ss melk og kjør <b>Re-spin</b>. Puddingpulver gir kremete is uten fløte.</div></div>`;
+  if (cat === "bakst") h += `<div class="rbox" style="margin:0 0 12px"><div class="lab">🥐 Tips</div><div>Bakst fryses best samme dag. Plantemargarin og laktosefri melk gjør nesten all bakst laktosefri.</div></div>`;
+  h += `<input type="search" class="srch" id="r-q" placeholder="🔍 Søk i ${esc(cat ? CATL[cat].toLowerCase() : "oppskrifter")}" value="${esc(RF.q)}" enterkeyhint="search">`;
+  h += `<div class="filtrow"><div class="chiprow">${!cat ? chip('data-v8rcat=""', !V8.rcat, "Alle") + CAT8.map(([k, l, i]) => chip(`data-v8rcat="${k}"`, V8.rcat === k, i + " " + l)).join("") : ""}
+    ${mode !== "laktosefri" ? chip("data-v8lfonly", DIET.lfOnly, "🥛 Bare laktosefri") : ""}${chip('data-rf="time" data-v="' + (RF.time === 20 ? 0 : 20) + '"', RF.time === 20, "⚡ ≤ 20 min")}</div>${filterBtn(filterCountRF(RF))}</div>`;
+  if (FS.open && FS.ctx === "r") h += filterSheetRF(RF, "r", mode === "");
+  return h + `<div class="cntb">${list.length} ${list.length === 1 ? "rett" : "retter"}</div>${list.map(r => rc7(r)).join("") || `<div class="msg">Ingen treff. Prøv et annet filter.</div>`}</div>`;
+};
+function viewReise() {
+  const le = lastEaten(), t = today(), vis = recipes.filter(r => !r.hidden && r.variant !== "hurtig" && r.kind !== "snack");
+  let h = hubBar("🌍 Smaksreise", "Oppskrifter") + `<p class="sub">Variert mat gir bredere næring – og mindre lei. Prøv ett nytt kjøkken i uka. Grønn hake = spist siste 30 dager.</p>`;
+  const ch = weekChallenge();
+  if (ch) h += `<section class="card chal"><div class="lab">🎯 Ukens smaksutfordring</div>${rc7(ch)}</section>`;
+  for (const [k, l, i] of CUIS) {
+    const list = vis.filter(r => cuisOf(r) === k); if (!list.length) continue;
+    const done = list.some(r => le[r.id] && diffDays(le[r.id], t) <= 30);
+    h += `<div class="sech"><h2>${i} ${esc(l)} ${done ? '<span class="okb">✓</span>' : ""}</h2><span class="d">${list.length} retter</span></div><div class="car">${list.slice().sort((a, b) => (le[a.id] ? 1 : 0) - (le[b.id] ? 1 : 0) || b.id - a.id).map(ccard).join("")}</div>`;
+  }
+  return h + `</div>`;
+}
+
+/* ---------- oppskrift: laktosefri visning ---------- */
+const _v7Body = recipeBody;
+recipeBody = function (r, portions) {
+  const li = lacInfo(r);
+  if (!DIET.lf || li.st === "free" || li.st === "low") return _v7Body(r, portions);
+  const sw = V8.noSwap !== r.id;
+  const r2 = sw ? Object.assign({}, r, {id: r.id, ing: (r.ing || []).map(i => lacOf(i.name) === "high" ? Object.assign({}, i, {name: lacSwap(i.name) + " ↺"}) : i)}) : r;
+  const box = `<div class="rbox lfbox"><div class="lab">🥛 Laktosefri versjon</div><div>${li.high.length ? `Byttes: ${li.high.map(n => `<b>${esc(n)}</b> → ${esc(lacSwap(n))}`).join(", ")}.` : ""}${li.check.length ? ` Sjekk pakken på: ${li.check.map(esc).join(", ")}.` : ""}</div>
+    ${li.high.length ? `<button class="btn sm" style="margin-top:8px" data-v8swap="${r.id}">${sw ? "Vis original" : "Vis med laktosefrie bytter"}</button>` : ""}</div>`;
+  return box + _v7Body(r2, portions);
+};
+
+/* ---------- Handle: tilbud inn i Handle, laktosetag på varer ---------- */
+const _v6HandleHub = viewHandle;
+viewHandle = function () {
+  const h = _v6HandleHub();
+  if (NAV.handle) return h;
+  return h.replace('<nav class="offhub">', '<nav class="offhub">' + `<button type="button" class="offtile" data-v8off=""><span class="otico">🏷️</span><span class="ottxt"><b>Tilbud og priser</b><span>Kundeaviser, billigste butikk og favorittvarer</span></span></button>`);
+};
+function decorateShop() {
+  if (!DIET.lf || tab !== "handle" || NAV.handle !== "liste") return;
+  document.querySelectorAll(".it[data-id]").forEach(el => {
+    const it = items.find(i => i.id === +el.dataset.id); if (!it || el.querySelector(".lftag")) return;
+    if (lacOf(it.name) === "high") { const s = el.querySelector("span[style]"); if (s) s.insertAdjacentHTML("beforeend", `<span class="lftag">🥛 Velg: ${esc(lacSwap(it.name))}</span>`); }
+  });
+}
+
+/* ---------- I dag: utfordring og nyheter ---------- */
+const _v7Idag = viewIdag;
+viewIdag = function () {
+  let h = _v7Idag();
+  if (NAV.idag) return h;
+  let extra = "";
+  if (!V8.seen) extra += `<section class="card news"><div class="lab">✨ Nytt i appen</div><ul class="hlp"><li>Fem faner nederst – tilbud ligger under <b>Handle</b>, resten under <b>Mer</b>.</li><li>Nye kategorier: <b>dessert, bakst og Ninja Creami</b>.</li><li><b>Laktosefritt-modus</b> under Mer.</li><li><b>🌍 Smaksreise</b> for mer variert mat.</li></ul><div class="grid2"><button class="btn sm" data-v8dismiss>Skjønner</button><button class="btn sm go" data-v7go="mer/hjelp">Vis guide</button></div></section>`;
+  const ch = sel === today() ? weekChallenge() : null;
+  if (ch) extra += `<section class="card chal"><div class="lab">🌍 Ukens smaksutfordring</div><p class="sub" style="margin:2px 0 8px">Noe du ikke har spist før – fra et kjøkken du ikke har vært innom på en stund.</p>${rc7(ch)}<button class="btn sm" data-v7go="retter/reise">Utforsk smaksreisen</button></section>`;
+  return h.replace('<nav class="offhub">', extra + '<nav class="offhub">');
+};
+
+/* ---------- Overrask meg med kategorier ---------- */
+supPick = function (m) {
+  const le = lastEaten(), t = today(), ok = r => !r.hidden && r.variant !== "hurtig" && catOf(r) === m.kind && r.name !== "Rester fra middag" && (!DIET.lfOnly || lacOk(r));
+  let c = recipes.filter(r => ok(r) && !m.tried.includes(r.id));
+  if (!c.length) { m.tried = []; c = recipes.filter(ok); }
+  if (!c.length) return null;
+  const w = r => (r.favorite ? 3 : r.tag === "liker" ? 1.8 : 1) * (le[r.id] && diffDays(le[r.id], t) < 14 ? .25 : 1) * (isNewest(r) ? 1.4 : 1);
+  const ws = c.map(w), sum = ws.reduce((a, b) => a + b, 0); let k = Math.random() * sum;
+  for (let i = 0; i < c.length; i++) { k -= ws[i]; if (k <= 0) return c[i]; }
+  return c[0];
+};
+{ const _s = supHtml; supHtml = m => _s(m).replace(/<div class="chips" style="margin-top:0">[\s\S]*?<\/div>/, `<div class="chiprow" style="margin-top:0">${CAT8.map(([k, l, i]) => `<button class="chip ${m.kind === k ? "on" : ""}" data-v7supk="${k}">${i} ${l}</button>`).join("")}</div>`).replace('<div class="lab">' + esc(KL[(R(m.rid) || {}).kind] || ""), '<div class="lab">' + esc(catLabel(R(m.rid) || {}))); }
+
+/* ---------- velg rett (planlegging): laktosefilter ---------- */
+{ const _pk = pickHtml; pickHtml = m => { let h = _pk(m); if (m.f.lf) h = h.replace(/(<button type="button" class="rc7[^>]*data-padd="(\d+)"[\s\S]*?<\/button>)/g, (all, x, id) => lacOk(R(+id)) ? all : "");
+  return h.replace('når den finnes</button>', `når den finnes</button><button class="chip ${m.f.lf ? "on" : ""}" data-v8plf>🥛 Bare laktosefri</button>`); }; }
+
+/* ---------- render ---------- */
+const _v7Render = render;
+render = function () {
+  initNav8();
+  if (tab === "mer") {
+    document.querySelectorAll(".tab").forEach(t => t.classList.toggle("on", t.dataset.t === "mer"));
+    if (loaded) { $("#view").innerHTML = viewMer(); renderModal(); const k = "mer|" + (NAV.mer || ""); if (k !== V7.lastKey) { const v = $("#view"); v.classList.add("enter"); clearTimeout(V7._vt); V7._vt = setTimeout(() => v.classList.remove("enter"), 380); } V7.lastKey = k; }
+    else renderModal();
+    return;
+  }
+  _v7Render();
+  const nt = navTab(); document.querySelectorAll(".tab").forEach(t => t.classList.toggle("on", t.dataset.t === nt));
+  decorateShop();
+};
+{ const _v6go = go; go = function (t, view) { if (t === "mer") { tab = "mer"; NAV.mer = view || null; history.replaceState({tab: "mer"}, "", "#mer" + (view ? "/" + view : "")); render(); scrollTo(0, 0); return; } return _v6go(t, view); }; }
+
+/* ---------- hendelser ---------- */
+document.addEventListener("click", ev => {
+  const c = s => ev.target.closest(s); let e;
+  const stop = () => { ev.stopPropagation(); ev.preventDefault(); };
+  if (c("[data-v8lfmode]")) { stop(); DIET.lf = !DIET.lf; saveDiet(); showToast(DIET.lf ? "🥛 Laktosefritt-modus er på" : "Laktosefritt-modus er av"); return render(); }
+  if (c("[data-v8lfonly]")) { stop(); DIET.lfOnly = !DIET.lfOnly; saveDiet(); return render(); }
+  if ((e = c("[data-v8rcat]"))) { stop(); V8.rcat = e.dataset.v8rcat; return render(); }
+  if ((e = c("[data-v8swap]"))) { stop(); const id = +e.dataset.v8swap; V8.noSwap = V8.noSwap === id ? null : id; return render(); }
+  if ((e = c("[data-v8off]"))) { stop(); tab = "tilbud"; OF.q = ""; OF.cat = ""; const v = e.dataset.v8off; if (v) goOff(v); else { OF.view = null; OF.store = null; history.pushState({tab: "tilbud"}, "", "#tilbud"); render(); scrollTo(0, 0); } return; }
+  if (c("[data-v8dismiss]")) { stop(); V8.seen = true; LS.set("mat_seen_v8", true); return render(); }
+  if (c("[data-v8plf]") && M && M.t === "pick") { stop(); M.f.lf = !M.f.lf; return render(); }
+  if (M && M.t === "recipe" && c("[data-plan-open]")) { const r = R(M.id); if (r && !M.pl && slotFor(r) !== r.kind) { stop(); M.pl = {mon: monday(today()), date: today(), slot: slotFor(r)}; return render(); } }
+}, true);
+{ const _cmds = CMDS.length; CMDS.splice(0, 0, ["🥛", "Laktosefritt-modus", DIET.lf ? "På – trykk for å slå av" : "Av – trykk for å slå på", () => { DIET.lf = !DIET.lf; saveDiet(); render(); showToast(DIET.lf ? "🥛 Laktosefritt-modus er på" : "Laktosefritt-modus er av"); }],
+  ["🍰", "Desserter", "Oppskrifter → Dessert", () => { go("retter"); goHub("dessert"); }], ["🍦", "Ninja Creami", "Proteinis og sorbet", () => { go("retter"); goHub("creami"); }],
+  ["🥐", "Bakst", "Brød, boller og kaker", () => { go("retter"); goHub("bakst"); }], ["🌍", "Smaksreise", "Mat fra ulike land", () => { go("retter"); goHub("reise"); }], ["❓", "Hjelp", "Slik bruker du appen", () => { go("mer"); goHub("hjelp"); }]); }
+{ const c = CMDS.find(x => x[1] === "Tilbud"); if (c) c[3] = () => { tab = "tilbud"; OF.view = null; history.pushState({tab: "tilbud"}, "", "#tilbud"); render(); }; }
+initNav8();
 
 applyHubHash();
 render();
