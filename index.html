@@ -675,6 +675,16 @@ kbd{font:inherit;font-size:.75rem;font-weight:700;border:1px solid var(--line2);
 .news{border:1.5px solid var(--acc)}
 .okb{display:inline-grid;place-items:center;width:22px;height:22px;border-radius:50%;background:var(--acc);color:var(--onacc);font-size:.8rem;vertical-align:3px;margin-left:4px}
 .sech .d{font-size:.85rem;font-weight:700}
+
+/* v8.1 tilbudsvelger */
+.opk{display:flex;flex-direction:column;align-items:flex-start;gap:3px;width:100%;text-align:left;padding:12px 14px;margin:0 0 8px;border:1.5px solid var(--line);border-radius:18px;background:var(--card);color:var(--ink);font:inherit;cursor:pointer;box-shadow:var(--sh1)}
+.opk.on{border-color:var(--acc);background:var(--accbg)}
+.opk b{font-size:1rem;line-height:1.25}.opk small{color:var(--mut);font-size:.82rem;line-height:1.3}
+.opt{display:flex;flex-wrap:wrap;gap:6px;align-items:center}
+.opp{font-size:.95rem}.opp b{font-size:1.1rem}
+.vtag{display:inline-block;font-size:.76rem;font-weight:800;border-radius:999px;padding:2px 8px;background:var(--card2);border:1px solid var(--line);color:var(--ink)}
+.vtag.ok{background:var(--acc);color:var(--onacc);border-color:transparent}
+.krow{flex-wrap:wrap}.kbtns{display:flex;gap:6px;margin-left:auto}.kbtns .btn{min-height:44px;padding:0 14px}
 </style>
 </head>
 <body>
@@ -4949,6 +4959,124 @@ initNav8();
   document.addEventListener("visibilitychange", () => { if (!document.hidden) checkUpdate(); });
   addEventListener("focus", checkUpdate); setTimeout(checkUpdate, 5000);
 }
+
+/* ================= v8.1 – velg variant selv i tilbud og sammenligning ================= */
+V7.ver = "8.1";
+const VAR_RULES = [["blandet", "Blandet", /blanding|blandet|svin og storfe|storfe og svin|storfe\/svin|svin\/storfe/], ["kylling", "Kylling", /kylling/], ["kalkun", "Kalkun", /kalkun/],
+  ["svin", "Svin", /svin|\bgris/], ["lam", "Lam", /\blam\b|lammekjøtt|lammedeig/], ["storfe", "Storfe", /storfe|okse|angus|karbonade|\bbiff|entrec|kjøttdeig av ku|\bku\b/]];
+const VARL = {blandet: "Blandet", kylling: "Kylling", kalkun: "Kalkun", svin: "Svin", lam: "Lam", storfe: "Storfe", laktosefri: "Laktosefri", vanlig: "Vanlig"};
+const VARI = {blandet: "🥩", kylling: "🐔", kalkun: "🦃", svin: "🐷", lam: "🐑", storfe: "🐄", laktosefri: "🥛", vanlig: "🥛"};
+const MEATK = /kjøttdeig|deig|pølse|kjøtt|bacon|burger|kebab|skinke|filet|kotelett|ribbe/;
+let PREF = LS.get("mat_offpref_v8", {});
+const prefKey = name => favNameKey(String(name || "").toLowerCase().replace(/\s*\d+\s*%.*$/, "").trim());
+function variantOf(o) {
+  const t = offText(o);
+  if (/laktosefri/.test(t)) return "laktosefri";
+  for (const [k, , re] of VAR_RULES) if (re.test(t)) return k;
+  if (/kjøttdeig/.test(t)) return "storfe";
+  if (lacOf(o.product || "") === "high") return "vanlig";
+  return null;
+}
+function wantVariant(name) {
+  const n = String(name || "").toLowerCase();
+  if (/laktosefri/.test(n)) return "laktosefri";
+  for (const [k, , re] of VAR_RULES) if (re.test(n)) return k;
+  const p = PREF[prefKey(n)]; if (p) return p;
+  if (/kjøttdeig/.test(n)) return "storfe";
+  if (DIET.lf && lacOf(n) === "high") return "laktosefri";
+  return null;
+}
+const varPool = (list, want) => { if (!want) return list; return list.filter(o => variantOf(o) === want); };
+
+/* sammenligning: bruk valgt variant */
+wantedSlots = function () {
+  const ticked = (offers || []).filter(o => OF.tick.has(oid(o))), map = new Map();
+  for (const o of ticked) {
+    const k = offerKey(o) || offText(o).slice(0, 40);
+    const label = ({"kjøttdeig": "kjøttdeig", "kylling": "kylling", "laks": "laks", "pasta": "pasta", "ris": "ris", "mais": "mais", "egg": "egg", "smågodt": "smågodt", "skyr/yoghurt": "skyr/yoghurt", "ferdigpizza": "pizza / Grandiosa", "ferdigmat": "ferdigmat", "bacon": "bacon"})[k] || o.product;
+    if (!map.has(k)) map.set(k, {key: k, label, offers: []});
+    map.get(k).offers.push(o);
+  }
+  return [...map.values()].map(s => { const vs = new Set(s.offers.map(variantOf).filter(Boolean)); s.variant = vs.size === 1 ? [...vs][0] : null; return s; });
+};
+bestForSlot = function (slot, chain) {
+  const name = (slot && slot.label) || "", want = slot && slot.variant !== undefined ? slot.variant : wantVariant(name);
+  const rows = packOffers().filter(o => o.chain === chain && o.price != null), exact = [], similar = [];
+  for (const o of rows) { const kind = offerMatchKind(o, name); if (kind === "exact") exact.push(o); else if (kind === "similar") similar.push(o); }
+  const e2 = varPool(exact, want), s2 = varPool(similar, want), pool = e2.length ? e2 : s2;
+  if (!pool.length) return null;
+  return {o: pool.slice().sort((a, b) => a.price - b.price)[0], kind: e2.length ? "exact" : "similar"};
+};
+tickFromShop = function () {
+  const names = (items || []).filter(i => !i.checked).map(i => i.name);
+  if (!names.length) { showToast("Ingen varer i handlelista"); return; }
+  let n = 0;
+  for (const name of names) {
+    const hits = offersForItem(name), exact = hits.filter(o => offerMatchKind(o, name) === "exact"), pool = varPool(exact.length ? exact : hits, wantVariant(name));
+    const best = pool.slice().sort((a, b) => a.price - b.price)[0];
+    if (best && !OF.tick.has(oid(best))) { OF.tick.add(oid(best)); n++; }
+  }
+  saveTick(); showToast(n ? "✓ La til " + n + " varer fra lista – trykk «Bytt» for å velge en annen variant" : "Ingen av varene er på tilbud i avisen"); render();
+};
+
+/* velger */
+const pickHits = name => { const seen = new Set(); return packOffers().filter(o => o.price != null && (offerMatchesFav(o, name) || offerMatchKind(o, name) === "exact")).filter(o => { const k = o.chain + "|" + String(o.product).toLowerCase() + "|" + o.price; return !seen.has(k) && seen.add(k); }); };
+function openOffPick(name, replaceId) { const want = wantVariant(name); M = {t: "v8offpick", name, v: want && pickHits(name).some(o => variantOf(o) === want) ? want : "", rep: replaceId || null}; render(); }
+const unitTxt = o => o.unit_price ? `${kr(o.unit_price)}/${esc(o.unit || "kg")}` : "";
+function offPickHtml(m) {
+  const all = pickHits(m.name), vc = {};
+  all.forEach(o => { const v = variantOf(o); if (v) vc[v] = (vc[v] || 0) + 1; });
+  const list = (m.v ? all.filter(o => variantOf(o) === m.v) : all).slice().sort((a, b) => (a.unit_price || 1e9) - (b.unit_price || 1e9) || a.price - b.price);
+  const vkeys = Object.keys(vc);
+  return `<div class="top"><div><div class="lab">⭐ Velg vare</div><h2>${esc(m.name)}</h2></div>${closeB}</div>
+    <p class="sub" style="margin:0 0 10px">Trykk på den du vil ha. Sammenligningen bruker bare den typen du velger, og valget huskes til neste gang.</p>
+    ${vkeys.length > 1 ? `<div class="chiprow">${[["", "Alle", all.length]].concat(vkeys.map(k => [k, (VARI[k] || "") + " " + VARL[k], vc[k]])).map(([k, l, n]) => `<button class="chip ${m.v === k ? "on" : ""}" data-v8pv="${k}">${l} (${n})</button>`).join("")}</div>` : ""}
+    <div class="cntb">${list.length} tilbud · billigst per kilo/liter øverst</div>
+    ${list.map(o => { const on = OF.tick.has(oid(o)), v = variantOf(o);
+      return `<button type="button" class="opk ${on ? "on" : ""}" data-v8padd="${esc(oid(o))}"><span class="opt">${chipCh(o.chain)}${v ? `<span class="vtag">${VARI[v] || ""} ${VARL[v]}</span>` : ""}${on ? '<span class="vtag ok">✓ I kurven</span>' : ""}</span>
+        <b>${esc(o.product)}</b>${o.description ? `<small>${esc(o.description)}</small>` : ""}
+        <span class="opp"><b>${esc(kr(o.price))}</b>${o.quantity_text ? ` · ${esc(o.quantity_text)}` : ""}${unitTxt(o) ? ` · <span class="d">${unitTxt(o)}</span>` : ""}</span><small>${esc(storePlace(o.chain))} · ${esc(validTxt(o))}</small></button>`; }).join("") || `<div class="msg">Ingen tilbud av denne typen nå.</div>`}`;
+}
+addFavToBasket = name => openOffPick(name);
+{ const _rm = renderModal; renderModal = function () {
+  const el = $("#modal");
+  if (M && M.t === "v8offpick") { const old = el.querySelector(".sh"), top = old ? old.scrollTop : 0, key = "v8offpick:" + M.name;
+    el.innerHTML = `<div class="ov" data-ov><div class="sh">${offPickHtml(M)}</div></div>`; document.body.classList.add("nos");
+    const n = el.querySelector(".sh"); if (n && el.dataset.k === key) n.scrollTop = top; el.dataset.k = key;
+    if (key !== V7.lastModal) { el.classList.add("enter"); setTimeout(() => el.classList.remove("enter"), 380); } V7.lastModal = key; return; }
+  _rm(); }; }
+
+/* kurv-siden: forklaring og «Bytt» */
+{ const _k = viewOffKurv; viewOffKurv = function () {
+  let h = _k();
+  h = h.replace("Handlekurv / Sammenlign", "Sammenlign butikker")
+    .replace(/<p class="sub">Velg varer og se hva det koster[^<]*<\/p>/, `<div class="rbox prep" style="margin:0 0 14px"><div class="lab">Slik virker det</div><ol class="hlp" style="margin-top:4px"><li><b>Velg varene</b> du skal kjøpe: søk, trykk en ⭐ favoritt eller hent fra handlelista. Du velger selv type (f.eks. storfe eller svin).</li><li><b>Se prisen per butikk</b> under «Alt på én butikk» – bare tilbudspriser fra kundeavisene.</li><li><b>«Del opp»</b> viser om det lønner seg å handle i to butikker.</li></ol></div>`)
+    .replace('<div class="lab">Hurtigvalg fra favoritter</div>', '<div class="lab">⭐ Favoritter – trykk for å velge type og butikk</div>')
+    .replace(/<button type="button" class="btn sm" data-offtick="([^"]+)" aria-label="Fjern">Fjern<\/button><\/div>/g, (a, id) => { const o = (offers || []).find(x => oid(x) === id), v = o && variantOf(o);
+      return `${v ? `<span class="vtag">${VARI[v] || ""} ${VARL[v]}</span>` : ""}<span class="kbtns"><button type="button" class="btn sm" data-v8bytt="${id}">Bytt</button><button type="button" class="btn sm" data-offtick="${id}" aria-label="Fjern">✕</button></span></div>`; });
+  return h;
+}; }
+
+/* klikk */
+document.addEventListener("click", ev => {
+  const c = s => ev.target.closest(s); let e;
+  const stop = () => { ev.stopPropagation(); ev.preventDefault(); };
+  if ((e = c("[data-offqfav]"))) { stop(); return openOffPick(e.dataset.offqfav); }
+  if ((e = c("[data-v8bytt]"))) { stop(); const o = (offers || []).find(x => oid(x) === e.dataset.v8bytt); if (!o) return; const k = offerKey(o) || o.product; return openOffPick(k, oid(o)); }
+  if (!M || M.t !== "v8offpick") return;
+  if ((e = c("[data-v8pv]"))) { stop(); M.v = e.dataset.v8pv; return render(); }
+  if ((e = c("[data-v8padd]"))) {
+    stop(); const o = (offers || []).find(x => oid(x) === e.dataset.v8padd); if (!o) return;
+    const k = offerKey(o) || offText(o).slice(0, 40);
+    if (OF.tick.has(oid(o))) { OF.tick.delete(oid(o)); saveTick(); return render(); }
+    for (const x of offers || []) if (OF.tick.has(oid(x)) && (offerKey(x) || offText(x).slice(0, 40)) === k) OF.tick.delete(oid(x));
+    OF.tick.add(oid(o)); saveTick();
+    const v = variantOf(o); if (v) { PREF[prefKey(M.name)] = v; LS.set("mat_offpref_v8", PREF); }
+    M = null; render();
+    return showToast("✓ " + o.product + " hos " + ch(o.chain).short + " · " + kr(o.price) + (v ? " – husker " + VARL[v].toLowerCase() : ""));
+  }
+}, true);
+
 applyHubHash();
 render();
 load();
