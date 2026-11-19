@@ -580,6 +580,7 @@ body.cooking #timers{bottom:calc(96px + env(safe-area-inset-bottom));z-index:210
 .cktxt{font-size:26px;letter-spacing:-.01em}
 .ckart{display:flex;gap:14px;align-items:center;margin:4px 0 10px}
 .cknav .btn{border-radius:20px}
+.cknext{margin-top:22px;padding:14px 16px;border-radius:18px;border:1.5px dashed var(--line2);color:var(--mut);font-size:1.05rem;line-height:1.45}.cknext .lab{margin-bottom:4px}
 
 /* statistikk */
 .kpis{display:grid;grid-template-columns:repeat(2,minmax(0,1fr));gap:10px;margin:8px 0 14px}
@@ -4451,7 +4452,8 @@ renderCook = function () {
     ${r.tips ? `<div class="rbox tips"><div class="lab">💡 Husk til neste gang</div><ul>${String(r.tips).split(/\n+/).map(x => `<li>${esc(x)}</li>`).join("")}</ul></div>` : ""}`;
   else body = `<div class="cklab">Steg ${i + 1} av ${n}</div><div class="ckdots">${st.map((_, j) => `<i class="${j <= i ? "on" : ""}"></i>`).join("")}</div>
     <div class="cktxt">${esc(st[i])}</div>${tchips(st[i], "Steg " + (i + 1) + " · " + r.name) ? `<div style="margin:-8px 0 18px">${tchips(st[i], "Steg " + (i + 1) + " · " + r.name)}</div>` : ""}
-    <button class="btn sm" data-ckin>${CK.ing ? "Skjul ingredienser" : "🧾 Vis ingredienser"}</button>${CK.ing ? ingList(r, f) : ""}`;
+    <button class="btn sm" data-ckin>${CK.ing ? "Skjul ingredienser" : "🧾 Vis ingredienser"}</button>${CK.ing ? ingList(r, f) : ""}
+    ${i + 1 < n ? `<div class="cknext"><div class="lab">Neste steg</div><div>${esc(st[i + 1])}</div></div>` : `<div class="cknext"><div class="lab">Neste</div><div>🍽️ Server og nyt!</div></div>`}`;
   el.innerHTML = `<div class="cktop"><button class="btn sm" data-ckx aria-label="Lukk kokemodus">✕ Lukk</button><span class="ckw">${wake}</span></div>
     <div class="ckbody">${body}</div>
     <div class="cknav"><button class="btn" data-ckp ${i < 0 ? "disabled" : ""}>◀ Forrige</button>${i >= n ? `<button class="btn go" data-ckx>Ferdig ✓</button>` : `<button class="btn go" data-ckn>${i < 0 ? "Start ▶" : i === n - 1 ? "Ferdig ▶" : "Neste ▶"}</button>`}</div>`;
