@@ -1291,6 +1291,9 @@ function renderModal() {
   if (M && M.t === "auto" && typeof NAV !== "undefined" && NAV.plan === "auto") {
     el.innerHTML = ""; el.dataset.k = ""; document.body.classList.remove("nos"); return;
   }
+  if (M && M.t === "haveui") {
+    el.innerHTML = ""; el.dataset.k = ""; document.body.classList.remove("nos"); return;
+  }
   if (M) {
     if (M.t === "pick") inner = pickHtml(M);
     else if (M.t === "entry") inner = entryHtml(M);
@@ -1408,7 +1411,7 @@ document.addEventListener("click", async ev => {
     if (c("[data-esave]")) return saveRecipe();
     return;
   }
-  if ((e = c("[data-rec]"))) { M = {t: "recipe", id: +e.dataset.rec, back: e.hasAttribute("data-fromentry") || (M && (M.t === "auto" || M.t === "have")) ? M : null}; return render(); }
+  if ((e = c("[data-rec]"))) { M = {t: "recipe", id: +e.dataset.rec, back: e.hasAttribute("data-fromentry") || (M && (M.t === "auto" || M.t === "have" || M.t === "haveui")) ? M : null}; return render(); }
   if ((e = c("[data-edit]"))) return openEdit(+e.dataset.edit);
   if (c("[data-newrec]")) { M = null; return openEdit(null); }
   if ((e = c("[data-fb]"))) { M = {t: "fb", k: e.dataset.fb, back: M && M.t === "recipe" ? M : null}; dr(M.k).ok = false; return render(); }
@@ -3861,7 +3864,7 @@ function viewRetterBrowse(title, mode) {
 
 function viewHavePick() {
   ensureHave();
-  if (!M || M.t !== "haveui") M = {t: "haveui", q: "", open: null, date: add(today(), 2)};
+  if (!M || (M.t !== "haveui" && M.t !== "recipe" && M.t !== "edit" && M.t !== "fb")) M = {t: "haveui", q: "", open: null, date: add(today(), 2)};
   const m = M, cnt = haveKeys(), q = (m.q || "").toLowerCase().trim();
   const grouped = {};
   HAVE_GROUPS.forEach(([g, keys]) => { grouped[g] = keys.filter(k => cnt[k] || HV.sel.includes(k)); });
@@ -3959,7 +3962,7 @@ function haveFilterSheet() {
 }
 function viewHaveResults() {
   ensureHave();
-  if (!M || M.t !== "haveui") M = {t: "haveui", q: "", open: null, date: add(today(), 2)};
+  if (!M || (M.t !== "haveui" && M.t !== "recipe" && M.t !== "edit" && M.t !== "fb")) M = {t: "haveui", q: "", open: null, date: add(today(), 2)};
   const m = M, res = haveFiltered(), now = res.filter(x => !x.miss.length), near = res.filter(x => x.miss.length);
   if (!HV.forceNow && now.length === 0 && near.length) HV.rtab = "near";
   const onNear = HV.rtab === "near";
@@ -5365,7 +5368,7 @@ haveFiltered = function () {
 
 viewHaveResults = function () {
   ensureHave();
-  if (!M || M.t !== "haveui") M = {t: "haveui", q: "", open: null, date: add(today(), 2)};
+  if (!M || (M.t !== "haveui" && M.t !== "recipe" && M.t !== "edit" && M.t !== "fb")) M = {t: "haveui", q: "", open: null, date: add(today(), 2)};
   const m = M, res = haveFiltered(), now = res.filter(x => !x.miss.length), near = res.filter(x => x.miss.length);
   if (!HV.forceNow && now.length === 0 && near.length) HV.rtab = "near";
   const onNear = HV.rtab === "near";
@@ -5476,6 +5479,9 @@ document.addEventListener("click", ev => {
     FS.open = false; render(); scrollTo(0, 0); return;
   }
 }, true);
+
+/* ========= v8.3 – åpne oppskrift fra Hva har jeg-resultat ================= */
+V7.ver = "8.3";
 
 applyHubHash();
 render();

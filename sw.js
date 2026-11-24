@@ -1,6 +1,6 @@
-/* Mat v8.2 – service worker. Nettverk først for appen (så nye versjoner alltid vinner),
+/* Mat v8.3 – service worker. Nettverk først for appen (så nye versjoner alltid vinner),
    cache som reserve når du er uten nett. Supabase-kall caches aldri. */
-const C = "mat-v82";
+const C = "mat-v83";
 const CORE = ["./", "./index.html", "./manifest.webmanifest", "./icon.svg", "./icon-192.png", "./icon-512.png"];
 self.addEventListener("install", e => { e.waitUntil(caches.open(C).then(c => c.addAll(CORE)).catch(() => {})); self.skipWaiting(); });
 self.addEventListener("activate", e => { e.waitUntil(caches.keys().then(ks => Promise.all(ks.filter(k => k !== C).map(k => caches.delete(k)))).then(() => self.clients.claim())); });
